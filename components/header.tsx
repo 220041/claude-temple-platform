@@ -96,72 +96,88 @@ export default function Header({
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden lg:flex items-center justify-end" aria-label="주 메뉴">
-          {menuItems.map((item, i) => (
-            <div
-              key={i}
-              className="relative"
-              onMouseEnter={() => setOpenMenu(i)}
-              onMouseLeave={() => setOpenMenu(null)}
-            >
-              <button
-                className="flex items-center gap-1 font-sans font-medium transition-colors"
-                style={{
-                  padding: "28px 20px",
-                  fontSize: "15px",
-                  color: openMenu === i ? "var(--color-accent)" : "#1a1a1a",
-                  letterSpacing: "0.01em",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                aria-expanded={openMenu === i}
-                aria-haspopup="true"
+          {menuItems.map((item, i) => {
+            const hasChildren = item.children.length > 0
+            const visibleChildren = item.children.filter((child) => child.href)
+            return (
+              <div
+                key={i}
+                className="relative"
+                onMouseEnter={() => setOpenMenu(i)}
+                onMouseLeave={() => setOpenMenu(null)}
               >
-                {item.label}
-                <ChevronDown
-                  className="transition-transform duration-200"
-                  style={{
-                    width: "13px",
-                    height: "13px",
-                    opacity: 0.5,
-                    transform: openMenu === i ? "rotate(180deg)" : "rotate(0)",
-                  }}
-                />
-              </button>
-
-              {/* 2차 메뉴 — 2번 스타일: 항목 아래 좁은 박스형 드롭다운 */}
-              {openMenu === i && (
                 <div
-                  className="absolute top-full left-1/2 z-40"
+                  className="flex items-center gap-1 font-sans font-medium"
                   style={{
-                    transform: "translateX(-50%)",
-                    width: "176px",
-                    background: "#fff",
-                    border: "1px solid #e8e6e1",
-                    boxShadow: "0 10px 24px rgba(22,20,16,0.12)",
+                    padding: "28px 20px",
+                    fontSize: "15px",
+                    color: openMenu === i ? "var(--color-accent)" : "#1a1a1a",
+                    letterSpacing: "0.01em",
                   }}
                 >
-                  {item.children.map((child, j) => (
-                    <Link
-                      key={j}
-                      href={child.href ?? "#"}
-                      className="block font-sans transition-colors"
-                      style={{
-                        padding: "12px 20px",
-                        fontSize: "13px",
-                        color: "#4e4a42",
-                        borderBottom: j < item.children.length - 1 ? "1px solid #f5f4f2" : "none",
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "#fdfbf8"; e.currentTarget.style.color = "#161410" }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#4e4a42" }}
-                    >
-                      {child.label}
+                  {item.href ? (
+                    <Link href={item.href} className="transition-colors">
+                      {item.label}
                     </Link>
-                  ))}
+                  ) : (
+                    <span>{item.label}</span>
+                  )}
+                  {hasChildren && (
+                    <button
+                      type="button"
+                      onClick={() => setOpenMenu(openMenu === i ? null : i)}
+                      aria-expanded={openMenu === i}
+                      aria-haspopup="true"
+                      aria-label={`${item.label} 하위 메뉴 펼치기`}
+                      style={{ display: "flex", background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                    >
+                      <ChevronDown
+                        className="transition-transform duration-200"
+                        style={{
+                          width: "13px",
+                          height: "13px",
+                          opacity: 0.5,
+                          transform: openMenu === i ? "rotate(180deg)" : "rotate(0)",
+                        }}
+                      />
+                    </button>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+
+                {/* 2차 메뉴 — 2번 스타일: 항목 아래 좁은 박스형 드롭다운 */}
+                {hasChildren && openMenu === i && (
+                  <div
+                    className="absolute top-full left-1/2 z-40"
+                    style={{
+                      transform: "translateX(-50%)",
+                      width: "176px",
+                      background: "#fff",
+                      border: "1px solid #e8e6e1",
+                      boxShadow: "0 10px 24px rgba(22,20,16,0.12)",
+                    }}
+                  >
+                    {visibleChildren.map((child, j) => (
+                      <Link
+                        key={j}
+                        href={child.href as string}
+                        className="block font-sans transition-colors"
+                        style={{
+                          padding: "12px 20px",
+                          fontSize: "13px",
+                          color: "#4e4a42",
+                          borderBottom: j < visibleChildren.length - 1 ? "1px solid #f5f4f2" : "none",
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = "#fdfbf8"; e.currentTarget.style.color = "#161410" }}
+                        onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#4e4a42" }}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
 
         {/* 모바일 메뉴 버튼 */}
@@ -181,32 +197,49 @@ export default function Header({
       {/* 모바일 메뉴 */}
       {mobileOpen && (
         <div className="lg:hidden bg-white" style={{ borderTop: "1px solid #e8e6e1" }}>
-          {menuItems.map((item, i) => (
-            <div key={i} style={{ borderBottom: "1px solid #f5f4f2" }}>
-              <button
-                className="w-full flex items-center justify-between font-sans font-medium"
-                style={{ padding: "15px 24px", fontSize: "15px", color: "#1a1a1a" }}
-                onClick={() => setMobileExpanded(mobileExpanded === i ? null : i)}
-              >
-                {item.label}
-                <ChevronDown style={{
-                  width: "14px", height: "14px", color: "var(--color-accent)",
-                  transform: mobileExpanded === i ? "rotate(180deg)" : "rotate(0)",
-                  transition: "transform .2s",
-                }} />
-              </button>
-              {mobileExpanded === i && (
-                <div style={{ background: "#fdfbf8" }}>
-                  {item.children.map((child, j) => (
-                    <Link key={j} href={child.href ?? "#"} className="block font-sans"
-                      style={{ padding: "12px 40px", fontSize: "14px", color: "#555", borderTop: "1px solid #eee" }}>
-                      {child.label}
-                    </Link>
-                  ))}
+          {menuItems.map((item, i) => {
+            const hasChildren = item.children.length > 0
+            const visibleChildren = item.children.filter((child) => child.href)
+            return (
+              <div key={i} style={{ borderBottom: "1px solid #f5f4f2" }}>
+                <div
+                  className="w-full flex items-center justify-between font-sans font-medium"
+                  style={{ padding: "15px 24px", fontSize: "15px", color: "#1a1a1a" }}
+                >
+                  {item.href ? (
+                    <Link href={item.href} className="flex-1">{item.label}</Link>
+                  ) : (
+                    <span className="flex-1">{item.label}</span>
+                  )}
+                  {hasChildren && (
+                    <button
+                      type="button"
+                      onClick={() => setMobileExpanded(mobileExpanded === i ? null : i)}
+                      aria-expanded={mobileExpanded === i}
+                      aria-label={`${item.label} 하위 메뉴 펼치기`}
+                      style={{ background: "none", border: "none", padding: "4px", cursor: "pointer", display: "flex" }}
+                    >
+                      <ChevronDown style={{
+                        width: "14px", height: "14px", color: "var(--color-accent)",
+                        transform: mobileExpanded === i ? "rotate(180deg)" : "rotate(0)",
+                        transition: "transform .2s",
+                      }} />
+                    </button>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+                {hasChildren && mobileExpanded === i && (
+                  <div style={{ background: "#fdfbf8" }}>
+                    {visibleChildren.map((child, j) => (
+                      <Link key={j} href={child.href as string} className="block font-sans"
+                        style={{ padding: "12px 40px", fontSize: "14px", color: "#555", borderTop: "1px solid #eee" }}>
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
     </header>

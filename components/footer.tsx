@@ -103,14 +103,24 @@ export default function Footer({
             {/* 메뉴 링크 */}
             {menuItems.map((group, i) => (
               <div key={i}>
-                <h4 className="font-sans font-semibold" style={{ fontSize: "13px", color: "#d1d1d1", marginBottom: "16px", letterSpacing: "0.04em" }}>
-                  {group.label}
-                </h4>
+                {group.href ? (
+                  <Link
+                    href={group.href}
+                    className="font-sans font-semibold transition-colors"
+                    style={{ display: "block", fontSize: "13px", color: "#d1d1d1", marginBottom: "16px", letterSpacing: "0.04em" }}
+                  >
+                    {group.label}
+                  </Link>
+                ) : (
+                  <h4 className="font-sans font-semibold" style={{ fontSize: "13px", color: "#d1d1d1", marginBottom: "16px", letterSpacing: "0.04em" }}>
+                    {group.label}
+                  </h4>
+                )}
                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                  {group.children.map((link, j) => (
+                  {group.children.filter((link) => link.href).map((link, j) => (
                     <li key={j} style={{ marginBottom: "10px" }}>
                       <Link
-                        href={link.href ?? "#"}
+                        href={link.href as string}
                         className="font-sans transition-colors"
                         style={{ fontSize: "13px", color: "#969696" }}
                         onMouseEnter={e => { e.currentTarget.style.color = "#ffffff" }}
