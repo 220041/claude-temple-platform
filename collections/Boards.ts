@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyAdmin, superAdminOnly } from '../lib/access'
+import { superAdminOnly } from '../lib/access'
 import { isReservedPath } from '../lib/reservedPaths'
 
 const SLUG_PATTERN = /^[a-z][a-z0-9-]{1,49}$/
@@ -23,7 +23,7 @@ export const Boards: CollectionConfig = {
   access: {
     read: () => true,
     create: superAdminOnly,
-    update: anyAdmin,
+    update: superAdminOnly,
     delete: superAdminOnly,
   },
   fields: [
