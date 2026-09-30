@@ -48,26 +48,40 @@ export type FooterInfo = {
   copyrightText: string
 }
 
-// CMS(FooterSettings)가 비어 있을 때만 쓰는 개발용 기본값.
+// CMS(FooterSettings) 조회가 실패했을 때만 쓰는 타입 안전장치용 기본값.
+// 특정 사찰의 실제 연락처를 담지 않는다 — 콘텐츠 폴백이 아니다.
 const FALLBACK_FOOTER: FooterInfo = {
-  address: "제주특별자치도 서귀포시\n태평로 205번길 87",
-  phone: "064-739-5968",
-  fax: "0303-3442-5968",
-  email: "wwwbonglimsa@naver.com",
+  address: "",
+  phone: "",
+  fax: "",
+  email: "",
   copyrightText: "ALL RIGHTS RESERVED.",
 }
 
-export default function Footer({ footerInfo, temporaryHome = false }: { footerInfo?: Partial<FooterInfo>; temporaryHome?: boolean }) {
+export type FooterBrand = { shortName?: string; nameEn?: string; affiliation?: string }
+
+export default function Footer({
+  footerInfo,
+  temporaryHome = false,
+  brand,
+}: {
+  footerInfo?: Partial<FooterInfo>
+  temporaryHome?: boolean
+  brand?: FooterBrand
+}) {
   const info = { ...FALLBACK_FOOTER, ...footerInfo }
+  const shortName = brand?.shortName || "사찰"
+  const nameEn = brand?.nameEn?.toUpperCase()
+  const affiliation = brand?.affiliation
 
   if (temporaryHome) {
     return (
       <footer className="bg-[#4f4f4f] text-[#d1d1d1]">
         <div className="mx-auto max-w-[1280px] px-8 pb-10 pt-12 lg:px-16">
           <Link href="/" className="mb-8 inline-block leading-none">
-            <span className="block font-sans text-[9px] tracking-[0.15em]">대한불교조계종</span>
-            <span className="mt-1 block font-serif text-2xl font-bold tracking-[0.05em] text-white">봉림사</span>
-            <span className="mt-1 block font-sans text-[9px] tracking-[0.3em] text-[#969696]">BONGRIMSA</span>
+            {affiliation && <span className="block font-sans text-[9px] tracking-[0.15em]">{affiliation}</span>}
+            <span className="mt-1 block font-serif text-2xl font-bold tracking-[0.05em] text-white">{shortName}</span>
+            {nameEn && <span className="mt-1 block font-sans text-[9px] tracking-[0.3em] text-[#969696]">{nameEn}</span>}
           </Link>
 
           <address className="grid gap-6 font-sans not-italic sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
@@ -85,7 +99,7 @@ export default function Footer({ footerInfo, temporaryHome = false }: { footerIn
           </address>
 
           <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 font-sans text-xs text-[#aaa] sm:flex-row sm:items-center sm:justify-between">
-            <p>&copy; {new Date().getFullYear()} 봉림사. {info.copyrightText}</p>
+            <p>&copy; {new Date().getFullYear()} {shortName}. {info.copyrightText}</p>
             <p className="font-serif text-[13px] text-[#d1d1d1]">마음이 힘들때 "관세음보살"을 불러보세요.</p>
           </div>
         </div>
@@ -103,9 +117,13 @@ export default function Footer({ footerInfo, temporaryHome = false }: { footerIn
             {/* 사찰 정보 */}
             <div className="lg:col-span-1">
               <Link href="/" className="block mb-6">
-                <span className="font-sans block" style={{ fontSize: "9px", color: "#d1d1d1", letterSpacing: "0.15em", marginBottom: "6px" }}>대한불교조계종</span>
-                <span className="font-serif block font-bold" style={{ fontSize: "24px", color: "#ffffff", letterSpacing: "0.05em" }}>봉림사</span>
-                <span className="font-sans block" style={{ fontSize: "9px", color: "#969696", letterSpacing: "0.3em", marginTop: "4px" }}>BONGRIMSA</span>
+                {affiliation && (
+                  <span className="font-sans block" style={{ fontSize: "9px", color: "#d1d1d1", letterSpacing: "0.15em", marginBottom: "6px" }}>{affiliation}</span>
+                )}
+                <span className="font-serif block font-bold" style={{ fontSize: "24px", color: "#ffffff", letterSpacing: "0.05em" }}>{shortName}</span>
+                {nameEn && (
+                  <span className="font-sans block" style={{ fontSize: "9px", color: "#969696", letterSpacing: "0.3em", marginTop: "4px" }}>{nameEn}</span>
+                )}
               </Link>
               <address className="font-sans not-italic" style={{ fontSize: "13px", color: "#d1d1d1", lineHeight: 1.9 }}>
                 <p style={{ whiteSpace: "pre-line" }}>{info.address}</p>
@@ -147,7 +165,7 @@ export default function Footer({ footerInfo, temporaryHome = false }: { footerIn
             className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 font-sans"
             style={{ marginTop: "40px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,.12)", fontSize: "12px", color: "#969696" }}
           >
-            <p>&copy; {new Date().getFullYear()} 봉림사. {info.copyrightText}</p>
+            <p>&copy; {new Date().getFullYear()} {shortName}. {info.copyrightText}</p>
             <p className="font-serif" style={{ fontSize: "13px", color: "#d1d1d1", letterSpacing: "0.05em" }}>마음이 힘들때 "관세음보살"을 불러보세요.</p>
           </div>
         </div>

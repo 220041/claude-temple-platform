@@ -56,10 +56,12 @@ export const SiteSettings: GlobalConfig = {
     { name: 'siteName', label: '사찰 정식 명칭', type: 'text', admin: { description: '예: 하논봉림사' } },
     { name: 'siteShortName', label: '짧은 이름', type: 'text', admin: { description: '헤더/푸터 브랜드 표기용. 예: 봉림사' } },
     { name: 'siteNameEn', label: '영문 명칭', type: 'text', admin: { description: '예: Bonglimsa' } },
+    { name: 'affiliation', label: '소속 종단', type: 'text', admin: { description: '예: 대한불교조계종' } },
     { name: 'siteDescription', label: '사이트 설명 (SEO)', type: 'textarea' },
     { name: 'siteKeywords', label: 'SEO 키워드', type: 'text', admin: { description: '쉼표로 구분' } },
     { name: 'logo', label: '로고 이미지', type: 'upload', relationTo: 'media-public' },
     { name: 'logoAlt', label: '로고 대체 텍스트', type: 'text' },
+    { name: 'logoTagline', label: '로고 위 짧은 문구', type: 'text', admin: { description: '예: 하논에 깃든 사찰' } },
     { name: 'themeColor', label: '브라우저 주소창 색상', type: 'text', validate: validateHexColor },
     {
       name: 'colors',

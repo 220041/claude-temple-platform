@@ -1,13 +1,24 @@
 import Header from "@/components/header"
 import TemporaryHeader from "@/components/temporary-header"
 import SiteNotice from "@/components/site-notice"
-import Footer, { type FooterInfo } from "@/components/footer"
-import { getFooterSettings } from "@/lib/payload"
+import Footer, { type FooterInfo, type FooterBrand } from "@/components/footer"
+import { getFooterSettings, getSiteSettings } from "@/lib/payload"
 import { getCurrentMemberCached } from "@/lib/memberAuth"
+
+function resolveLogoUrl(logo: unknown): string | undefined {
+  if (logo && typeof logo === "object" && "url" in logo && typeof logo.url === "string") {
+    return logo.url
+  }
+  return undefined
+}
 
 /** 모든 프런트엔드 페이지가 반복하던 Header/Footer + 세션·설정 조회를 한 곳에 모은다. */
 export default async function SiteShell({ children, temporaryHome = false }: { children: React.ReactNode; temporaryHome?: boolean }) {
-  const [footerSettings, member] = await Promise.all([getFooterSettings(), getCurrentMemberCached()])
+  const [footerSettings, siteSettings, member] = await Promise.all([
+    getFooterSettings(),
+    getSiteSettings(),
+    getCurrentMemberCached(),
+  ])
 
   const footerInfo: Partial<FooterInfo> | undefined = footerSettings
     ? {
@@ -19,12 +30,28 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
       }
     : undefined
 
+  const installed = Boolean(siteSettings?.installed)
+  const logo = {
+    logoUrl: installed ? resolveLogoUrl(siteSettings?.logo) : undefined,
+    logoAlt: installed ? siteSettings?.logoAlt ?? undefined : undefined,
+    logoTagline: installed ? siteSettings?.logoTagline ?? undefined : undefined,
+  }
+  const brand: FooterBrand = {
+    shortName: installed ? siteSettings?.siteShortName ?? undefined : undefined,
+    nameEn: installed ? siteSettings?.siteNameEn ?? undefined : undefined,
+    affiliation: installed ? siteSettings?.affiliation ?? undefined : undefined,
+  }
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#ffffff" }}>
       <SiteNotice />
-      {temporaryHome ? <TemporaryHeader /> : <Header memberNickname={member?.nickname} />}
+      {temporaryHome ? (
+        <TemporaryHeader logo={logo} />
+      ) : (
+        <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} />
+      )}
       <main className="flex-1">{children}</main>
-      <Footer footerInfo={footerInfo} temporaryHome={temporaryHome} />
+      <Footer footerInfo={footerInfo} temporaryHome={temporaryHome} brand={brand} />
     </div>
   )
 }

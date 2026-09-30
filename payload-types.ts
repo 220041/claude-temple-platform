@@ -1164,6 +1164,10 @@ export interface SiteSetting {
    * 예: Bonglimsa
    */
   siteNameEn?: string | null;
+  /**
+   * 예: 대한불교조계종
+   */
+  affiliation?: string | null;
   siteDescription?: string | null;
   /**
    * 쉼표로 구분
@@ -1171,6 +1175,10 @@ export interface SiteSetting {
   siteKeywords?: string | null;
   logo?: (number | null) | MediaPublic;
   logoAlt?: string | null;
+  /**
+   * 예: 하논에 깃든 사찰
+   */
+  logoTagline?: string | null;
   themeColor?: string | null;
   /**
    * 공용 디자인 틀 안에서 바꿀 수 있는 색상만 제공합니다.
@@ -1283,10 +1291,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
   siteShortName?: T;
   siteNameEn?: T;
+  affiliation?: T;
   siteDescription?: T;
   siteKeywords?: T;
   logo?: T;
   logoAlt?: T;
+  logoTagline?: T;
   themeColor?: T;
   colors?:
     | T

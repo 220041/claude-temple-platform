@@ -1,17 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
 import { ChevronDown, Menu, X } from "lucide-react"
 import { logoutAction } from "@/app/(frontend)/actions/memberAuth"
+import SiteLogo, { type SiteLogoInfo } from "@/components/site-logo"
 
-const topLinks = [
-  { label: "봉림사", href: "#hero" },
-  { label: "기도·법회", href: "/pages/prayer-info" },
-  { label: "오시는 길", href: "/pages/location" },
-  { label: "통합검색", href: "/search" },
-]
+function buildTopLinks(siteShortName?: string) {
+  return [
+    { label: siteShortName || "홈", href: "#hero" },
+    { label: "기도·법회", href: "/pages/prayer-info" },
+    { label: "오시는 길", href: "/pages/location" },
+    { label: "통합검색", href: "/search" },
+  ]
+}
 
 const navItems = [
   {
@@ -49,10 +51,17 @@ const navItems = [
   },
 ]
 
-export default function Header({ memberNickname }: { memberNickname?: string | null }) {
+export default function Header({
+  memberNickname,
+  logo,
+}: {
+  memberNickname?: string | null
+  logo?: SiteLogoInfo & { siteShortName?: string }
+}) {
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<number | null>(null)
+  const topLinks = buildTopLinks(logo?.siteShortName)
 
   return (
     <header className="relative z-50 bg-white">
@@ -112,18 +121,9 @@ export default function Header({ memberNickname }: { memberNickname?: string | n
         className="max-w-[1280px] mx-auto px-8 lg:px-16 flex items-center justify-between"
         style={{ height: "80px" }}
       >
-        {/* 로고 */}
-        <Link href="/" className="flex-shrink-0 flex flex-col items-center leading-none gap-1.5">
-          <span className="font-sans" style={{ fontSize: "11px", color: "#aaa", letterSpacing: "0.12em" }}>하논에 깃든 사찰</span>
-          <Image
-            src="/images/logo-combined.png"
-            alt="대한불교조계종 봉림사 Bonglimsa"
-            width={357}
-            height={63}
-            style={{ height: "40px", width: "auto" }}
-            priority
-          />
-        </Link>
+        <div className="flex-shrink-0">
+          <SiteLogo logoUrl={logo?.logoUrl} logoAlt={logo?.logoAlt} logoTagline={logo?.logoTagline} />
+        </div>
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden lg:flex items-center justify-end" aria-label="주 메뉴">
