@@ -193,7 +193,14 @@ function menuItemFields(opts: { withChildren: boolean }): Field[] {
  */
 export const MainMenu: GlobalConfig = {
   slug: 'main-menu',
-  admin: { group: '홈페이지' },
+  admin: {
+    group: '홈페이지',
+    components: {
+      elements: {
+        beforeDocumentControls: ['@/components/admin/menu/MenuLinkWarnings#MenuLinkWarnings'],
+      },
+    },
+  },
   access: {
     read: () => true,
     update: superAdminOnly,
