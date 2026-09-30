@@ -13,58 +13,29 @@ export type HeroSlide = {
   href?: string
 }
 
-// CMS(HomePage.mainSlides)가 비어 있거나 연결에 실패했을 때만 쓰는 개발용
-// 기본값. guide.md 6절: 운영 배포 전 이 기본값이 노출되지 않는지 검증한다.
-const FALLBACK_SLIDES: HeroSlide[] = [
-  {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20260728_195210204-Flp8RFQORhTQnwadYjPwRrbvtcbND7.jpg",
-    alt: "봉림사 석양 - 분홍빛 하늘과 처마 실루엣",
-    caption: "마음이 고요하다. 청정하다.",
-    sub: "하논에 자리한 천년수행의 도량",
-    desc: "봉림사는 세상의 모든 이들을 위해 언제나 문이 열려 있습니다",
-  },
-  {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20260728_195210204_05-Tsk6bQlYzqu2KBHeYDKzSN55TTIZSc.jpg",
-    alt: "봉림사 전경 항공뷰",
-    caption: "수행과 기도의 도량",
-    sub: "제주 하논의 자연 속에서 고요히 마음을 쉬어 가세요.",
-    desc: "",
-  },
-  {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20260728_195210204_07-bFscndzCV7o75c3Th9LQsAXxJl5UAy.jpg",
-    alt: "봉림사 야간 연등 법회",
-    caption: "빛으로 피어나는 발원",
-    sub: "부처님 오신 날 연등 법회",
-    desc: "수백 개의 연등이 빛나는\n봉림사의 아름다운 밤입니다.",
-  },
-  {
-    src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/KakaoTalk_20260728_195526881-9da9CoY0tnAIa0zhKp8cWYinucu8dx.jpg",
-    alt: "봉림사 일주문과 철쭉꽃",
-    caption: "사계절 아름다운 기도 도량",
-    sub: "새봄의 철쭉과 함께 봉림사로 마음을 씻으러 오세요.",
-    desc: "",
-  },
-]
-
-export default function HeroSlider({ slides: slidesProp }: { slides?: HeroSlide[] }) {
-  const slides = slidesProp && slidesProp.length > 0 ? slidesProp : FALLBACK_SLIDES
+export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
   const [current, setCurrent] = useState(0)
   const [transitioning, setTransitioning] = useState(false)
 
   const goTo = useCallback((index: number) => {
-    if (transitioning) return
+    if (transitioning || slides.length === 0) return
     setTransitioning(true)
     setCurrent((index + slides.length) % slides.length)
     setTimeout(() => setTransitioning(false), 600)
-  }, [transitioning])
+  }, [transitioning, slides.length])
 
   const prev = useCallback(() => goTo(current - 1), [current, goTo])
   const next = useCallback(() => goTo(current + 1), [current, goTo])
 
   useEffect(() => {
+    if (slides.length === 0) return
     const t = setInterval(next, 5500)
     return () => clearInterval(t)
-  }, [next])
+  }, [next, slides.length])
+
+  // HomePage.mainSlides가 비어 있으면(설정 전/설치 미완료) 아무 사찰의
+  // 슬라이드도 대신 보여주지 않는다 — 빈 영역을 그대로 남긴다.
+  if (slides.length === 0) return null
 
   return (
     <section

@@ -16,39 +16,10 @@ export type PrayerCard = {
   href: string
 }
 
-// CMS(HomePage.prayerCards)가 비어 있을 때만 쓰는 개발용 기본값.
-const FALLBACK_PRAYERS: PrayerCard[] = [
-  {
-    id: "annual",
-    icon: "calendar",
-    title: "연중기도",
-    desc: "일 년 동안 끊이지 않는 기도의 물결. 매월 특별 기도일을 정해 가족과 이웃의 안녕을 빕니다.",
-    image: "/images/KakaoTalk_20260728_195210204_04.jpg",
-    alt: "봉림사 삼존불 앞 기도",
-    href: "#prayer-yearly",
-  },
-  {
-    id: "gwaneum",
-    icon: "heart",
-    title: "관음42수주기도",
-    desc: "관세음보살의 42수 주문을 외우며 자비의 마음을 닦아가는 정진 기도입니다.",
-    image: "/images/KakaoTalk_20260728_195210204_03.jpg",
-    alt: "봉림사 야간 연등",
-    href: "#prayer-gwaneum",
-  },
-  {
-    id: "youth",
-    icon: "users",
-    title: "어린이·청소년 법회",
-    desc: "미래의 주인공들이 부처님의 가르침 속에서 바르고 밝게 자라도록 인도하는 법회입니다.",
-    image: "/images/KakaoTalk_20260728_195210204_01.jpg",
-    alt: "봉림사 연등나무",
-    href: "#prayer-youth",
-  },
-]
 
 export default function PrayerSection({ cards }: { cards?: PrayerCard[] }) {
-  const prayers = cards && cards.length > 0 ? cards : FALLBACK_PRAYERS
+  if (!cards || cards.length === 0) return null
+  const prayers = cards
   return (
     <section id="prayer" aria-label="기도·법회" style={{ background: "#f5f4f2", borderBottom: "1px solid #e8e6e1" }}>
       <div className="max-w-[1280px] mx-auto px-8 lg:px-16" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
