@@ -1,7 +1,8 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { pageBlocks } from '../blocks/pageBlocks'
 import { adminOnly } from '../lib/access'
+import { isReservedPath } from '../lib/reservedPaths'
 
 /**
  * guide.md 4단계/5.2절: 정적 페이지. 메뉴 구조·URL·레이아웃은 코드로 고정하고,
@@ -40,6 +41,19 @@ export const Pages: CollectionConfig = {
     },
     maxPerDoc: 30,
   },
+  hooks: {
+    // slug가 바뀌면 옛 주소를 slugHistory에 남겨, 기존에 공유된 링크가
+    // 깨지지 않고 새 주소로 리다이렉트되게 한다(app/(frontend)/pages/[slug]/page.tsx).
+    beforeChange: [
+      ({ data, originalDoc, operation }) => {
+        if (operation !== 'update' || !originalDoc) return data
+        if (typeof data.slug !== 'string' || data.slug === originalDoc.slug) return data
+        const history = Array.isArray(originalDoc.slugHistory) ? originalDoc.slugHistory : []
+        data.slugHistory = [...history, { slug: originalDoc.slug, changedAt: new Date().toISOString() }]
+        return data
+      },
+    ],
+  },
   fields: [
     { name: 'title', type: 'text', required: true },
     {
@@ -49,6 +63,33 @@ export const Pages: CollectionConfig = {
       unique: true,
       index: true,
       admin: { description: 'URL 경로: /pages/이 값' },
+      validate: async (value: string | null | undefined, { req, id }: { req: PayloadRequest; id?: number | string }) => {
+        if (typeof value !== 'string' || !value) return '주소를 입력하세요.'
+        if (isReservedPath(value)) return `"${value}"는 시스템이 사용하는 예약된 경로라 페이지 주소로 쓸 수 없습니다.`
+
+        // 다른 페이지의 "이전 주소(slugHistory)"와 겹치면 리다이렉트가
+        // 서로 충돌하므로, 살아있는 slug의 unique 제약과 별개로 여기서도 막는다.
+        const { totalDocs } = await req.payload.find({
+          collection: 'pages',
+          where: {
+            and: [{ 'slugHistory.slug': { equals: value } }, ...(id ? [{ id: { not_equals: id } }] : [])],
+          },
+          overrideAccess: true,
+          limit: 1,
+        })
+        if (totalDocs > 0) return `"${value}"는 다른 페이지의 이전 주소로 이미 쓰인 적이 있어 사용할 수 없습니다.`
+
+        return true
+      },
+    },
+    {
+      name: 'slugHistory',
+      type: 'array',
+      admin: { readOnly: true, description: '이전 주소 자동 기록(직접 수정 불가) — 옛 링크를 새 주소로 안내하는 데 쓰인다.' },
+      fields: [
+        { name: 'slug', type: 'text', required: true },
+        { name: 'changedAt', type: 'date' },
+      ],
     },
     {
       name: 'blocks',

@@ -312,6 +312,16 @@ export interface Page {
    * URL 경로: /pages/이 값
    */
   slug: string;
+  /**
+   * 이전 주소 자동 기록(직접 수정 불가) — 옛 링크를 새 주소로 안내하는 데 쓰인다.
+   */
+  slugHistory?:
+    | {
+        slug: string;
+        changedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   blocks?:
     | (
         | {
@@ -892,6 +902,13 @@ export interface MediaPrivateSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  slugHistory?:
+    | T
+    | {
+        slug?: T;
+        changedAt?: T;
+        id?: T;
+      };
   blocks?:
     | T
     | {

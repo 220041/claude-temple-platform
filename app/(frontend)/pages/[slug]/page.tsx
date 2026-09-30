@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import PageBlocksRenderer from "@/components/page-blocks-renderer"
 import { getPayloadClient, getSiteSettings } from "@/lib/payload"
@@ -20,6 +20,23 @@ async function getPage(slug: string, isDraft: boolean) {
   return result.docs[0] ?? null
 }
 
+/**
+ * 현재 slug로 못 찾으면 slugHistory(이전 주소)에서 찾는다. 찾으면 그
+ * 문서의 "현재" slug로 308 리다이렉트 — 관리자가 주소를 바꿔도 기존에
+ * 공유된 링크가 깨지지 않는다.
+ */
+async function findRedirectSlug(oldSlug: string, isDraft: boolean): Promise<string | null> {
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: "pages",
+    where: { "slugHistory.slug": { equals: oldSlug } },
+    draft: isDraft,
+    overrideAccess: isDraft,
+    limit: 1,
+  })
+  return result.docs[0]?.slug ?? null
+}
+
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params
   const [page, siteSettings] = await Promise.all([getPage(slug, false), getSiteSettings()])
@@ -33,7 +50,11 @@ export default async function StaticPage({ params }: Params) {
   const draft = await draftMode()
   const page = await getPage(slug, draft.isEnabled)
 
-  if (!page) notFound()
+  if (!page) {
+    const newSlug = await findRedirectSlug(slug, draft.isEnabled)
+    if (newSlug) permanentRedirect(`/pages/${newSlug}`)
+    notFound()
+  }
 
   return (
     <SiteShell>
