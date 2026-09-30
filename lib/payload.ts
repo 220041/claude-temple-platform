@@ -44,3 +44,12 @@ export const getSiteSettings = cache(async () => {
     return null
   }
 })
+
+export const getMainMenu = cache(async () => {
+  try {
+    const payload = await getPayloadClient()
+    return await payload.findGlobal({ slug: 'main-menu' })
+  } catch {
+    return null
+  }
+})

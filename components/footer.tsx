@@ -1,44 +1,7 @@
 "use client"
 
 import Link from "next/link"
-
-// 메뉴 구조·URL은 guide.md 1.2/5.1절에 따라 코드로 고정 관리한다(CMS 대상 아님).
-// 아직 콘텐츠 체계가 없는 항목(연중기도 등 세부 기도 프로그램)은 "#"으로 남겨둔다.
-const footerGroups = [
-  {
-    title: "봉림사 소개",
-    links: [
-      { label: "봉림사 역사", href: "/pages/temple-history" },
-      { label: "언론 속 봉림사", href: "/press" },
-      { label: "오시는 길", href: "/pages/location" },
-    ],
-  },
-  {
-    title: "기도 법회",
-    links: [
-      { label: "연중기도", href: "#" },
-      { label: "관음42수주기도", href: "#" },
-      { label: "어린이·청소년 법회", href: "#" },
-    ],
-  },
-  {
-    title: "회주·주지스님",
-    links: [
-      { label: "행장", href: "/pages/monk-biography" },
-      { label: "법문", href: "/dharma" },
-      { label: "포토갤러리", href: "/gallery/monks" },
-    ],
-  },
-  {
-    title: "봉림 풍경",
-    links: [
-      { label: "공지사항", href: "/notices" },
-      { label: "감로당", href: "/stories/gamrodang" },
-      { label: "포토갤러리", href: "/gallery/scenery" },
-      { label: "자유게시판", href: "/community" },
-    ],
-  },
-]
+import type { ResolvedMenuLink } from "@/lib/menuLink"
 
 export type FooterInfo = {
   address: string
@@ -64,10 +27,12 @@ export default function Footer({
   footerInfo,
   temporaryHome = false,
   brand,
+  menuItems = [],
 }: {
   footerInfo?: Partial<FooterInfo>
   temporaryHome?: boolean
   brand?: FooterBrand
+  menuItems?: ResolvedMenuLink[]
 }) {
   const info = { ...FALLBACK_FOOTER, ...footerInfo }
   const shortName = brand?.shortName || "사찰"
@@ -136,16 +101,16 @@ export default function Footer({
             </div>
 
             {/* 메뉴 링크 */}
-            {footerGroups.map((group, i) => (
+            {menuItems.map((group, i) => (
               <div key={i}>
                 <h4 className="font-sans font-semibold" style={{ fontSize: "13px", color: "#d1d1d1", marginBottom: "16px", letterSpacing: "0.04em" }}>
-                  {group.title}
+                  {group.label}
                 </h4>
                 <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                  {group.links.map((link, j) => (
+                  {group.children.map((link, j) => (
                     <li key={j} style={{ marginBottom: "10px" }}>
                       <Link
-                        href={link.href}
+                        href={link.href ?? "#"}
                         className="font-sans transition-colors"
                         style={{ fontSize: "13px", color: "#969696" }}
                         onMouseEnter={e => { e.currentTarget.style.color = "#ffffff" }}

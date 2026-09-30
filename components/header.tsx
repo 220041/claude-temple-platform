@@ -5,7 +5,10 @@ import Link from "next/link"
 import { ChevronDown, Menu, X } from "lucide-react"
 import { logoutAction } from "@/app/(frontend)/actions/memberAuth"
 import SiteLogo, { type SiteLogoInfo } from "@/components/site-logo"
+import type { ResolvedMenuLink } from "@/lib/menuLink"
 
+// 로그인/회원가입/통합검색 같은 UI 액션 링크 — 콘텐츠 내비게이션이 아니라
+// 메뉴 데이터 모델(MainMenu)에 넣지 않고 계속 코드에 둔다.
 function buildTopLinks(siteShortName?: string) {
   return [
     { label: siteShortName || "홈", href: "#hero" },
@@ -15,48 +18,14 @@ function buildTopLinks(siteShortName?: string) {
   ]
 }
 
-const navItems = [
-  {
-    label: "봉림사 소개",
-    children: [
-      { label: "봉림사 역사", href: "/pages/temple-history" },
-      { label: "언론 속 봉림사", href: "/press" },
-      { label: "오시는 길", href: "/pages/location" },
-    ],
-  },
-  {
-    label: "기도 · 법회",
-    children: [
-      { label: "연중기도", href: "#" },
-      { label: "관음42수주기도", href: "#" },
-      { label: "어린이·청소년 법회", href: "#" },
-    ],
-  },
-  {
-    label: "회주·주지스님",
-    children: [
-      { label: "행장", href: "/pages/monk-biography" },
-      { label: "법문", href: "/dharma" },
-      { label: "포토갤러리", href: "/gallery/monks" },
-    ],
-  },
-  {
-    label: "봉림 풍경",
-    children: [
-      { label: "공지사항", href: "/notices" },
-      { label: "감로당", href: "/stories/gamrodang" },
-      { label: "포토갤러리", href: "/gallery/scenery" },
-      { label: "자유게시판", href: "/community" },
-    ],
-  },
-]
-
 export default function Header({
   memberNickname,
   logo,
+  menuItems,
 }: {
   memberNickname?: string | null
   logo?: SiteLogoInfo & { siteShortName?: string }
+  menuItems: ResolvedMenuLink[]
 }) {
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -127,7 +96,7 @@ export default function Header({
 
         {/* 데스크탑 네비게이션 */}
         <nav className="hidden lg:flex items-center justify-end" aria-label="주 메뉴">
-          {navItems.map((item, i) => (
+          {menuItems.map((item, i) => (
             <div
               key={i}
               className="relative"
@@ -175,7 +144,7 @@ export default function Header({
                   {item.children.map((child, j) => (
                     <Link
                       key={j}
-                      href={child.href}
+                      href={child.href ?? "#"}
                       className="block font-sans transition-colors"
                       style={{
                         padding: "12px 20px",
@@ -212,7 +181,7 @@ export default function Header({
       {/* 모바일 메뉴 */}
       {mobileOpen && (
         <div className="lg:hidden bg-white" style={{ borderTop: "1px solid #e8e6e1" }}>
-          {navItems.map((item, i) => (
+          {menuItems.map((item, i) => (
             <div key={i} style={{ borderBottom: "1px solid #f5f4f2" }}>
               <button
                 className="w-full flex items-center justify-between font-sans font-medium"
@@ -229,7 +198,7 @@ export default function Header({
               {mobileExpanded === i && (
                 <div style={{ background: "#fdfbf8" }}>
                   {item.children.map((child, j) => (
-                    <Link key={j} href={child.href} className="block font-sans"
+                    <Link key={j} href={child.href ?? "#"} className="block font-sans"
                       style={{ padding: "12px 40px", fontSize: "14px", color: "#555", borderTop: "1px solid #eee" }}>
                       {child.label}
                     </Link>

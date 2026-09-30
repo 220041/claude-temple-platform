@@ -2,8 +2,9 @@ import Header from "@/components/header"
 import TemporaryHeader from "@/components/temporary-header"
 import SiteNotice from "@/components/site-notice"
 import Footer, { type FooterInfo, type FooterBrand } from "@/components/footer"
-import { getFooterSettings, getSiteSettings } from "@/lib/payload"
+import { getFooterSettings, getMainMenu, getSiteSettings } from "@/lib/payload"
 import { getCurrentMemberCached } from "@/lib/memberAuth"
+import { buildMenuTree } from "@/lib/menuLink"
 
 function resolveLogoUrl(logo: unknown): string | undefined {
   if (logo && typeof logo === "object" && "url" in logo && typeof logo.url === "string") {
@@ -14,11 +15,15 @@ function resolveLogoUrl(logo: unknown): string | undefined {
 
 /** 모든 프런트엔드 페이지가 반복하던 Header/Footer + 세션·설정 조회를 한 곳에 모은다. */
 export default async function SiteShell({ children, temporaryHome = false }: { children: React.ReactNode; temporaryHome?: boolean }) {
-  const [footerSettings, siteSettings, member] = await Promise.all([
+  const [footerSettings, siteSettings, mainMenu, member] = await Promise.all([
     getFooterSettings(),
     getSiteSettings(),
+    getMainMenu(),
     getCurrentMemberCached(),
   ])
+
+  const topMenuItems = buildMenuTree(mainMenu, 'top')
+  const bottomMenuItems = buildMenuTree(mainMenu, 'bottom')
 
   const footerInfo: Partial<FooterInfo> | undefined = footerSettings
     ? {
@@ -48,10 +53,10 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
       {temporaryHome ? (
         <TemporaryHeader logo={logo} />
       ) : (
-        <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} />
+        <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} menuItems={topMenuItems} />
       )}
       <main className="flex-1">{children}</main>
-      <Footer footerInfo={footerInfo} temporaryHome={temporaryHome} brand={brand} />
+      <Footer footerInfo={footerInfo} temporaryHome={temporaryHome} brand={brand} menuItems={bottomMenuItems} />
     </div>
   )
 }
