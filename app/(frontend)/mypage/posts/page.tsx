@@ -4,9 +4,12 @@ import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
 import { getMyPosts, pathForBoardKey } from "@/lib/boards"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import type { Board } from "@/payload-types"
 
-export const metadata: Metadata = { title: "내가 쓴 글 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("내가 쓴 글")
+}
 
 export default async function MyPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const member = await getCurrentMember()

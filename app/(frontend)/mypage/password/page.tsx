@@ -2,9 +2,12 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import PasswordForm from "./password-form"
 
-export const metadata: Metadata = { title: "비밀번호 변경 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("비밀번호 변경")
+}
 
 export default async function PasswordPage() {
   const member = await getCurrentMember()

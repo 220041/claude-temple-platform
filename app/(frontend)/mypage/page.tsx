@@ -3,8 +3,11 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
+import { generateAccountPageMetadata } from "@/lib/seo"
 
-export const metadata: Metadata = { title: "마이페이지 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("마이페이지")
+}
 
 const STATUS_LABEL: Record<string, string> = {
   pending: "이메일 인증 대기",

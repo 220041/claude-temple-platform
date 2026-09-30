@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 import SiteShell from "@/components/site-shell"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import LoginForm from "./login-form"
 
-export const metadata: Metadata = { title: "로그인 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("로그인")
+}
 
 export default function LoginPage() {
   return (

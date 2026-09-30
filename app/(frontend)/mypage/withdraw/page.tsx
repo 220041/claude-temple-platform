@@ -2,9 +2,12 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import WithdrawForm from "./withdraw-form"
 
-export const metadata: Metadata = { title: "회원 탈퇴 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("회원 탈퇴")
+}
 
 export default async function WithdrawPage() {
   const member = await getCurrentMember()

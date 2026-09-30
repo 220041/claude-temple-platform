@@ -2,7 +2,7 @@ import { draftMode } from "next/headers"
 import { notFound } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import PageBlocksRenderer from "@/components/page-blocks-renderer"
-import { getPayloadClient } from "@/lib/payload"
+import { getPayloadClient, getSiteSettings } from "@/lib/payload"
 
 export const revalidate = 60
 
@@ -22,9 +22,10 @@ async function getPage(slug: string, isDraft: boolean) {
 
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params
-  const page = await getPage(slug, false)
+  const [page, siteSettings] = await Promise.all([getPage(slug, false), getSiteSettings()])
   if (!page) return {}
-  return { title: `${page.title} | 하논봉림사` }
+  const siteName = siteSettings?.installed ? (siteSettings.siteName || siteSettings.siteShortName) : undefined
+  return { title: siteName ? `${page.title} | ${siteName}` : page.title }
 }
 
 export default async function StaticPage({ params }: Params) {

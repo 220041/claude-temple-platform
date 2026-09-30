@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 import SiteShell from "@/components/site-shell"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import ForgotPasswordForm from "./forgot-password-form"
 
-export const metadata: Metadata = { title: "비밀번호 재설정 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("비밀번호 재설정")
+}
 
 export default function ForgotPasswordPage() {
   return (

@@ -2,9 +2,12 @@ import type { Metadata } from "next"
 import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import ProfileForms from "./profile-forms"
 
-export const metadata: Metadata = { title: "회원정보 수정 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("회원정보 수정")
+}
 
 export default async function ProfilePage() {
   const member = await getCurrentMember()

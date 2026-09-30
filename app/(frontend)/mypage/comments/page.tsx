@@ -4,9 +4,12 @@ import { redirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import { getCurrentMember } from "@/lib/memberAuth"
 import { getMyComments, pathForBoardKey } from "@/lib/boards"
+import { generateAccountPageMetadata } from "@/lib/seo"
 import type { Board, Post } from "@/payload-types"
 
-export const metadata: Metadata = { title: "내가 쓴 댓글 | 하논봉림사", robots: { index: false, follow: false } }
+export async function generateMetadata(): Promise<Metadata> {
+  return generateAccountPageMetadata("내가 쓴 댓글")
+}
 
 export default async function MyCommentsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const member = await getCurrentMember()

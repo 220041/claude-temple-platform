@@ -1,12 +1,17 @@
 import Link from "next/link"
 import SiteShell from "@/components/site-shell"
 import { getTempleNewsPosts, pathForBoardKey } from "@/lib/boards"
+import { getSiteSettings } from "@/lib/payload"
 import type { Board } from "@/payload-types"
 
 export const revalidate = 60
 
 export async function generateMetadata() {
-  return { title: "봉림사 소식 | 하논봉림사" }
+  const settings = await getSiteSettings()
+  if (!settings?.installed) return { title: '사찰 소식' }
+  const shortName = settings.siteShortName || settings.siteName || '사찰'
+  const fullName = settings.siteName || settings.siteShortName || '사찰'
+  return { title: `${shortName} 소식 | ${fullName}` }
 }
 
 export default async function TempleNewsPage() {
