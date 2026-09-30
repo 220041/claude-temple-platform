@@ -117,6 +117,12 @@ export async function purgeOrphanMedia(payload: Payload) {
   const popupImageId = extractDirectUploadId(popup.image)
   if (popupImageId) usedPublic.add(popupImageId)
 
+  // Stage 1: SiteSettings.logo도 media-public을 참조한다. 여기서 빠뜨리면
+  // 사이트 로고가 "고아 파일"로 오인돼 정리 작업에 삭제될 수 있다.
+  const siteSettings = await payload.findGlobal({ slug: 'site-settings', overrideAccess: true })
+  const logoId = extractDirectUploadId(siteSettings.logo)
+  if (logoId) usedPublic.add(logoId)
+
   let deletedPublic = 0
   const { docs: publicMedia } = await payload.find({
     collection: 'media-public',
