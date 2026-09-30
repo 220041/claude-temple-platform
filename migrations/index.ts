@@ -8,6 +8,8 @@ import * as migration_20260930_030000_backfill_hanonbonglimsa_site_settings from
 import * as migration_20260930_032801_pages_slug_history from './20260930_032801_pages_slug_history';
 import * as migration_20260930_033121_main_menu_global from './20260930_033121_main_menu_global';
 import * as migration_20260930_034000_backfill_main_menu from './20260930_034000_backfill_main_menu';
+import * as migration_20260930_051705_boards_boardkey_to_text from './20260930_051705_boards_boardkey_to_text';
+import * as migration_20260930_051834_boards_type_and_approval_fields from './20260930_051834_boards_type_and_approval_fields';
 
 export const migrations = [
   {
@@ -59,5 +61,15 @@ export const migrations = [
     up: migration_20260930_034000_backfill_main_menu.up,
     down: migration_20260930_034000_backfill_main_menu.down,
     name: '20260930_034000_backfill_main_menu',
+  },
+  {
+    up: migration_20260930_051705_boards_boardkey_to_text.up,
+    down: migration_20260930_051705_boards_boardkey_to_text.down,
+    name: '20260930_051705_boards_boardkey_to_text',
+  },
+  {
+    up: migration_20260930_051834_boards_type_and_approval_fields.up,
+    down: migration_20260930_051834_boards_type_and_approval_fields.down,
+    name: '20260930_051834_boards_type_and_approval_fields'
   },
 ];

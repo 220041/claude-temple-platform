@@ -383,10 +383,18 @@ export interface Page {
 export interface Board {
   id: number;
   /**
-   * 메뉴 URL과 매핑되는 고정 키. 생성 후 변경하지 않는다.
+   * 영문 소문자·숫자·하이픈만 사용. 게시판 주소(/boards/이 값)로 쓰이며 생성 후 바꿀 수 없습니다. 예: youth-gathering
    */
-  boardKey: 'notices' | 'dharma' | 'press' | 'monk-gallery' | 'scenery-gallery' | 'community' | 'stories' | 'gamrodang';
+  boardKey: string;
   displayName: string;
+  /**
+   * 새로 만드는 게시판의 화면 형태를 정합니다(기존 8개 게시판은 자체 화면을 그대로 써서 이 값의 영향을 받지 않습니다).
+   */
+  boardType?: ('notice' | 'general' | 'gallery') | null;
+  /**
+   * 인증회원 작성을 허용한 게시판에서만 의미가 있습니다.
+   */
+  memberPostApproval?: ('immediate' | 'requiresApproval') | null;
   adminOnly?: boolean | null;
   allowMemberPost?: boolean | null;
   defaultAllowComments?: boolean | null;
@@ -975,6 +983,8 @@ export interface PagesSelect<T extends boolean = true> {
 export interface BoardsSelect<T extends boolean = true> {
   boardKey?: T;
   displayName?: T;
+  boardType?: T;
+  memberPostApproval?: T;
   adminOnly?: T;
   allowMemberPost?: T;
   defaultAllowComments?: T;

@@ -15,6 +15,7 @@ export const RESERVED_PATHS = [
   'verify-result',
   'search',
   'pages',
+  'boards',
   'notices',
   'dharma',
   'press',
