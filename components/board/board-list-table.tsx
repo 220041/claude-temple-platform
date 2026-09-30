@@ -54,7 +54,7 @@ export default function BoardListTable({
               <td style={{ padding: "12px 8px" }}>
                 <Link href={`${basePath}/${post.id}`} style={{ color: "#272520" }}>
                   {isSecret ? "🔒 비밀글입니다" : post.title}
-                  {hasImages && !isSecret && <span style={{ color: "#9b6b3f", marginLeft: "6px", fontSize: "12px" }}>[사진]</span>}
+                  {hasImages && !isSecret && <span style={{ color: "var(--color-accent)", marginLeft: "6px", fontSize: "12px" }}>[사진]</span>}
                   {isNew(post.createdAt) && (
                     <span className="font-sans font-bold" style={{ marginLeft: "6px", fontSize: "10px", color: "#cc5030" }}>
                       NEW

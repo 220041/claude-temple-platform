@@ -139,7 +139,7 @@ export default function Header({
                 style={{
                   padding: "28px 20px",
                   fontSize: "15px",
-                  color: openMenu === i ? "#9b6b3f" : "#1a1a1a",
+                  color: openMenu === i ? "var(--color-accent)" : "#1a1a1a",
                   letterSpacing: "0.01em",
                   background: "none",
                   border: "none",
@@ -221,7 +221,7 @@ export default function Header({
               >
                 {item.label}
                 <ChevronDown style={{
-                  width: "14px", height: "14px", color: "#9b6b3f",
+                  width: "14px", height: "14px", color: "var(--color-accent)",
                   transform: mobileExpanded === i ? "rotate(180deg)" : "rotate(0)",
                   transition: "transform .2s",
                 }} />

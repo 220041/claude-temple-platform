@@ -54,6 +54,31 @@ export async function generateViewport(): Promise<Viewport> {
   return { colorScheme: 'light', themeColor }
 }
 
+const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/
+
+/**
+ * globals.css의 `@theme inline` 팔레트(accent/ink/deep/pine/paper) 5개 토큰만
+ * 사찰별 값으로 덮어쓴다. Payload 필드에서 이미 hex 형식을 검증하지만,
+ * 렌더링 시점에도 한 번 더 확인해 잘못된 값이 <style>에 그대로 삽입되지
+ * 않게 한다.
+ */
+function buildColorOverrideCss(colors: {
+  accent?: string | null
+  ink?: string | null
+  deep?: string | null
+  pine?: string | null
+  paper?: string | null
+} | null | undefined): string | null {
+  if (!colors) return null
+  const entries = (['accent', 'ink', 'deep', 'pine', 'paper'] as const)
+    .map((key) => [key, colors[key]] as const)
+    .filter((entry): entry is [typeof entry[0], string] => Boolean(entry[1] && HEX_COLOR_PATTERN.test(entry[1])))
+
+  if (entries.length === 0) return null
+  const declarations = entries.map(([key, value]) => `--color-${key}: ${value};`).join(' ')
+  return `:root { ${declarations} }`
+}
+
 function resolveImageUrl(image: unknown): string | undefined {
   if (image && typeof image === 'object' && 'url' in image && typeof image.url === 'string') {
     return image.url
@@ -83,10 +108,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const popup = await getActivePopup()
+  const [popup, siteSettings] = await Promise.all([getActivePopup(), getSiteSettings()])
+  const colorOverrideCss = siteSettings?.installed ? buildColorOverrideCss(siteSettings.colors) : null
 
   return (
     <html lang="ko" className={`bg-white ${notoSansKR.variable} ${notoSerifKR.variable}`}>
+      <head>{colorOverrideCss && <style>{colorOverrideCss}</style>}</head>
       <body className="antialiased font-sans">
         {children}
         {popup && <PopupModal popup={popup} />}
