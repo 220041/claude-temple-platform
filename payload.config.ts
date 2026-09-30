@@ -30,11 +30,20 @@ export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   admin: {
     user: Admins.slug,
+    meta: {
+      // 사찰마다 다른 admin.meta는 Payload config 평가 시점에 DB를 읽어야
+      // 해 복잡도가 크다(관리자 화면 부팅 전 DB 왕복) — 이번 범위에서는
+      // 범용 문구만 두고, 사찰별 관리자 타이틀은 이후 단계로 미룬다.
+      titleSuffix: ' | 관리자',
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
     components: {
-      beforeDashboard: ['@/components/admin/RateLimitAlertCard#RateLimitAlertCard'],
+      beforeDashboard: [
+        '@/components/admin/RateLimitAlertCard#RateLimitAlertCard',
+        '@/components/admin/QuickActionsCard#QuickActionsCard',
+      ],
     },
   },
   collections: [Admins, Members, MediaPublic, MediaPrivate, Pages, Boards, Posts, Comments, Reports, AuditLogs, SecurityEvents],
