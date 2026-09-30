@@ -14,7 +14,10 @@ export function buildEmailAdapter() {
   return resendAdapter({
     apiKey,
     defaultFromAddress: process.env.EMAIL_FROM || 'noreply@example.com',
-    defaultFromName: '봉림사',
+    // Payload config 평가 시점(모듈 로드 시)에 실행되므로 DB(SiteSettings)를
+    // 읽을 수 없다 — 여기는 범용 기본값만 두고, 실제 발신 이름이 필요한
+    // 제목 줄은 요청 시점에 SiteSettings.emailFromName을 읽는 각 훅에서 만든다.
+    defaultFromName: '사찰 홈페이지',
     overrideRecipientAddress: publicRegistrationEnabled ? undefined : process.env.TEST_EMAIL_RECIPIENT,
   })
 }

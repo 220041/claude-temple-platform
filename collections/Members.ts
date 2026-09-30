@@ -37,7 +37,13 @@ export const Members: CollectionConfig = {
         const url = `${process.env.NEXT_PUBLIC_SERVER_URL ?? ''}/reset-password?token=${token}`
         return `<p>아래 링크를 클릭해 비밀번호를 재설정해 주세요. 이 링크는 30분간 유효합니다.</p><p><a href="${url}">${url}</a></p>`
       },
-      generateEmailSubject: () => '[봉림사] 비밀번호 재설정 안내',
+      generateEmailSubject: async (args) => {
+        const req = args?.req
+        if (!req) return '사찰 홈페이지 비밀번호 재설정 안내'
+        const siteSettings = await req.payload.findGlobal({ slug: 'site-settings', overrideAccess: true, req })
+        const fromName = siteSettings.emailFromName || '사찰 홈페이지'
+        return `${fromName} 비밀번호 재설정 안내`
+      },
     },
   },
   trash: true,

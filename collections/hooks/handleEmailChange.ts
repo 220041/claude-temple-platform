@@ -24,9 +24,12 @@ export const handleEmailChange: CollectionAfterChangeHook = async ({ doc, previo
 
   const verificationURL = `${process.env.NEXT_PUBLIC_SERVER_URL ?? ''}/api/members/verify-and-activate/${token}`
 
+  const siteSettings = await req.payload.findGlobal({ slug: 'site-settings', overrideAccess: true, req })
+  const fromName = siteSettings.emailFromName || '사찰 홈페이지'
+
   await req.payload.sendEmail({
     to: doc.email,
-    subject: '[봉림사] 변경된 이메일 인증을 완료해 주세요',
+    subject: `${fromName} 변경된 이메일 인증을 완료해 주세요`,
     html: `<p>이메일 주소가 변경되어 재인증이 필요합니다.</p><p><a href="${verificationURL}">${verificationURL}</a></p>`,
   })
 

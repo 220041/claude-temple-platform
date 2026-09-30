@@ -92,9 +92,12 @@ export const resendVerificationEndpoint: Endpoint = {
 
     const verificationURL = `${process.env.NEXT_PUBLIC_SERVER_URL ?? ''}/api/members/verify-and-activate/${token}`
 
+    const siteSettings = await req.payload.findGlobal({ slug: 'site-settings', overrideAccess: true, req })
+    const fromName = siteSettings.emailFromName || '사찰 홈페이지'
+
     await req.payload.sendEmail({
       to: member.email,
-      subject: '[봉림사] 이메일 인증을 완료해 주세요',
+      subject: `${fromName} 이메일 인증을 완료해 주세요`,
       html: `<p>아래 링크를 클릭하면 이메일 인증이 완료됩니다.</p><p><a href="${verificationURL}">${verificationURL}</a></p>`,
     })
 
