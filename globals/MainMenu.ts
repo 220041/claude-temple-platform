@@ -30,6 +30,17 @@ function menuItemFields(opts: { withChildren: boolean }): Field[] {
       },
     },
     {
+      name: 'newPageAction',
+      label: '',
+      type: 'ui',
+      admin: {
+        condition: (_, siblingData) => siblingData?.linkType === 'newPage',
+        components: {
+          Field: '@/components/admin/menu/CreateLinkedPageButton#CreateLinkedPageButton',
+        },
+      },
+    },
+    {
       name: 'pageRef',
       label: '연결할 페이지',
       type: 'relationship',
