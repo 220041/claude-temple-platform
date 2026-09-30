@@ -113,12 +113,14 @@ export interface Config {
     'home-page': HomePage;
     'footer-settings': FooterSetting;
     'popup-settings': PopupSetting;
+    'main-menu': MainMenu;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'footer-settings': FooterSettingsSelect<false> | FooterSettingsSelect<true>;
     'popup-settings': PopupSettingsSelect<false> | PopupSettingsSelect<true>;
+    'main-menu': MainMenuSelect<false> | MainMenuSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1301,6 +1303,53 @@ export interface PopupSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "main-menu".
+ */
+export interface MainMenu {
+  id: number;
+  items?:
+    | {
+        label: string;
+        visible?: boolean | null;
+        showInTop?: boolean | null;
+        showInBottom?: boolean | null;
+        /**
+         * "새 페이지 만들기"는 저장되지 않는 화면 전용 선택지입니다 — 클릭 시 초안 페이지를 만들고 자동으로 "기존 페이지 연결"로 바뀝니다.
+         */
+        linkType?: ('none' | 'newPage' | 'page' | 'board' | 'url') | null;
+        pageRef?: (number | null) | Page;
+        boardRef?: (number | null) | Board;
+        /**
+         * http(s)://로 시작하는 외부 주소만 허용됩니다. 내부 페이지는 "기존 페이지 연결"을 사용하세요.
+         */
+        externalUrl?: string | null;
+        children?:
+          | {
+              label: string;
+              visible?: boolean | null;
+              showInTop?: boolean | null;
+              showInBottom?: boolean | null;
+              /**
+               * "새 페이지 만들기"는 저장되지 않는 화면 전용 선택지입니다 — 클릭 시 초안 페이지를 만들고 자동으로 "기존 페이지 연결"로 바뀝니다.
+               */
+              linkType?: ('none' | 'newPage' | 'page' | 'board' | 'url') | null;
+              pageRef?: (number | null) | Page;
+              boardRef?: (number | null) | Board;
+              /**
+               * http(s)://로 시작하는 외부 주소만 허용됩니다. 내부 페이지는 "기존 페이지 연결"을 사용하세요.
+               */
+              externalUrl?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
@@ -1418,6 +1467,41 @@ export interface PopupSettingsSelect<T extends boolean = true> {
   startDate?: T;
   endDate?: T;
   allowHideForOneDay?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "main-menu_select".
+ */
+export interface MainMenuSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        label?: T;
+        visible?: T;
+        showInTop?: T;
+        showInBottom?: T;
+        linkType?: T;
+        pageRef?: T;
+        boardRef?: T;
+        externalUrl?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              visible?: T;
+              showInTop?: T;
+              showInBottom?: T;
+              linkType?: T;
+              pageRef?: T;
+              boardRef?: T;
+              externalUrl?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

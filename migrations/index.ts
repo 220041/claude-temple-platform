@@ -6,6 +6,7 @@ import * as migration_20260930_025640_add_logo_tagline from './20260930_025640_a
 import * as migration_20260930_025806_add_affiliation from './20260930_025806_add_affiliation';
 import * as migration_20260930_030000_backfill_hanonbonglimsa_site_settings from './20260930_030000_backfill_hanonbonglimsa_site_settings';
 import * as migration_20260930_032801_pages_slug_history from './20260930_032801_pages_slug_history';
+import * as migration_20260930_033121_main_menu_global from './20260930_033121_main_menu_global';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20260930_032801_pages_slug_history.up,
     down: migration_20260930_032801_pages_slug_history.down,
-    name: '20260930_032801_pages_slug_history'
+    name: '20260930_032801_pages_slug_history',
+  },
+  {
+    up: migration_20260930_033121_main_menu_global.up,
+    down: migration_20260930_033121_main_menu_global.down,
+    name: '20260930_033121_main_menu_global'
   },
 ];

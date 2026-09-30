@@ -19,6 +19,7 @@ import { Reports } from './collections/Reports'
 import { SecurityEvents } from './collections/SecurityEvents'
 import { FooterSettings } from './globals/FooterSettings'
 import { HomePage } from './globals/HomePage'
+import { MainMenu } from './globals/MainMenu'
 import { PopupSettings } from './globals/PopupSettings'
 import { SiteSettings } from './globals/SiteSettings'
 import { buildEmailAdapter } from './lib/email'
@@ -47,7 +48,7 @@ export default buildConfig({
     },
   },
   collections: [Admins, Members, MediaPublic, MediaPrivate, Pages, Boards, Posts, Comments, Reports, AuditLogs, SecurityEvents],
-  globals: [SiteSettings, HomePage, FooterSettings, PopupSettings],
+  globals: [SiteSettings, HomePage, FooterSettings, PopupSettings, MainMenu],
   editor: lexicalEditor(),
   email: buildEmailAdapter(),
   secret: process.env.PAYLOAD_SECRET || '',
