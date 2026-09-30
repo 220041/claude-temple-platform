@@ -1,0 +1,73 @@
+import type { Block } from 'payload'
+
+/**
+ * guide.md 5.2: 정적 페이지 허용 블록 — 제목, 문단, 사진, 갤러리, 안내표.
+ * 관리자가 임의 CSS/script/iframe/HTML 원문을 넣을 수 없도록 서식 없는
+ * 텍스트 필드만 사용한다(리치텍스트/HTML 입력 금지).
+ */
+
+export const HeadingBlock: Block = {
+  slug: 'heading',
+  labels: { singular: '제목', plural: '제목' },
+  fields: [
+    { name: 'text', type: 'text', required: true },
+    {
+      name: 'level',
+      type: 'select',
+      defaultValue: 'h2',
+      options: [
+        { label: '큰 제목', value: 'h2' },
+        { label: '중간 제목', value: 'h3' },
+      ],
+    },
+  ],
+}
+
+export const ParagraphBlock: Block = {
+  slug: 'paragraph',
+  labels: { singular: '문단', plural: '문단' },
+  fields: [{ name: 'text', type: 'textarea', required: true }],
+}
+
+export const PhotoBlock: Block = {
+  slug: 'photo',
+  labels: { singular: '사진', plural: '사진' },
+  fields: [
+    { name: 'image', type: 'upload', relationTo: 'media-public', required: true },
+    { name: 'caption', type: 'text' },
+  ],
+}
+
+export const GalleryBlock: Block = {
+  slug: 'gallery',
+  labels: { singular: '갤러리', plural: '갤러리' },
+  fields: [
+    {
+      name: 'images',
+      type: 'array',
+      minRows: 1,
+      fields: [
+        { name: 'image', type: 'upload', relationTo: 'media-public', required: true },
+        { name: 'caption', type: 'text' },
+      ],
+    },
+  ],
+}
+
+export const InfoTableBlock: Block = {
+  slug: 'infoTable',
+  labels: { singular: '안내표', plural: '안내표' },
+  fields: [
+    {
+      name: 'rows',
+      type: 'array',
+      minRows: 1,
+      fields: [
+        { name: 'label', type: 'text', required: true },
+        { name: 'value', type: 'text', required: true },
+      ],
+    },
+  ],
+}
+
+export const pageBlocks: Block[] = [HeadingBlock, ParagraphBlock, PhotoBlock, GalleryBlock, InfoTableBlock]
