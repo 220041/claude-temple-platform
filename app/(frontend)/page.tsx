@@ -1,4 +1,5 @@
 import HeroSlider, { type HeroSlide } from "@/components/hero-slider"
+import InstallationPending from "@/components/installation-pending"
 import LocationSection from "@/components/location-section"
 import PrayerSection, { type PrayerCard } from "@/components/prayer-section"
 import TempleIntroSection from "@/components/temple-intro-section"
@@ -17,6 +18,14 @@ function resolveImageUrl(image: unknown): string {
 
 export default async function HomePage() {
   const [homePage, siteSettings] = await Promise.all([getHomePage(), getSiteSettings()])
+
+  if (!siteSettings?.installed) {
+    return (
+      <SiteShell temporaryHome>
+        <InstallationPending />
+      </SiteShell>
+    )
+  }
 
   const slides: HeroSlide[] = (homePage?.mainSlides ?? [])
     .filter((slide) => slide.enabled !== false)
