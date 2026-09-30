@@ -17,6 +17,30 @@ export const HomePage: GlobalConfig = {
   },
   fields: [
     {
+      name: 'showTempleIntro',
+      label: '사찰 소개 섹션 표시',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'showMonkIntro',
+      label: '회주·주지 스님 소개 섹션 표시',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'showPrayerSection',
+      label: '기도·법회 카드 섹션 표시',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
+      name: 'showLocationSection',
+      label: '찾아오는 길 섹션 표시',
+      type: 'checkbox',
+      defaultValue: true,
+    },
+    {
       name: 'mainSlides',
       label: '메인 슬라이드',
       type: 'array',

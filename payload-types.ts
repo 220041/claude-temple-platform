@@ -1148,8 +1148,50 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface SiteSetting {
   id: number;
+  /**
+   * 체크하기 전까지 공개 화면(홈/헤더/푸터)은 이 사찰의 정보 대신 "설치 미완료" 안내만 보여줍니다. 아래 정보를 모두 입력한 뒤 체크하세요.
+   */
+  installed?: boolean | null;
+  /**
+   * 예: 하논봉림사
+   */
   siteName?: string | null;
+  /**
+   * 헤더/푸터 브랜드 표기용. 예: 봉림사
+   */
+  siteShortName?: string | null;
+  /**
+   * 예: Bonglimsa
+   */
+  siteNameEn?: string | null;
   siteDescription?: string | null;
+  /**
+   * 쉼표로 구분
+   */
+  siteKeywords?: string | null;
+  logo?: (number | null) | MediaPublic;
+  logoAlt?: string | null;
+  themeColor?: string | null;
+  /**
+   * 공용 디자인 틀 안에서 바꿀 수 있는 색상만 제공합니다.
+   */
+  colors?: {
+    accent?: string | null;
+    ink?: string | null;
+    deep?: string | null;
+    pine?: string | null;
+    paper?: string | null;
+  };
+  /**
+   * 예: [봉림사]
+   */
+  emailFromName?: string | null;
+  location?: {
+    lat?: number | null;
+    lng?: number | null;
+    mapLabel?: string | null;
+    zoomLevel?: number | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1159,6 +1201,10 @@ export interface SiteSetting {
  */
 export interface HomePage {
   id: number;
+  showTempleIntro?: boolean | null;
+  showMonkIntro?: boolean | null;
+  showPrayerSection?: boolean | null;
+  showLocationSection?: boolean | null;
   mainSlides?:
     | {
         image: number | MediaPublic;
@@ -1233,8 +1279,33 @@ export interface PopupSetting {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
+  installed?: T;
   siteName?: T;
+  siteShortName?: T;
+  siteNameEn?: T;
   siteDescription?: T;
+  siteKeywords?: T;
+  logo?: T;
+  logoAlt?: T;
+  themeColor?: T;
+  colors?:
+    | T
+    | {
+        accent?: T;
+        ink?: T;
+        deep?: T;
+        pine?: T;
+        paper?: T;
+      };
+  emailFromName?: T;
+  location?:
+    | T
+    | {
+        lat?: T;
+        lng?: T;
+        mapLabel?: T;
+        zoomLevel?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1244,6 +1315,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
  * via the `definition` "home-page_select".
  */
 export interface HomePageSelect<T extends boolean = true> {
+  showTempleIntro?: T;
+  showMonkIntro?: T;
+  showPrayerSection?: T;
+  showLocationSection?: T;
   mainSlides?:
     | T
     | {
