@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-const adminOnly = ({ req: { user } }: { req: { user: { collection?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins')
+import { adminOnly } from '../lib/access'
 
 /**
  * guide.md 6절: 홈페이지에서 관리자가 수정할 수 있는 항목들.

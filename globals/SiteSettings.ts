@@ -1,9 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { writeAuditLog } from '../collections/hooks/writeAuditLog'
-
-const adminOnly = ({ req: { user } }: { req: { user: { collection?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins')
+import { adminOnly } from '../lib/access'
 
 /**
  * guide.md 21절 권장 Global. 사이트 전역 기본값을 담는다.

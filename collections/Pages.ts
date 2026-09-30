@@ -1,9 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { pageBlocks } from '../blocks/pageBlocks'
-
-const adminOnly = ({ req: { user } }: { req: { user: { collection?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins')
+import { adminOnly } from '../lib/access'
 
 /**
  * guide.md 4단계/5.2절: 정적 페이지. 메뉴 구조·URL·레이아웃은 코드로 고정하고,

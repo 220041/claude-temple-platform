@@ -1,7 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-const adminOnly = ({ req: { user } }: { req: { user: { collection?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins')
+import { adminOnly } from '../lib/access'
 
 /**
  * guide.md 6절: 푸터 — 주소, 전화번호, 이메일, 저작권 문구.

@@ -1,10 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-const superAdminOnly = ({ req: { user } }: { req: { user: { collection?: string; role?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins' && user.role === 'super-admin')
-
-const anyAdmin = ({ req: { user } }: { req: { user: { collection?: string } | null } }) =>
-  Boolean(user && user.collection === 'admins')
+import { anyAdmin, superAdminOnly } from '../lib/access'
 
 /**
  * guide.md 7.1: 게시판마다 프로그램을 복제하지 않고 공통 Boards 설정과
