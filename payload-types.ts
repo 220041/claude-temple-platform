@@ -1255,6 +1255,15 @@ export interface HomePage {
   showMonkIntro?: boolean | null;
   showPrayerSection?: boolean | null;
   showLocationSection?: boolean | null;
+  /**
+   * 메인 슬라이드 아래 섹션이 표시되는 순서입니다. 각 행을 드래그해 순서를 바꾸세요(표시/숨김은 위 체크박스로 따로 설정합니다).
+   */
+  sectionOrder?:
+    | {
+        section: 'templeIntro' | 'prayer' | 'location';
+        id?: string | null;
+      }[]
+    | null;
   mainSlides?:
     | {
         image: number | MediaPublic;
@@ -1420,6 +1429,12 @@ export interface HomePageSelect<T extends boolean = true> {
   showMonkIntro?: T;
   showPrayerSection?: T;
   showLocationSection?: T;
+  sectionOrder?:
+    | T
+    | {
+        section?: T;
+        id?: T;
+      };
   mainSlides?:
     | T
     | {

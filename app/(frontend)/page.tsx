@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import HeroSlider, { type HeroSlide } from "@/components/hero-slider"
 import InstallationPending from "@/components/installation-pending"
 import LocationSection from "@/components/location-section"
@@ -57,9 +58,12 @@ export default async function HomePage() {
       }
     : undefined
 
-  return (
-    <SiteShell temporaryHome={!siteSettings.homepageReady}>
-      <HeroSlider slides={slides} />
+  // 표시 여부는 기존 체크박스(show*)가 그대로 담당하고, sectionOrder는
+  // "보일 섹션들을 어떤 순서로 배치할지"만 결정한다 — 두 개념을 하나의
+  // 필드로 합치면 관리자 입장에서 "순서 목록에서 뺐는데 체크박스는
+  // 켜져 있다" 같은 혼동이 생긴다.
+  const sectionRenderers: Record<string, React.ReactNode> = {
+    templeIntro: (
       <TempleIntroSection
         templeIntro={{
           title: homePage?.templeIntro?.title ?? undefined,
@@ -76,10 +80,24 @@ export default async function HomePage() {
         showTempleIntro={homePage?.showTempleIntro ?? true}
         showMonkIntro={homePage?.showMonkIntro ?? true}
       />
-      {(homePage?.showPrayerSection ?? true) && (
-        <PrayerSection cards={prayerCards.length > 0 ? prayerCards : undefined} />
-      )}
-      {(homePage?.showLocationSection ?? true) && <LocationSection location={location} />}
+    ),
+    prayer: (homePage?.showPrayerSection ?? true) ? (
+      <PrayerSection cards={prayerCards.length > 0 ? prayerCards : undefined} />
+    ) : null,
+    location: (homePage?.showLocationSection ?? true) ? <LocationSection location={location} /> : null,
+  }
+
+  const sectionOrder = (homePage?.sectionOrder ?? [])
+    .map((row) => row.section)
+    .filter((key): key is NonNullable<typeof key> => Boolean(key))
+  const orderedKeys: string[] = sectionOrder.length > 0 ? sectionOrder : ["templeIntro", "prayer", "location"]
+
+  return (
+    <SiteShell temporaryHome={!siteSettings.homepageReady}>
+      <HeroSlider slides={slides} />
+      {orderedKeys.map((key) => (
+        <Fragment key={key}>{sectionRenderers[key]}</Fragment>
+      ))}
     </SiteShell>
   )
 }

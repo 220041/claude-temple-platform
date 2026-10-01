@@ -12,6 +12,7 @@ import * as migration_20260930_051705_boards_boardkey_to_text from './20260930_0
 import * as migration_20260930_051834_boards_type_and_approval_fields from './20260930_051834_boards_type_and_approval_fields';
 import * as migration_20261001_003821_posts_moderation_status from './20261001_003821_posts_moderation_status';
 import * as migration_20261001_044119_site_settings_homepage_toggle from './20261001_044119_site_settings_homepage_toggle';
+import * as migration_20261001_045158_home_page_section_order from './20261001_045158_home_page_section_order';
 
 export const migrations = [
   {
@@ -82,6 +83,11 @@ export const migrations = [
   {
     up: migration_20261001_044119_site_settings_homepage_toggle.up,
     down: migration_20261001_044119_site_settings_homepage_toggle.down,
-    name: '20261001_044119_site_settings_homepage_toggle'
+    name: '20261001_044119_site_settings_homepage_toggle',
+  },
+  {
+    up: migration_20261001_045158_home_page_section_order.up,
+    down: migration_20261001_045158_home_page_section_order.down,
+    name: '20261001_045158_home_page_section_order'
   },
 ];
