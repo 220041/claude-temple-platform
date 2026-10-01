@@ -92,9 +92,29 @@ export const Pages: CollectionConfig = {
       ],
     },
     {
+      name: 'templatePicker',
+      label: '',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/pages/TemplatePicker#TemplatePicker',
+        },
+      },
+    },
+    {
       name: 'blocks',
       type: 'blocks',
       blocks: pageBlocks,
+    },
+    {
+      name: 'addToMenuAction',
+      label: '',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/pages/AddToMenuButton#AddToMenuButton',
+        },
+      },
     },
   ],
 }

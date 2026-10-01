@@ -1,3 +1,5 @@
+import { TemplatePicker as TemplatePicker_8ef6909aee18bae10bc8e3ad9c2e808d } from '@/components/admin/pages/TemplatePicker'
+import { AddToMenuButton as AddToMenuButton_45894d51e4144fbd131c52f79cce3095 } from '@/components/admin/pages/AddToMenuButton'
 import { ReportCountCell as ReportCountCell_9a5be1724e49620e0677d277924f8097 } from '@/components/admin/ReportCountCell'
 import { CreateLinkedPageButton as CreateLinkedPageButton_bff97076ed6d4674c0e20e271b949275 } from '@/components/admin/menu/CreateLinkedPageButton'
 import { MenuLinkWarnings as MenuLinkWarnings_fdeef09fe0dd3c06f91000f0bd23207c } from '@/components/admin/menu/MenuLinkWarnings'
@@ -9,6 +11,8 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "@/components/admin/pages/TemplatePicker#TemplatePicker": TemplatePicker_8ef6909aee18bae10bc8e3ad9c2e808d,
+  "@/components/admin/pages/AddToMenuButton#AddToMenuButton": AddToMenuButton_45894d51e4144fbd131c52f79cce3095,
   "@/components/admin/ReportCountCell#ReportCountCell": ReportCountCell_9a5be1724e49620e0677d277924f8097,
   "@/components/admin/menu/CreateLinkedPageButton#CreateLinkedPageButton": CreateLinkedPageButton_bff97076ed6d4674c0e20e271b949275,
   "@/components/admin/menu/MenuLinkWarnings#MenuLinkWarnings": MenuLinkWarnings_fdeef09fe0dd3c06f91000f0bd23207c,
