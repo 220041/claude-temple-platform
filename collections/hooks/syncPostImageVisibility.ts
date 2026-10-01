@@ -33,6 +33,11 @@ function isPostVisible(doc: Record<string, unknown>): boolean {
   if (doc.archived) return false
   if (doc.hiddenAt) return false
   if (doc.expiresAt && new Date(doc.expiresAt as string).getTime() <= Date.now()) return false
+  // Stage 3: 회원 글은 작성 즉시 _status:'published'가 강제되므로(setPostAuthor.ts),
+  // 승인 대기/반려 상태를 여기서 따로 확인하지 않으면 media-private 파일
+  // 스트리밍 엔드포인트(isPublic:true)가 Posts.access.read보다 먼저
+  // 익명에게 이미지를 그대로 노출한다.
+  if (doc.moderationStatus === 'pending' || doc.moderationStatus === 'rejected') return false
   return true
 }
 
