@@ -57,6 +57,16 @@ export const Pages: CollectionConfig = {
   fields: [
     { name: 'title', type: 'text', required: true },
     {
+      name: 'statusBadge',
+      label: '',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/components/admin/pages/StatusBadge#StatusBadge',
+        },
+      },
+    },
+    {
       name: 'slug',
       type: 'text',
       required: true,

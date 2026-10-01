@@ -1,3 +1,4 @@
+import { StatusBadge as StatusBadge_57cfd0b3031aeea6dcb0affdba64e3a5 } from '@/components/admin/pages/StatusBadge'
 import { TemplatePicker as TemplatePicker_8ef6909aee18bae10bc8e3ad9c2e808d } from '@/components/admin/pages/TemplatePicker'
 import { AddToMenuButton as AddToMenuButton_45894d51e4144fbd131c52f79cce3095 } from '@/components/admin/pages/AddToMenuButton'
 import { ReportCountCell as ReportCountCell_9a5be1724e49620e0677d277924f8097 } from '@/components/admin/ReportCountCell'
@@ -11,6 +12,7 @@ import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } f
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "@/components/admin/pages/StatusBadge#StatusBadge": StatusBadge_57cfd0b3031aeea6dcb0affdba64e3a5,
   "@/components/admin/pages/TemplatePicker#TemplatePicker": TemplatePicker_8ef6909aee18bae10bc8e3ad9c2e808d,
   "@/components/admin/pages/AddToMenuButton#AddToMenuButton": AddToMenuButton_45894d51e4144fbd131c52f79cce3095,
   "@/components/admin/ReportCountCell#ReportCountCell": ReportCountCell_9a5be1724e49620e0677d277924f8097,
