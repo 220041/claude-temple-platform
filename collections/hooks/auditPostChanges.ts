@@ -30,6 +30,18 @@ export const auditPostChanges: CollectionAfterChangeHook = async ({ doc, previou
     })
   }
 
+  if (previousDoc && previousDoc.moderationStatus !== doc.moderationStatus) {
+    await writeAuditLog(req.payload, {
+      actorId: req.user.id,
+      action: 'content-moderation',
+      targetCollection: 'posts',
+      targetId: doc.id,
+      reason: doc.moderationReason || undefined,
+      metadata: { from: previousDoc.moderationStatus, to: doc.moderationStatus },
+      req,
+    })
+  }
+
   if (previousDoc?.deletedAt && !doc.deletedAt) {
     await writeAuditLog(req.payload, {
       actorId: req.user.id,

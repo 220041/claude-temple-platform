@@ -9,6 +9,7 @@ type AuditAction =
   | 'content-archive'
   | 'content-restore'
   | 'content-permanent-delete'
+  | 'content-moderation'
   | 'member-suspend'
   | 'member-reactivate'
   | 'member-force-withdraw'

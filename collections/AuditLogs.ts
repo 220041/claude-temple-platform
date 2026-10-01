@@ -36,6 +36,7 @@ export const AuditLogs: CollectionConfig = {
         { label: '콘텐츠 보관', value: 'content-archive' },
         { label: '콘텐츠 복원', value: 'content-restore' },
         { label: '콘텐츠 영구삭제', value: 'content-permanent-delete' },
+        { label: '회원 글 승인 상태 변경', value: 'content-moderation' },
         { label: '회원 정지', value: 'member-suspend' },
         { label: '회원 정지 해제', value: 'member-reactivate' },
         { label: '회원 강제탈퇴', value: 'member-force-withdraw' },
