@@ -47,9 +47,25 @@ export const Posts: CollectionConfig = {
     // 하므로, 문서 자체(제목 포함)는 누구나 조회 가능하게 열어두고
     // title/content/featuredImage/images 필드 접근을 아래 필드별
     // access.read로 따로 제한한다(본문·이미지는 작성자·관리자만).
-    read: (async () => {
-      const where: Where = { and: commonReadConditions() }
-      return where
+    // Stage 3: 회원 글 승인 대기(moderationStatus) 추가 — commonReadConditions
+    // (기존 조건, 변경 없음)에 moderationStatus 조건만 분기해서 더한다.
+    // 관리자가 특정 게시물 ID로 직접 접근(목록 조회가 아님)할 때만 완전히
+    // 우회한다 — hiddenAt이 이미 그렇듯 관리자도 목록에서는 승인대기/반려
+    // 글을 못 보고, 대시보드 검수 카드의 딥링크로만 들어가 확인·처리한다.
+    read: (async ({ req: { user }, id }) => {
+      const conditions = commonReadConditions()
+
+      if (user && user.collection === 'admins' && id !== undefined) {
+        return { and: conditions }
+      }
+
+      const notPendingOrRejected: Where = { moderationStatus: { not_in: ['pending', 'rejected'] } }
+      if (user && user.collection === 'members') {
+        conditions.push({ or: [notPendingOrRejected, { memberAuthor: { equals: user.id } }] })
+      } else {
+        conditions.push(notPendingOrRejected)
+      }
+      return { and: conditions }
     }) satisfies Access,
     create: (async ({ req, data }) => {
       const { user, payload } = req
@@ -120,6 +136,21 @@ export const Posts: CollectionConfig = {
     },
     { name: 'adminAuthor', type: 'relationship', relationTo: 'admins' },
     { name: 'memberAuthor', type: 'relationship', relationTo: 'members' },
+    {
+      name: 'moderationStatus',
+      label: '승인 상태',
+      type: 'select',
+      defaultValue: 'approved',
+      options: [
+        { label: '승인됨', value: 'approved' },
+        { label: '승인 대기', value: 'pending' },
+        { label: '반려됨', value: 'rejected' },
+      ],
+      admin: {
+        description:
+          '회원 작성 게시물 중 게시판의 "회원 글 공개 방식"이 승인제인 경우에만 의미가 있다(hooks/setPostAuthor.ts가 자동 지정). 반려 시 아래 "관리자 조치 사유"에 사유를 남긴다.',
+      },
+    },
     {
       name: 'visibility',
       type: 'select',

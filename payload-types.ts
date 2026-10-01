@@ -421,6 +421,10 @@ export interface Post {
   adminAuthor?: (number | null) | Admin;
   memberAuthor?: (number | null) | Member;
   /**
+   * 회원 작성 게시물 중 게시판의 "회원 글 공개 방식"이 승인제인 경우에만 의미가 있다(hooks/setPostAuthor.ts가 자동 지정). 반려 시 아래 "관리자 조치 사유"에 사유를 남긴다.
+   */
+  moderationStatus?: ('approved' | 'pending' | 'rejected') | null;
+  /**
    * 비밀글은 게시판의 allowSecret이 켜진 경우에만 허용된다(guide.md 9.3, 자유게시판).
    */
   visibility?: ('public' | 'secret') | null;
@@ -1006,6 +1010,7 @@ export interface PostsSelect<T extends boolean = true> {
   authorType?: T;
   adminAuthor?: T;
   memberAuthor?: T;
+  moderationStatus?: T;
   visibility?: T;
   commentPolicy?: T;
   featuredImage?: T;

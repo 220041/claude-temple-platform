@@ -43,6 +43,7 @@ export default buildConfig({
     components: {
       beforeDashboard: [
         '@/components/admin/RateLimitAlertCard#RateLimitAlertCard',
+        '@/components/admin/ModerationQueueCard#ModerationQueueCard',
         '@/components/admin/QuickActionsCard#QuickActionsCard',
         '@/components/admin/menu/MenuLinkWarnings#MenuLinkWarnings',
       ],

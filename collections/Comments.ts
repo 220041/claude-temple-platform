@@ -42,6 +42,12 @@ export const Comments: CollectionConfig = {
             user && user.collection === 'members'
               ? { or: [{ visibility: { not_equals: 'secret' } }, { memberAuthor: { equals: user.id } }] }
               : { visibility: { not_equals: 'secret' } },
+            // Stage 3: Posts.access.read의 moderationStatus 조건과 동일하게
+            // 맞춘다 — 안 그러면 승인대기/반려 글 자체는 안 보여도 거기 달린
+            // 댓글은 이 inline where를 그대로 통과해 노출된다.
+            user && user.collection === 'members'
+              ? { or: [{ moderationStatus: { not_in: ['pending', 'rejected'] } }, { memberAuthor: { equals: user.id } }] }
+              : { moderationStatus: { not_in: ['pending', 'rejected'] } },
           ],
         },
       })

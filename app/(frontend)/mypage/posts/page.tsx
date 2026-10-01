@@ -39,6 +39,14 @@ export default async function MyPostsPage({ searchParams }: { searchParams: Prom
                     {post.visibility === "secret" ? "🔒 " : ""}
                     {post.title}
                   </Link>
+                  {post.moderationStatus === "pending" && (
+                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#6b5420" }}>⏳ 승인 대기</span>
+                  )}
+                  {post.moderationStatus === "rejected" && (
+                    <span style={{ marginLeft: "8px", fontSize: "11px", color: "#8a3524" }}>
+                      🚫 반려됨{post.moderationReason ? ` — ${post.moderationReason}` : ""}
+                    </span>
+                  )}
                   <div style={{ fontSize: "12px", color: "#888078", marginTop: "4px" }}>
                     {board.displayName} · {new Date(post.createdAt).toLocaleDateString("ko-KR")} · 조회 {post.viewCount ?? 0}
                   </div>

@@ -73,6 +73,23 @@ export default function PostDetail({
         </div>
       </div>
 
+      {isOwner && post.moderationStatus === "pending" && (
+        <p
+          className="font-sans"
+          style={{ padding: "12px 16px", background: "#fdf6e3", border: "1px solid #d9c38a", color: "#6b5420", fontSize: "13px", marginBottom: "24px" }}
+        >
+          ⏳ 관리자 승인 대기 중입니다. 승인 전까지는 본인에게만 보입니다.
+        </p>
+      )}
+      {isOwner && post.moderationStatus === "rejected" && (
+        <p
+          className="font-sans"
+          style={{ padding: "12px 16px", background: "#fdf0ee", border: "1px solid #e3a89c", color: "#8a3524", fontSize: "13px", marginBottom: "24px" }}
+        >
+          🚫 반려된 게시물입니다{post.moderationReason ? ` — 사유: ${post.moderationReason}` : ""}. 수정 후 다시 제출하면 재검수됩니다.
+        </p>
+      )}
+
       {images.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "24px" }}>
           {images.map((src) => (
