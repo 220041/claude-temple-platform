@@ -17,6 +17,13 @@ function resolveImageUrl(image: unknown): string {
   return ""
 }
 
+function resolveImageFocal(image: unknown): { focalX?: number; focalY?: number } {
+  if (!image || typeof image !== "object") return {}
+  const focalX = "focalX" in image && typeof image.focalX === "number" ? image.focalX : undefined
+  const focalY = "focalY" in image && typeof image.focalY === "number" ? image.focalY : undefined
+  return { focalX, focalY }
+}
+
 export default async function HomePage() {
   const [homePage, siteSettings] = await Promise.all([getHomePage(), getSiteSettings()])
 
@@ -37,6 +44,7 @@ export default async function HomePage() {
       sub: slide.subtitle ?? "",
       desc: slide.description ?? "",
       href: slide.linkUrl ?? undefined,
+      ...resolveImageFocal(slide.image),
     }))
     .filter((slide) => slide.src)
 

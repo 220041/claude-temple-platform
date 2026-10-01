@@ -11,6 +11,11 @@ export type HeroSlide = {
   sub: string
   desc: string
   href?: string
+  // 관리자가 미디어 업로드 화면에서 지정한 초점(Payload 기본 제공 focal
+  // point 편집기, 0~100 퍼센트) — 전체 화면 배너로 크게 잘릴 때 인물/
+  // 현판처럼 중요한 부분이 가운데가 아니어도 잘리지 않게 한다.
+  focalX?: number
+  focalY?: number
 }
 
 export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
@@ -56,6 +61,11 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
             alt={slide.alt}
             fill
             className={`object-cover ${i === current ? "hero-kenburns" : ""}`}
+            style={
+              slide.focalX != null && slide.focalY != null
+                ? { objectPosition: `${slide.focalX}% ${slide.focalY}%` }
+                : undefined
+            }
             priority={i === 0}
             sizes="100vw"
           />
