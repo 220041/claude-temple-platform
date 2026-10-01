@@ -58,7 +58,7 @@ export default async function HomePage() {
     : undefined
 
   return (
-    <SiteShell temporaryHome>
+    <SiteShell temporaryHome={!siteSettings.homepageReady}>
       <HeroSlider slides={slides} />
       <TempleIntroSection
         templeIntro={{

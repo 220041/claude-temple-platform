@@ -1187,6 +1187,14 @@ export interface SiteSetting {
    */
   installed?: boolean | null;
   /**
+   * 체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. installed와 별개 설정입니다.
+   */
+  homepageReady?: boolean | null;
+  /**
+   * 모든 페이지 상단에 띠 배너로 표시됩니다(예: "공사 중", "오늘 하루 휴무"). 비워두면 배너가 표시되지 않습니다.
+   */
+  siteNoticeText?: string | null;
+  /**
    * 예: 하논봉림사
    */
   siteName?: string | null;
@@ -1369,6 +1377,8 @@ export interface MainMenu {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   installed?: T;
+  homepageReady?: T;
+  siteNoticeText?: T;
   siteName?: T;
   siteShortName?: T;
   siteNameEn?: T;

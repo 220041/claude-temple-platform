@@ -49,7 +49,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#ffffff" }}>
-      <SiteNotice />
+      <SiteNotice text={siteSettings?.siteNoticeText} />
       {temporaryHome ? (
         <TemporaryHeader logo={logo} />
       ) : (

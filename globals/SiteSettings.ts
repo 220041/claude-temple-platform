@@ -53,6 +53,22 @@ export const SiteSettings: GlobalConfig = {
           '체크하기 전까지 공개 화면(홈/헤더/푸터)은 이 사찰의 정보 대신 "설치 미완료" 안내만 보여줍니다. 아래 정보를 모두 입력한 뒤 체크하세요.',
       },
     },
+    {
+      name: 'homepageReady',
+      label: '정식 홈페이지로 전환',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          '체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. installed와 별개 설정입니다.',
+      },
+    },
+    {
+      name: 'siteNoticeText',
+      label: '사이트 상단 안내 문구',
+      type: 'text',
+      admin: { description: '모든 페이지 상단에 띠 배너로 표시됩니다(예: "공사 중", "오늘 하루 휴무"). 비워두면 배너가 표시되지 않습니다.' },
+    },
     { name: 'siteName', label: '사찰 정식 명칭', type: 'text', admin: { description: '예: 하논봉림사' } },
     { name: 'siteShortName', label: '짧은 이름', type: 'text', admin: { description: '헤더/푸터 브랜드 표기용. 예: 봉림사' } },
     { name: 'siteNameEn', label: '영문 명칭', type: 'text', admin: { description: '예: Bonglimsa' } },

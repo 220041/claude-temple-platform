@@ -11,6 +11,7 @@ import * as migration_20260930_034000_backfill_main_menu from './20260930_034000
 import * as migration_20260930_051705_boards_boardkey_to_text from './20260930_051705_boards_boardkey_to_text';
 import * as migration_20260930_051834_boards_type_and_approval_fields from './20260930_051834_boards_type_and_approval_fields';
 import * as migration_20261001_003821_posts_moderation_status from './20261001_003821_posts_moderation_status';
+import * as migration_20261001_044119_site_settings_homepage_toggle from './20261001_044119_site_settings_homepage_toggle';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261001_003821_posts_moderation_status.up,
     down: migration_20261001_003821_posts_moderation_status.down,
-    name: '20261001_003821_posts_moderation_status'
+    name: '20261001_003821_posts_moderation_status',
+  },
+  {
+    up: migration_20261001_044119_site_settings_homepage_toggle.up,
+    down: migration_20261001_044119_site_settings_homepage_toggle.down,
+    name: '20261001_044119_site_settings_homepage_toggle'
   },
 ];
