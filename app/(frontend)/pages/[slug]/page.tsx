@@ -2,6 +2,7 @@ import { draftMode } from "next/headers"
 import { notFound, permanentRedirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import PageBlocksRenderer from "@/components/page-blocks-renderer"
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave"
 import { getPayloadClient, getSiteSettings } from "@/lib/payload"
 
 export const revalidate = 60
@@ -59,12 +60,15 @@ export default async function StaticPage({ params }: Params) {
   return (
     <SiteShell>
       {draft.isEnabled && (
-        <div
-          className="font-sans"
-          style={{ background: "#cc5030", color: "#fff", padding: "8px 16px", fontSize: "13px", textAlign: "center" }}
-        >
-          미리보기 모드입니다 — 아직 게시되지 않은 내용일 수 있습니다.
-        </div>
+        <>
+          <RefreshRouteOnSave />
+          <div
+            className="font-sans"
+            style={{ background: "#cc5030", color: "#fff", padding: "8px 16px", fontSize: "13px", textAlign: "center" }}
+          >
+            미리보기 모드입니다 — 아직 게시되지 않은 내용일 수 있습니다.
+          </div>
+        </>
       )}
       <div className="max-w-[900px] mx-auto px-8" style={{ paddingTop: "56px", paddingBottom: "80px" }}>
         <h1

@@ -15,6 +15,8 @@
     "@base-ui/react": "^1.5.0",
     "@payloadcms/db-postgres": "^3.87.0",
     "@payloadcms/email-resend": "^3.87.0",
+    "@payloadcms/live-preview": "^3.87.0",
+    "@payloadcms/live-preview-react": "^3.87.0",
     "@payloadcms/next": "^3.87.0",
     "@payloadcms/richtext-lexical": "^3.87.0",
     "@payloadcms/storage-vercel-blob": "^3.87.0",
