@@ -28,6 +28,22 @@ export const HomePage: GlobalConfig = {
   slug: 'home-page',
   admin: {
     group: '홈페이지',
+    preview: () => {
+      const base = process.env.NEXT_PUBLIC_SERVER_URL ?? ''
+      // Pages.ts와 동일한 2중 인증 패턴 — app/(payload)/api/home-preview/route.ts가
+      // secret+관리자 세션을 확인한 뒤 draftMode를 켜고 "/"로 리다이렉트한다.
+      return `${base}/api/home-preview?secret=${process.env.PAGE_PREVIEW_SECRET ?? ''}`
+    },
+  },
+  // Pages.ts와 동일한 초안/게시/복원 흐름. 기존에 versions 없이 운영되던
+  // global이라, 마이그레이션에서 기존 데이터를 published 상태로 백필해야
+  // 한다(아래 마이그레이션 참고) — 안 그러면 새로 생기는 _status 컬럼
+  // 기본값이 'draft'가 되어 "최근 공개본"의 의미가 불명확해진다.
+  versions: {
+    drafts: {
+      autosave: false,
+      schedulePublish: true,
+    },
   },
   access: {
     read: () => true,

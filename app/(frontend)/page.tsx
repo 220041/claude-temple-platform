@@ -1,10 +1,12 @@
 import { Fragment } from "react"
+import { draftMode } from "next/headers"
 import HeroSlider, { type HeroSlide } from "@/components/hero-slider"
 import InstallationPending from "@/components/installation-pending"
 import LocationSection from "@/components/location-section"
 import PrayerSection, { type PrayerCard } from "@/components/prayer-section"
 import TempleIntroSection from "@/components/temple-intro-section"
 import SiteShell from "@/components/site-shell"
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave"
 import { getHomePage, getSiteSettings } from "@/lib/payload"
 
 // 관리자가 CMS를 수정하면 재배포 없이도 최대 60초 내에 반영되도록 ISR 적용.
@@ -25,7 +27,8 @@ function resolveImageFocal(image: unknown): { focalX?: number; focalY?: number }
 }
 
 export default async function HomePage() {
-  const [homePage, siteSettings] = await Promise.all([getHomePage(), getSiteSettings()])
+  const draft = await draftMode()
+  const [homePage, siteSettings] = await Promise.all([getHomePage(draft.isEnabled), getSiteSettings()])
 
   if (!siteSettings?.installed) {
     return (
@@ -102,6 +105,17 @@ export default async function HomePage() {
 
   return (
     <SiteShell temporaryHome={!siteSettings.homepageReady}>
+      {draft.isEnabled && (
+        <>
+          <RefreshRouteOnSave />
+          <div
+            className="font-sans"
+            style={{ background: "#cc5030", color: "#fff", padding: "8px 16px", fontSize: "13px", textAlign: "center" }}
+          >
+            미리보기 모드입니다 — 아직 게시되지 않은 내용일 수 있습니다.
+          </div>
+        </>
+      )}
       <HeroSlider slides={slides} />
       {orderedKeys.map((key) => (
         <Fragment key={key}>{sectionRenderers[key]}</Fragment>

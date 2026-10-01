@@ -1300,6 +1300,7 @@ export interface HomePage {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1477,6 +1478,7 @@ export interface HomePageSelect<T extends boolean = true> {
         icon?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1573,7 +1575,7 @@ export interface TaskSchedulePublish {
           relationTo: 'posts';
           value: number | Post;
         } | null);
-    global?: string | null;
+    global?: 'home-page' | null;
     user?: (number | null) | Admin;
   };
   output?: unknown;

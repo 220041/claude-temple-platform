@@ -8,11 +8,16 @@ export const getPayloadClient = cache(async () => getPayload({ config }))
  * 홈페이지 CMS Global 조회. guide.md 6절: CMS 연결이 실패해도 화면이
  * 깨지지 않아야 하므로 오류 시 null을 반환하고 호출부에서 기본값으로
  * 대체한다(운영 전에는 샘플 데이터 노출 여부를 별도로 검증해야 한다).
+ *
+ * isDraft(Next.js draftMode)가 true일 때만 아직 공개 안 한 초안을
+ * 읽는다 — app/(frontend)/pages/[slug]/page.tsx의 getPage()와 동일한
+ * draft/overrideAccess 패턴. 기본값(false)은 기존 동작과 동일하게
+ * 항상 공개본(base 테이블의 현재 값)을 읽는다.
  */
-export const getHomePage = cache(async () => {
+export const getHomePage = cache(async (isDraft = false) => {
   try {
     const payload = await getPayloadClient()
-    return await payload.findGlobal({ slug: 'home-page' })
+    return await payload.findGlobal({ slug: 'home-page', draft: isDraft, overrideAccess: isDraft })
   } catch {
     return null
   }

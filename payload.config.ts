@@ -40,15 +40,21 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    // Pages 편집 화면에 PC는 분할 화면, 모바일은 편집/미리보기 전환
-    // 탭을 제공한다(Payload 관리자 UI가 기본 제공). url은 기존
-    // app/(payload)/api/pages/preview/route.ts(미리보기 secret 확인 +
-    // Next.js draftMode 활성화 후 /pages/{slug}로 리다이렉트)를 그대로
+    // Pages/HomePage 편집 화면에 PC는 분할 화면, 모바일은 편집/미리보기
+    // 전환 탭을 제공한다(Payload 관리자 UI가 기본 제공). url은 각각의
+    // 기존 미리보기 라우트(secret 확인 + draftMode 활성화 후 리다이렉트)를
     // 재사용 — 그래야 iframe이 공개본이 아니라 초안을 보여준다.
     livePreview: {
       collections: ['pages'],
-      url: ({ data }) =>
-        `${process.env.NEXT_PUBLIC_SERVER_URL ?? ''}/api/pages/preview?slug=${encodeURIComponent(data.slug ?? '')}&secret=${process.env.PAGE_PREVIEW_SECRET ?? ''}`,
+      globals: ['home-page'],
+      url: ({ data, globalConfig }) => {
+        const base = process.env.NEXT_PUBLIC_SERVER_URL ?? ''
+        const secret = process.env.PAGE_PREVIEW_SECRET ?? ''
+        if (globalConfig?.slug === 'home-page') {
+          return `${base}/api/home-preview?secret=${secret}`
+        }
+        return `${base}/api/pages/preview?slug=${encodeURIComponent(data.slug ?? '')}&secret=${secret}`
+      },
       breakpoints: [
         { label: '모바일', name: 'mobile', width: 375, height: 667 },
         { label: '태블릿', name: 'tablet', width: 768, height: 1024 },
