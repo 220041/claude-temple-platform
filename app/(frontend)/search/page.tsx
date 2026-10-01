@@ -1,19 +1,8 @@
 import Link from "next/link"
 import SiteShell from "@/components/site-shell"
 import { searchPosts } from "@/lib/search"
-import { pathForBoardKey } from "@/lib/boards"
+import { getAllBoards, pathForBoardKey } from "@/lib/boards"
 import type { Board } from "@/payload-types"
-
-const BOARD_OPTIONS: { value: string; label: string }[] = [
-  { value: "notices", label: "공지사항" },
-  { value: "dharma", label: "법문" },
-  { value: "press", label: "언론 속 봉림사" },
-  { value: "monk-gallery", label: "회주·주지스님 포토갤러리" },
-  { value: "scenery-gallery", label: "봉림풍경 포토갤러리" },
-  { value: "community", label: "자유게시판" },
-  { value: "stories", label: "봉림사 이야기" },
-  { value: "gamrodang", label: "감로당" },
-]
 
 function excerpt(content: string, query: string): string {
   const idx = content.toLowerCase().indexOf(query.toLowerCase())
@@ -32,13 +21,16 @@ export default async function SearchPage({
   const params = await searchParams
   const query = params.q ?? ""
   const page = Number(params.page) > 0 ? Number(params.page) : 1
-  const { posts, totalPages, totalDocs } = await searchPosts({
-    q: params.q,
-    board: params.board,
-    from: params.from,
-    to: params.to,
-    page,
-  })
+  const [{ posts, totalPages, totalDocs }, boards] = await Promise.all([
+    searchPosts({
+      q: params.q,
+      board: params.board,
+      from: params.from,
+      to: params.to,
+      page,
+    }),
+    getAllBoards(),
+  ])
 
   return (
     <SiteShell>
@@ -57,8 +49,8 @@ export default async function SearchPage({
           />
           <select name="board" defaultValue={params.board ?? ""} style={fieldStyle}>
             <option value="">전체 게시판</option>
-            {BOARD_OPTIONS.map((b) => (
-              <option key={b.value} value={b.value}>{b.label}</option>
+            {boards.map((b) => (
+              <option key={b.boardKey} value={b.boardKey}>{b.displayName}</option>
             ))}
           </select>
           <input name="from" type="date" defaultValue={params.from ?? ""} style={fieldStyle} />

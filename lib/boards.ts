@@ -16,7 +16,25 @@ const BOARD_PATHS: Record<string, string> = {
 }
 
 export function pathForBoardKey(boardKey: string): string {
-  return BOARD_PATHS[boardKey] ?? '/'
+  return BOARD_PATHS[boardKey] ?? `/boards/${boardKey}`
+}
+
+/** 기존 8개 고정 게시판인지 — `/boards/[slug]`가 이 값들과 겹쳐 이중 노출되는 것을 막는 데 쓴다. */
+export function isLegacyBoardKey(boardKey: string): boolean {
+  return boardKey in BOARD_PATHS
+}
+
+/** 검색 필터 드롭다운·sitemap에서 전체 게시판 목록이 필요할 때 쓴다. */
+export async function getAllBoards() {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'boards',
+    overrideAccess: true,
+    limit: 0,
+    pagination: false,
+    sort: 'displayName',
+  })
+  return docs
 }
 
 export async function getBoardByKey(boardKey: string) {

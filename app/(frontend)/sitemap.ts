@@ -1,26 +1,14 @@
 import type { MetadataRoute } from 'next'
 import { getPayloadClient } from '@/lib/payload'
-import { pathForBoardKey } from '@/lib/boards'
+import { getAllBoards, pathForBoardKey } from '@/lib/boards'
 
-const STATIC_PATHS = [
-  '/',
-  '/notices',
-  '/dharma',
-  '/press',
-  '/gallery/monks',
-  '/gallery/scenery',
-  '/community',
-  '/stories/bonglimsa',
-  '/stories/gamrodang',
-  '/temple-news',
-  '/search',
-]
+const STATIC_PATHS = ['/', '/temple-news', '/search']
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SERVER_URL ?? ''
   const payload = await getPayloadClient()
 
-  const [pages, posts] = await Promise.all([
+  const [pages, posts, boards] = await Promise.all([
     // overrideAccess:true는 접근 제어(admins만 열람 가능한 draft)를 건너뛸
     // 뿐, _status 필터는 별도로 걸어줘야 한다 — 걸지 않으면 아직 게시되지
     // 않은 draft 페이지까지 공개 sitemap에 노출되는 버그가 있었다.
@@ -44,9 +32,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       pagination: false,
       depth: 1,
     }),
+    getAllBoards(),
   ])
 
   const staticEntries: MetadataRoute.Sitemap = STATIC_PATHS.map((path) => ({ url: `${base}${path}` }))
+
+  const boardEntries: MetadataRoute.Sitemap = boards.map((board) => ({
+    url: `${base}${pathForBoardKey(board.boardKey)}`,
+    lastModified: board.updatedAt,
+  }))
 
   const pageEntries: MetadataRoute.Sitemap = pages.docs.map((page) => ({
     url: `${base}/pages/${page.slug}`,
@@ -61,5 +55,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter((entry): entry is { url: string; lastModified: string } => entry !== null)
 
-  return [...staticEntries, ...pageEntries, ...postEntries]
+  return [...staticEntries, ...boardEntries, ...pageEntries, ...postEntries]
 }
