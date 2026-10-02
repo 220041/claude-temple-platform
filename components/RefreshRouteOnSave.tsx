@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
  * 때마다 postMessage로 신호를 받아 이 라우트를 새로고침한다(App Router
  * router.refresh() — 전체 페이지 리로드가 아니라 서버 컴포넌트만 다시
  * 렌더링). draftMode가 켜진 미리보기 경로에서만 의미가 있으므로
- * app/(frontend)/pages/[slug]/page.tsx가 draft.isEnabled일 때만 렌더링한다.
+ * components/site-shell.tsx가 draft.isEnabled일 때만 렌더링한다.
  */
 export function RefreshRouteOnSave() {
   const router = useRouter()

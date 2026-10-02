@@ -28,5 +28,6 @@ export async function GET(request: Request) {
   const draft = await draftMode()
   draft.enable()
 
-  redirect('/')
+  // 메뉴/푸터 미리보기는 홈이 "준비 중"이어도 정식 헤더·푸터가 보이는 /login으로 보낸다.
+  redirect(searchParams.get('to') === 'shell' ? '/login' : '/')
 }

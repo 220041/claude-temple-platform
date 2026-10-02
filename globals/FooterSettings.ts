@@ -1,6 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { adminOnly } from '../lib/access'
+import { shellPreviewUrl } from '../lib/previewUrl'
 
 /**
  * guide.md 6절: 푸터 — 주소, 전화번호, 이메일, 저작권 문구.
@@ -11,6 +12,13 @@ export const FooterSettings: GlobalConfig = {
   slug: 'footer-settings',
   admin: {
     group: '홈페이지',
+    preview: () => shellPreviewUrl(),
+  },
+  versions: {
+    drafts: {
+      autosave: false,
+      schedulePublish: true,
+    },
   },
   access: {
     read: () => true,

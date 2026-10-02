@@ -23,6 +23,7 @@ import { MainMenu } from './globals/MainMenu'
 import { PopupSettings } from './globals/PopupSettings'
 import { SiteSettings } from './globals/SiteSettings'
 import { buildEmailAdapter } from './lib/email'
+import { shellPreviewUrl } from './lib/previewUrl'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -46,12 +47,15 @@ export default buildConfig({
     // 재사용 — 그래야 iframe이 공개본이 아니라 초안을 보여준다.
     livePreview: {
       collections: ['pages'],
-      globals: ['home-page'],
+      globals: ['home-page', 'main-menu', 'footer-settings'],
       url: ({ data, globalConfig }) => {
         const base = process.env.NEXT_PUBLIC_SERVER_URL ?? ''
         const secret = process.env.PAGE_PREVIEW_SECRET ?? ''
         if (globalConfig?.slug === 'home-page') {
           return `${base}/api/home-preview?secret=${secret}`
+        }
+        if (globalConfig?.slug === 'main-menu' || globalConfig?.slug === 'footer-settings') {
+          return shellPreviewUrl()
         }
         return `${base}/api/pages/preview?slug=${encodeURIComponent(data.slug ?? '')}&secret=${secret}`
       },

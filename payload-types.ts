@@ -1316,6 +1316,7 @@ export interface FooterSetting {
   fax?: string | null;
   email?: string | null;
   copyrightText?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1379,6 +1380,7 @@ export interface MainMenu {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1494,6 +1496,7 @@ export interface FooterSettingsSelect<T extends boolean = true> {
   fax?: T;
   email?: T;
   copyrightText?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1545,6 +1548,7 @@ export interface MainMenuSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1576,7 +1580,7 @@ export interface TaskSchedulePublish {
           relationTo: 'posts';
           value: number | Post;
         } | null);
-    global?: 'home-page' | null;
+    global?: ('home-page' | 'footer-settings' | 'main-menu') | null;
     user?: (number | null) | Admin;
   };
   output?: unknown;

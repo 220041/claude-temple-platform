@@ -6,7 +6,6 @@ import LocationSection from "@/components/location-section"
 import PrayerSection, { type PrayerCard } from "@/components/prayer-section"
 import TempleIntroSection from "@/components/temple-intro-section"
 import SiteShell from "@/components/site-shell"
-import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave"
 import { getHomePage, getSiteSettings } from "@/lib/payload"
 
 // 관리자가 CMS를 수정하면 재배포 없이도 최대 60초 내에 반영되도록 ISR 적용.
@@ -107,7 +106,6 @@ export default async function HomePage() {
     <SiteShell temporaryHome={!siteSettings.homepageReady}>
       {draft.isEnabled && (
         <>
-          <RefreshRouteOnSave />
           <div
             className="font-sans"
             style={{ background: "#cc5030", color: "#fff", padding: "8px 16px", fontSize: "13px", textAlign: "center" }}

@@ -15,6 +15,7 @@ import * as migration_20261001_044119_site_settings_homepage_toggle from './2026
 import * as migration_20261001_045158_home_page_section_order from './20261001_045158_home_page_section_order';
 import * as migration_20261001_050634_home_page_versions from './20261001_050634_home_page_versions';
 import * as migration_20261001_232418_audit_logs_moderation_action from './20261001_232418_audit_logs_moderation_action';
+import * as migration_20261001_235402_main_menu_footer_versions from './20261001_235402_main_menu_footer_versions';
 
 export const migrations = [
   {
@@ -100,6 +101,11 @@ export const migrations = [
   {
     up: migration_20261001_232418_audit_logs_moderation_action.up,
     down: migration_20261001_232418_audit_logs_moderation_action.down,
-    name: '20261001_232418_audit_logs_moderation_action'
+    name: '20261001_232418_audit_logs_moderation_action',
+  },
+  {
+    up: migration_20261001_235402_main_menu_footer_versions.up,
+    down: migration_20261001_235402_main_menu_footer_versions.down,
+    name: '20261001_235402_main_menu_footer_versions'
   },
 ];

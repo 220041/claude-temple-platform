@@ -2,7 +2,6 @@ import { draftMode } from "next/headers"
 import { notFound, permanentRedirect } from "next/navigation"
 import SiteShell from "@/components/site-shell"
 import PageBlocksRenderer from "@/components/page-blocks-renderer"
-import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave"
 import { getPayloadClient, getSiteSettings } from "@/lib/payload"
 
 export const revalidate = 60
@@ -61,7 +60,6 @@ export default async function StaticPage({ params }: Params) {
     <SiteShell>
       {draft.isEnabled && (
         <>
-          <RefreshRouteOnSave />
           <div
             className="font-sans"
             style={{ background: "#cc5030", color: "#fff", padding: "8px 16px", fontSize: "13px", textAlign: "center" }}

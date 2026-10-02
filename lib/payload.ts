@@ -23,10 +23,10 @@ export const getHomePage = cache(async (isDraft = false) => {
   }
 })
 
-export const getFooterSettings = cache(async () => {
+export const getFooterSettings = cache(async (isDraft = false) => {
   try {
     const payload = await getPayloadClient()
-    return await payload.findGlobal({ slug: 'footer-settings' })
+    return await payload.findGlobal({ slug: 'footer-settings', draft: isDraft })
   } catch {
     return null
   }
@@ -50,14 +50,14 @@ export const getSiteSettings = cache(async () => {
   }
 })
 
-export const getMainMenu = cache(async () => {
+export const getMainMenu = cache(async (isDraft = false) => {
   try {
     const payload = await getPayloadClient()
     // overrideAccess 기본값(true)으로 두면 pageRef 관계 populate도 Pages.access.read를
     // 건너뛰어, 미공개(draft) 페이지가 공개 메뉴 트리에 실제 링크로 노출된다
     // (app/(frontend)/pages/[slug]/page.tsx는 overrideAccess:false로 올바르게 막고
     // 있어 "메뉴엔 보이는데 클릭하면 404"인 죽은 링크가 생기는 원인이었다).
-    return await payload.findGlobal({ slug: 'main-menu', overrideAccess: false })
+    return await payload.findGlobal({ slug: 'main-menu', draft: isDraft, overrideAccess: false })
   } catch {
     return null
   }

@@ -37,7 +37,15 @@ export async function POST(request: Request) {
     return Response.json({ error: '페이지를 찾을 수 없습니다.' }, { status: 404 })
   }
 
-  const menu = await payload.findGlobal({ slug: 'main-menu', overrideAccess: true })
+  // draft:true로 최신 상태를 읽어, 메뉴 편집 화면에 게시 안 한 초안이 있으면
+  // 그 위에 게시본을 덮어써 편집 중인 내용이 사라지지 않도록 막는다.
+  const menu = await payload.findGlobal({ slug: 'main-menu', draft: true, overrideAccess: true })
+  if (menu._status === 'draft') {
+    return Response.json(
+      { error: '메뉴에 아직 게시하지 않은 변경 사항이 있습니다. 메뉴 편집 화면에서 먼저 게시하거나 되돌린 뒤 다시 시도하세요.' },
+      { status: 409 },
+    )
+  }
   const items = Array.isArray(menu.items) ? menu.items : []
 
   const alreadyLinked = items.some((item) => item.linkType === 'page' && extractRefId(item.pageRef) === String(pageId))
@@ -49,6 +57,7 @@ export async function POST(request: Request) {
     slug: 'main-menu',
     overrideAccess: true,
     data: {
+      _status: 'published',
       items: [
         ...items,
         {

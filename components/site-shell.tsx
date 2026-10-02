@@ -1,3 +1,5 @@
+import { draftMode } from "next/headers"
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave"
 import Header from "@/components/header"
 import TemporaryHeader from "@/components/temporary-header"
 import SiteNotice from "@/components/site-notice"
@@ -15,10 +17,12 @@ function resolveLogoUrl(logo: unknown): string | undefined {
 
 /** 모든 프런트엔드 페이지가 반복하던 Header/Footer + 세션·설정 조회를 한 곳에 모은다. */
 export default async function SiteShell({ children, temporaryHome = false }: { children: React.ReactNode; temporaryHome?: boolean }) {
+  // 미리보기(draftMode)일 때만 메뉴/푸터의 아직 게시 안 한 초안을 읽는다.
+  const draft = await draftMode()
   const [footerSettings, siteSettings, mainMenu, member] = await Promise.all([
-    getFooterSettings(),
+    getFooterSettings(draft.isEnabled),
     getSiteSettings(),
-    getMainMenu(),
+    getMainMenu(draft.isEnabled),
     getCurrentMemberCached(),
   ])
 
@@ -49,6 +53,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "#ffffff" }}>
+      {draft.isEnabled && <RefreshRouteOnSave />}
       <SiteNotice text={siteSettings?.siteNoticeText} />
       {temporaryHome ? (
         <TemporaryHeader logo={logo} />

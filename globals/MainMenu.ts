@@ -1,6 +1,7 @@
 import type { Field, GlobalBeforeValidateHook, GlobalConfig } from 'payload'
 
 import { superAdminOnly } from '../lib/access'
+import { shellPreviewUrl } from '../lib/previewUrl'
 
 /**
  * 내부 경로를 "외부 URL"에 입력하지 못하게 막는다 — 내부 페이지는
@@ -195,10 +196,19 @@ export const MainMenu: GlobalConfig = {
   slug: 'main-menu',
   admin: {
     group: '홈페이지',
+    preview: () => shellPreviewUrl(),
     components: {
       elements: {
         beforeDocumentControls: ['@/components/admin/menu/MenuLinkWarnings#MenuLinkWarnings'],
       },
+    },
+  },
+  // HomePage.ts와 동일한 초안/게시/복원 흐름. 기존 미버전 global이라
+  // 마이그레이션에서 현재 내용을 published로 백필한다.
+  versions: {
+    drafts: {
+      autosave: false,
+      schedulePublish: true,
     },
   },
   access: {

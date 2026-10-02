@@ -25,7 +25,7 @@ function extractRefId(ref: unknown): number | string | null {
  */
 export async function MenuLinkWarnings() {
   const payload = await getPayload({ config })
-  const menu = await payload.findGlobal({ slug: 'main-menu', overrideAccess: true, depth: 0 })
+  const menu = await payload.findGlobal({ slug: 'main-menu', draft: true, overrideAccess: true, depth: 0 })
 
   const items = (menu.items ?? []) as FlatItem[]
   const flat: FlatItem[] = []
