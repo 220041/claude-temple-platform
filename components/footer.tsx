@@ -9,6 +9,7 @@ export type FooterInfo = {
   fax: string
   email: string
   copyrightText: string
+  tagline: string
 }
 
 // CMS(FooterSettings) 조회가 실패했을 때만 쓰는 타입 안전장치용 기본값.
@@ -19,6 +20,7 @@ const FALLBACK_FOOTER: FooterInfo = {
   fax: "",
   email: "",
   copyrightText: "ALL RIGHTS RESERVED.",
+  tagline: "",
 }
 
 export type FooterBrand = { shortName?: string; nameEn?: string; affiliation?: string }
@@ -65,7 +67,7 @@ export default function Footer({
 
           <div className="mt-10 flex flex-col gap-2 border-t border-white/10 pt-5 font-sans text-xs text-[#aaa] sm:flex-row sm:items-center sm:justify-between">
             <p>&copy; {new Date().getFullYear()} {shortName}. {info.copyrightText}</p>
-            <p className="font-serif text-[13px] text-[#d1d1d1]">마음이 힘들때 "관세음보살"을 불러보세요.</p>
+            {info.tagline && <p className="font-serif text-[13px] text-[#d1d1d1]">{info.tagline}</p>}
           </div>
         </div>
       </footer>
@@ -141,7 +143,7 @@ export default function Footer({
             style={{ marginTop: "40px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,.12)", fontSize: "12px", color: "#969696" }}
           >
             <p>&copy; {new Date().getFullYear()} {shortName}. {info.copyrightText}</p>
-            <p className="font-serif" style={{ fontSize: "13px", color: "#d1d1d1", letterSpacing: "0.05em" }}>마음이 힘들때 "관세음보살"을 불러보세요.</p>
+            {info.tagline && <p className="font-serif" style={{ fontSize: "13px", color: "#d1d1d1", letterSpacing: "0.05em" }}>{info.tagline}</p>}
           </div>
         </div>
       </div>

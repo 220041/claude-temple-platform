@@ -7,13 +7,12 @@ import { logoutAction } from "@/app/(frontend)/actions/memberAuth"
 import SiteLogo, { type SiteLogoInfo } from "@/components/site-logo"
 import type { ResolvedMenuLink } from "@/lib/menuLink"
 
-// 로그인/회원가입/통합검색 같은 UI 액션 링크 — 콘텐츠 내비게이션이 아니라
-// 메뉴 데이터 모델(MainMenu)에 넣지 않고 계속 코드에 둔다.
-function buildTopLinks(siteShortName?: string) {
+// 홈/통합검색은 UI 액션 링크라 코드에 두고, 그 사이의 바로가기 링크는
+// 사찰마다 달라 MainMenu.utilityLinks(관리자 설정)에서 받는다.
+function buildTopLinks(siteShortName: string | undefined, utilityLinks: { label: string; href: string }[]) {
   return [
     { label: siteShortName || "홈", href: "#hero" },
-    { label: "기도·법회", href: "/pages/prayer-info" },
-    { label: "오시는 길", href: "/pages/location" },
+    ...utilityLinks,
     { label: "통합검색", href: "/search" },
   ]
 }
@@ -22,15 +21,17 @@ export default function Header({
   memberNickname,
   logo,
   menuItems,
+  utilityLinks = [],
 }: {
   memberNickname?: string | null
   logo?: SiteLogoInfo & { siteShortName?: string }
   menuItems: ResolvedMenuLink[]
+  utilityLinks?: { label: string; href: string }[]
 }) {
   const [openMenu, setOpenMenu] = useState<number | null>(null)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<number | null>(null)
-  const topLinks = buildTopLinks(logo?.siteShortName)
+  const topLinks = buildTopLinks(logo?.siteShortName, utilityLinks)
 
   return (
     <header className="relative z-50 bg-white">

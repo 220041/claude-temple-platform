@@ -6,7 +6,7 @@ import SiteNotice from "@/components/site-notice"
 import Footer, { type FooterInfo, type FooterBrand } from "@/components/footer"
 import { getFooterSettings, getMainMenu, getSiteSettings } from "@/lib/payload"
 import { getCurrentMemberCached } from "@/lib/memberAuth"
-import { buildMenuTree } from "@/lib/menuLink"
+import { buildMenuTree, buildUtilityLinks } from "@/lib/menuLink"
 
 function resolveLogoUrl(logo: unknown): string | undefined {
   if (logo && typeof logo === "object" && "url" in logo && typeof logo.url === "string") {
@@ -28,6 +28,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
 
   const topMenuItems = buildMenuTree(mainMenu, 'top')
   const bottomMenuItems = buildMenuTree(mainMenu, 'bottom')
+  const utilityLinks = buildUtilityLinks(mainMenu)
 
   const footerInfo: Partial<FooterInfo> | undefined = footerSettings
     ? {
@@ -36,6 +37,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
         fax: footerSettings.fax ?? undefined,
         email: footerSettings.email ?? undefined,
         copyrightText: footerSettings.copyrightText ?? undefined,
+        tagline: footerSettings.tagline ?? undefined,
       }
     : undefined
 
@@ -58,7 +60,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
       {temporaryHome ? (
         <TemporaryHeader logo={logo} />
       ) : (
-        <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} menuItems={topMenuItems} />
+        <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} menuItems={topMenuItems} utilityLinks={utilityLinks} />
       )}
       <main className="flex-1">{children}</main>
       <Footer footerInfo={footerInfo} temporaryHome={temporaryHome} brand={brand} menuItems={bottomMenuItems} />

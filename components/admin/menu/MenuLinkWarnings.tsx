@@ -33,6 +33,7 @@ export async function MenuLinkWarnings() {
     flat.push(item)
     for (const child of (item as { children?: FlatItem[] }).children ?? []) flat.push(child)
   }
+  for (const link of ((menu as { utilityLinks?: FlatItem[] }).utilityLinks ?? [])) flat.push(link)
 
   const warnings: string[] = []
 

@@ -30,5 +30,11 @@ export const FooterSettings: GlobalConfig = {
     { name: 'fax', label: '팩스', type: 'text' },
     { name: 'email', label: '이메일', type: 'email' },
     { name: 'copyrightText', label: '저작권 문구', type: 'text' },
+    {
+      name: 'tagline',
+      label: '푸터 문구 (선택)',
+      type: 'text',
+      admin: { description: '푸터 맨 아래 오른쪽에 표시되는 한 줄 문구입니다. 비워 두면 표시되지 않습니다.' },
+    },
   ],
 }

@@ -1316,6 +1316,10 @@ export interface FooterSetting {
   fax?: string | null;
   email?: string | null;
   copyrightText?: string | null;
+  /**
+   * 푸터 맨 아래 오른쪽에 표시되는 한 줄 문구입니다. 비워 두면 표시되지 않습니다.
+   */
+  tagline?: string | null;
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1377,6 +1381,19 @@ export interface MainMenu {
               id?: string | null;
             }[]
           | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * 헤더 맨 위 줄에 "홈"과 "통합검색" 사이에 표시됩니다. 비공개(초안) 페이지에 연결하면 방문자 화면에서는 자동으로 숨겨집니다.
+   */
+  utilityLinks?:
+    | {
+        label: string;
+        linkType?: ('page' | 'board' | 'url') | null;
+        pageRef?: (number | null) | Page;
+        boardRef?: (number | null) | Board;
+        externalUrl?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1496,6 +1513,7 @@ export interface FooterSettingsSelect<T extends boolean = true> {
   fax?: T;
   email?: T;
   copyrightText?: T;
+  tagline?: T;
   _status?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1546,6 +1564,16 @@ export interface MainMenuSelect<T extends boolean = true> {
               externalUrl?: T;
               id?: T;
             };
+        id?: T;
+      };
+  utilityLinks?:
+    | T
+    | {
+        label?: T;
+        linkType?: T;
+        pageRef?: T;
+        boardRef?: T;
+        externalUrl?: T;
         id?: T;
       };
   _status?: T;

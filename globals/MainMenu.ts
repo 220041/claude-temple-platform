@@ -187,6 +187,49 @@ function menuItemFields(opts: { withChildren: boolean }): Field[] {
 }
 
 /**
+ * 헤더 최상단 유틸리티 바(홈 · … · 통합검색)에 끼워 넣는 바로가기 링크.
+ * 2단계 메뉴와 달리 평면 목록이며 "새 페이지 만들기"는 제공하지 않는다
+ * (연결 대상은 이미 있는 페이지/게시판/외부 URL).
+ */
+function utilityLinkFields(): Field[] {
+  return [
+    { name: 'label', label: '링크 이름', type: 'text', required: true },
+    {
+      name: 'linkType',
+      label: '연결 대상',
+      type: 'select',
+      defaultValue: 'page',
+      options: [
+        { label: '기존 페이지 연결', value: 'page' },
+        { label: '게시판 연결', value: 'board' },
+        { label: '외부 URL 연결', value: 'url' },
+      ],
+    },
+    {
+      name: 'pageRef',
+      label: '연결할 페이지',
+      type: 'relationship',
+      relationTo: 'pages',
+      admin: { condition: (_, siblingData) => siblingData?.linkType === 'page' },
+    },
+    {
+      name: 'boardRef',
+      label: '연결할 게시판',
+      type: 'relationship',
+      relationTo: 'boards',
+      admin: { condition: (_, siblingData) => siblingData?.linkType === 'board' },
+    },
+    {
+      name: 'externalUrl',
+      label: '외부 URL',
+      type: 'text',
+      validate: validateExternalUrl,
+      admin: { condition: (_, siblingData) => siblingData?.linkType === 'url' },
+    },
+  ]
+}
+
+/**
  * 상단·모바일·하단 메뉴가 공유하는 단일 원본. header.tsx/footer.tsx가
  * lib/menuLink.ts의 buildMenuTree()로 각각 showInTop/showInBottom을
  * 필터링해서 쓴다. 구조 변경은 최고관리자만 가능하다(플랫폼 전환
@@ -224,6 +267,17 @@ export const MainMenu: GlobalConfig = {
       label: '메뉴 항목 (1단계)',
       type: 'array',
       fields: menuItemFields({ withChildren: true }),
+    },
+    {
+      name: 'utilityLinks',
+      label: '상단 바로가기 링크 (홈 옆, 선택)',
+      type: 'array',
+      maxRows: 4,
+      admin: {
+        description:
+          '헤더 맨 위 줄에 "홈"과 "통합검색" 사이에 표시됩니다. 비공개(초안) 페이지에 연결하면 방문자 화면에서는 자동으로 숨겨집니다.',
+      },
+      fields: utilityLinkFields(),
     },
   ],
 }

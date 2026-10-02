@@ -10,7 +10,9 @@ export type ResolvedMenuLink = {
   children: { label: string; href: string | null }[]
 }
 
-function resolveHref(item: RawMenuItem | RawMenuChild): string | null {
+type LinkTarget = Pick<RawMenuItem | RawMenuChild, 'linkType' | 'pageRef' | 'boardRef' | 'externalUrl'>
+
+function resolveHref(item: LinkTarget): string | null {
   switch (item.linkType) {
     case 'page': {
       const ref = item.pageRef
@@ -27,6 +29,19 @@ function resolveHref(item: RawMenuItem | RawMenuChild): string | null {
     default:
       return null
   }
+}
+
+/**
+ * 헤더 유틸리티 바 링크. 대상 페이지가 비공개라 해석에 실패한 항목(href
+ * 없음)은 죽은 링크가 되지 않도록 제외한다.
+ */
+export function buildUtilityLinks(menu: MainMenu | null | undefined): { label: string; href: string }[] {
+  const links: { label: string; href: string }[] = []
+  for (const link of menu?.utilityLinks ?? []) {
+    const href = resolveHref(link)
+    if (href) links.push({ label: link.label, href })
+  }
+  return links
 }
 
 /**
