@@ -46,7 +46,7 @@ export default function HeroSlider({ slides }: { slides: HeroSlide[] }) {
     <section
       className="relative w-full overflow-hidden"
       style={{ height: "clamp(380px, 54vw, 620px)" }}
-      aria-label="봉림사 메인 슬라이더"
+      aria-label="메인 슬라이더"
     >
       {/* 슬라이드 */}
       {slides.map((slide, i) => (

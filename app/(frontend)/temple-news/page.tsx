@@ -15,13 +15,14 @@ export async function generateMetadata() {
 }
 
 export default async function TempleNewsPage() {
-  const posts = await getTempleNewsPosts(50)
+  const [posts, settings] = await Promise.all([getTempleNewsPosts(50), getSiteSettings()])
+  const shortName = settings?.installed ? settings.siteShortName || settings.siteName || "사찰" : "사찰"
 
   return (
     <SiteShell>
       <div style={{ maxWidth: "760px", margin: "0 auto", padding: "64px 24px" }}>
         <h1 className="font-serif" style={{ fontSize: "28px", fontWeight: 700, color: "#161410", marginBottom: "24px" }}>
-          봉림사 소식
+          {shortName} 소식
         </h1>
 
         {posts.length === 0 ? (

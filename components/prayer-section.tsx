@@ -24,13 +24,12 @@ export default function PrayerSection({ cards }: { cards?: PrayerCard[] }) {
     <section id="prayer" aria-label="기도·법회" style={{ background: "#f5f4f2", borderBottom: "1px solid #e8e6e1" }}>
       <div className="max-w-[1280px] mx-auto px-8 lg:px-16" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
         <div className="mb-10 flex flex-col items-center text-center">
-          <Image src="/images/logo-mascot.png" alt="봉림사 마스코트" width={56} height={56} />
-          <p className="mt-3 font-serif text-sm leading-7 text-[#888078]">
+          <p className="font-serif text-sm leading-7 text-[#888078]">
             "일체중생이 행복하기를" 간절한 마음으로 기도합니다.
           </p>
         </div>
         <h2 className="mb-[10px] font-serif" style={{ fontSize: "22px", fontWeight: 700, color: "#161410", letterSpacing: "-0.01em" }}>
-          봉림사 이야기
+          기도 · 법회
         </h2>
 
         {/* 2번 스타일 3단 카드 — 번호워터마크 대신 상단 사진 */}

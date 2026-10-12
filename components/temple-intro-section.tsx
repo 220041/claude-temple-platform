@@ -34,12 +34,12 @@ export default function TempleIntroSection({
 
   return (
     <section aria-label="사찰 주요 소개" style={{ borderBottom: "1px solid #e8e6e1", background: "#ffffff" }}>
-      {/* 봉림사 소개 — 2번 스타일: 이미지-좌측 / 텍스트-우측, 풀블리드 스플릿 */}
+      {/* 사찰 소개 — 2번 스타일: 이미지-좌측 / 텍스트-우측, 풀블리드 스플릿 */}
       {intro && <div className="grid lg:grid-cols-2" style={{ minHeight: "520px" }}>
         <div className="relative" style={{ minHeight: "320px" }}>
           <Image
             src={intro.image}
-            alt="봉림사 대웅전과 단청 처마"
+            alt={intro.title}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"
@@ -48,7 +48,7 @@ export default function TempleIntroSection({
         <div className="flex items-center" style={{ padding: "64px 48px" }}>
           <div style={{ maxWidth: "420px" }}>
             <p className="font-sans" style={{ fontSize: "12px", letterSpacing: "0.3em", color: "#888078", marginBottom: "12px" }}>
-              01 · 봉림사 소개
+              01 · 사찰 소개
             </p>
             <h2
               className="font-serif"
@@ -67,7 +67,7 @@ export default function TempleIntroSection({
               onMouseEnter={e => { e.currentTarget.style.color = "#cc5030" }}
               onMouseLeave={e => { e.currentTarget.style.color = "#272520" }}
             >
-              <span style={{ borderBottom: "1px solid currentColor", paddingBottom: "2px" }}>봉림사 역사 자세히 보기</span>
+              <span style={{ borderBottom: "1px solid currentColor", paddingBottom: "2px" }}>자세히 보기</span>
               <span>→</span>
             </Link>
           </div>
@@ -109,7 +109,7 @@ export default function TempleIntroSection({
         <div className="relative order-1 lg:order-2" style={{ minHeight: "320px" }}>
           <Image
             src={monk.image}
-            alt="봉림사 스님 예불 장면"
+            alt={monk.title}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 50vw"

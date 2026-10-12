@@ -58,10 +58,10 @@ export default function LocationSection({ location }: { location?: LocationInfo 
   if (lat === undefined || lng === undefined) return null
 
   return (
-    <section aria-label="봉림사 찾아오는길" className="border-b border-[#e8e6e1] bg-white">
+    <section aria-label="찾아오는 길" className="border-b border-[#e8e6e1] bg-white">
       <div className="mx-auto max-w-[1280px] px-8 lg:px-16" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
         <h2 className="mb-[10px] font-serif" style={{ fontSize: "22px", fontWeight: 700, color: "#161410", letterSpacing: "-0.01em" }}>
-          봉림사 찾아오는길
+          찾아오는 길
         </h2>
         <div ref={mapRef} className="mt-6 h-[360px] w-full lg:h-[440px]" style={{ background: "#f5f4f2" }} />
         <a
