@@ -178,6 +178,7 @@ function menuItemFields(opts: { withChildren: boolean }): Field[] {
     fields.push({
       name: 'children',
       label: '하위 메뉴 (2단계)',
+      labels: { singular: '하위 메뉴', plural: '하위 메뉴' },
       type: 'array',
       fields: menuItemFields({ withChildren: false }),
     })
@@ -266,12 +267,14 @@ export const MainMenu: GlobalConfig = {
     {
       name: 'items',
       label: '메뉴 항목 (1단계)',
+      labels: { singular: '메뉴 항목', plural: '메뉴 항목' },
       type: 'array',
       fields: menuItemFields({ withChildren: true }),
     },
     {
       name: 'utilityLinks',
       label: '상단 바로가기 링크 (홈 옆, 선택)',
+      labels: { singular: '바로가기 링크', plural: '바로가기 링크' },
       type: 'array',
       maxRows: 4,
       admin: {

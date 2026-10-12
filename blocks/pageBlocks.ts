@@ -13,6 +13,7 @@ export const HeadingBlock: Block = {
     { name: 'text', label: '내용', type: 'text', required: true },
     {
       name: 'level',
+      label: '크기',
       type: 'select',
       defaultValue: 'h2',
       options: [
@@ -33,7 +34,14 @@ export const PhotoBlock: Block = {
   slug: 'photo',
   labels: { singular: '사진', plural: '사진' },
   fields: [
-    { name: 'image', label: '사진', type: 'upload', relationTo: 'media-public', required: true },
+    {
+      name: 'image',
+      label: '사진',
+      type: 'upload',
+      relationTo: 'media-public',
+      required: true,
+      admin: { description: '사진이 필요합니다. 사진이 없으면 이 블록 오른쪽의 "…" 메뉴에서 블록을 삭제한 뒤 게시하세요.' },
+    },
     { name: 'caption', label: '설명', type: 'text' },
   ],
 }
@@ -45,6 +53,7 @@ export const GalleryBlock: Block = {
     {
       name: 'images',
       label: '사진 목록',
+      labels: { singular: '사진', plural: '사진' },
       type: 'array',
       minRows: 1,
       fields: [
@@ -62,6 +71,7 @@ export const InfoTableBlock: Block = {
     {
       name: 'rows',
       label: '행',
+      labels: { singular: '행', plural: '행' },
       type: 'array',
       minRows: 1,
       fields: [

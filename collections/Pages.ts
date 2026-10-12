@@ -74,7 +74,10 @@ export const Pages: CollectionConfig = {
       required: true,
       unique: true,
       index: true,
-      admin: { description: 'URL 경로: /pages/이 값' },
+      // 새 페이지는 임의의 주소가 미리 채워진다 — 운영자가 영문 주소를 직접 지어야 하는 부담을 줄이고,
+      // 원하면 의미 있는 영문 이름(예: location)으로 바꿀 수 있다.
+      defaultValue: () => `page-${Math.random().toString(36).slice(2, 8)}`,
+      admin: { description: '방문자가 보는 주소입니다(/pages/이 값). 영문 소문자·숫자·하이픈을 권장하며, 저장 후 바꾸면 옛 주소는 새 주소로 자동 안내됩니다.' },
       validate: async (value: string | null | undefined, { req, id }: { req: PayloadRequest; id?: number | string }) => {
         if (typeof value !== 'string' || !value) return '주소를 입력하세요.'
         if (isReservedPath(value)) return `"${value}"는 시스템이 사용하는 예약된 경로라 페이지 주소로 쓸 수 없습니다.`
@@ -117,6 +120,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'blocks',
       label: '내용 구성',
+      labels: { singular: '블록', plural: '블록' },
       type: 'blocks',
       blocks: pageBlocks,
     },
