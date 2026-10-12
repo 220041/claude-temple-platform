@@ -1,5 +1,6 @@
 import type { Payload } from 'payload'
 import { put, list, del } from '@vercel/blob'
+import { encryptBackup } from './backup-crypto'
 
 const RETENTION_DAYS = 28
 const BACKUP_PREFIX = 'backups/'
@@ -32,7 +33,8 @@ export function filterExpiredBackups(
 }
 
 export type BackupSummary = {
-  backupUrl: string
+  /** Blob 내 경로만 노출한다 — 전체 URL은 로그·메일에 남기지 않는다(Vercel 대시보드 Blob 목록에서 찾을 수 있다). */
+  backupPath: string
   collectionCounts: Record<string, number>
   deletedOldBackups: string[]
 }
@@ -67,14 +69,15 @@ export async function buildBackupSnapshot(payload: Payload) {
 
 export async function runWeeklyBackup(payload: Payload): Promise<BackupSummary> {
   const { snapshot, collectionCounts } = await buildBackupSnapshot(payload)
-  const body = JSON.stringify(snapshot, null, 2)
+  // 키가 없으면 평문으로 올리지 않고 실패시킨다(공개 URL이라 평문 업로드는 유출과 같다).
+  const body = encryptBackup(JSON.stringify(snapshot, null, 2), process.env.BACKUP_ENCRYPTION_KEY)
 
   const token = process.env.BLOB_READ_WRITE_TOKEN_PRIVATE
   if (!token) throw new Error('BLOB_READ_WRITE_TOKEN_PRIVATE이 설정되지 않았습니다.')
 
-  const filename = `${BACKUP_PREFIX}backup-${new Date().toISOString().slice(0, 10)}.json`
+  const filename = `${BACKUP_PREFIX}backup-${new Date().toISOString().slice(0, 10)}.enc.json`
   const uploaded = await put(filename, body, {
-    access: 'public', // 이 저장소의 Blob 플러그인은 access:'public'만 지원한다(오늘 세션에서 확인) — 보호는 추측 불가능한 랜덤 접미사 + 어디에도 링크하지 않는 것으로 한다.
+    access: 'public', // 이 저장소의 Blob 플러그인은 access:'public'만 지원한다(오늘 세션에서 확인) — 파일은 위에서 암호화되고, URL은 응답·메일·로그에 남기지 않는다.
     addRandomSuffix: true,
     contentType: 'application/json',
     token,
@@ -87,7 +90,7 @@ export async function runWeeklyBackup(payload: Payload): Promise<BackupSummary> 
   }
 
   return {
-    backupUrl: uploaded.url,
+    backupPath: uploaded.pathname,
     collectionCounts,
     deletedOldBackups: expired.map((b) => b.pathname),
   }

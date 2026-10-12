@@ -1,11 +1,13 @@
 import fs from 'node:fs'
 import config from '../payload.config'
 import { getPayload } from 'payload'
+import { decryptBackup, isEncryptedBackup } from '../lib/backup-crypto'
 
 /**
  * 주간 백업 JSON(lib/backup.ts)을 **빈 새 DB**에 복구하는 수동 스크립트.
  *
- *   BACKUP_FILE=backup.json pnpm payload run scripts/restore-from-backup.ts
+ *   BACKUP_FILE=backup.enc.json BACKUP_ENCRYPTION_KEY=... pnpm payload run scripts/restore-from-backup.ts
+ *   (암호화되지 않은 예전 백업이면 BACKUP_ENCRYPTION_KEY는 필요 없다)
  *
  * - 마이그레이션이 끝난 비어 있는 DB에서만 실행한다(이미 데이터가 있으면 중단).
  * - id를 그대로 보존해 관계(게시물→게시판, 메뉴→페이지, 이미지 등)가 끊기지 않도록
@@ -45,7 +47,11 @@ const isInternal = (slug: string) => slug.startsWith('payload-')
 
 const file = process.env.BACKUP_FILE
 if (!file) throw new Error('BACKUP_FILE 환경변수에 백업 JSON 경로를 지정하세요.')
-const snapshot = JSON.parse(fs.readFileSync(file, 'utf8')) as {
+// 암호화된 백업(*.enc.json)은 BACKUP_ENCRYPTION_KEY로 복호화하고, 예전 평문 백업도 그대로 읽는다.
+const raw = JSON.parse(fs.readFileSync(file, 'utf8')) as unknown
+const snapshot = (
+  isEncryptedBackup(raw) ? JSON.parse(decryptBackup(raw, process.env.BACKUP_ENCRYPTION_KEY)) : raw
+) as {
   collections: Record<string, Record<string, unknown>[]>
   globals: Record<string, Record<string, unknown>>
 }

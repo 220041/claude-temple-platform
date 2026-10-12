@@ -41,7 +41,7 @@ export async function GET(request: Request) {
         to: recipients,
         subject: '[백업 완료] 주간 데이터 백업이 정상적으로 끝났습니다',
         html: `<p>생성 시각: ${new Date().toISOString()}</p>
-<p>백업 파일: <a href="${summary.backupUrl}">${summary.backupUrl}</a></p>
+<p>백업 파일(암호화됨): ${summary.backupPath} — Vercel 대시보드 Storage의 Blob 목록에서 내려받을 수 있습니다.</p>
 <p>컬렉션별 문서 수: ${JSON.stringify(summary.collectionCounts)}</p>
 <p>4주 지나 정리된 이전 백업: ${summary.deletedOldBackups.length}건</p>`,
       })
