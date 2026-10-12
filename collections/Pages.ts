@@ -100,10 +100,11 @@ export const Pages: CollectionConfig = {
     {
       name: 'slugHistory',
       label: '이전 주소 기록',
+      labels: { singular: '이전 주소', plural: '이전 주소' },
       type: 'array',
-      admin: { readOnly: true, description: '이전 주소 자동 기록(직접 수정 불가) — 옛 링크를 새 주소로 안내하는 데 쓰인다.' },
+      admin: { readOnly: true, condition: (data) => Array.isArray(data?.slugHistory) && data.slugHistory.length > 0, description: '이전 주소 자동 기록(직접 수정 불가) — 옛 링크를 새 주소로 안내하는 데 쓰인다.' },
       fields: [
-        { name: 'slug', type: 'text', required: true },
+        { name: 'slug', label: '이전 주소', type: 'text', required: true },
         { name: 'changedAt', label: '변경일', type: 'date' },
       ],
     },

@@ -90,7 +90,7 @@ export const MediaPrivate: CollectionConfig = {
     ],
   },
   fields: [
-    { name: 'alt', label: '대체 텍스트', type: 'text' },
+    { name: 'alt', label: '대체 텍스트', type: 'text', admin: { description: '사진 내용을 한 줄로 설명하는 글입니다. 비워 두어도 됩니다.' } },
     { name: 'uploadedBy', label: '올린 회원', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
     // 아래 두 필드는 이 파일이 쓰인 게시물의 공개 상태를 복제한 값이며
     // hooks/syncPostImageVisibility.ts가 Posts 저장 시 채운다. 어느 게시물

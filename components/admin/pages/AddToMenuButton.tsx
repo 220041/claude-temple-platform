@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useDocumentInfo, useFormModified } from '@payloadcms/ui'
+import { useAuth, useDocumentInfo, useField, useFormModified } from '@payloadcms/ui'
 
 type Status = { kind: 'success' } | { kind: 'error'; message: string } | null
 
@@ -16,8 +16,19 @@ type Status = { kind: 'success' } | { kind: 'error'; message: string } | null
 export function AddToMenuButton() {
   const { id } = useDocumentInfo()
   const modified = useFormModified()
+  const { user } = useAuth()
+  const { value: slug } = useField<string>({ path: 'slug' })
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<Status>(null)
+
+  // 메뉴 구조는 최고관리자만 바꿀 수 있다 — 편집자에게는 눌러 보고 실패하는 버튼 대신 다음에 할 일을 안내한다.
+  if (id !== undefined && (user as { role?: string } | null)?.role !== 'super-admin') {
+    return (
+      <p style={{ margin: '0 0 16px', fontSize: '13px', lineHeight: 1.7, color: 'var(--theme-elevation-500, #888078)' }}>
+        이 페이지를 홈페이지 메뉴에 넣는 일은 최고관리자만 할 수 있습니다. 최고관리자에게 &quot;/pages/{slug}&quot; 페이지를 메뉴에 넣어 달라고 요청해 주세요.
+      </p>
+    )
+  }
 
   if (id === undefined) {
     return (

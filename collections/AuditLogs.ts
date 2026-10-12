@@ -28,6 +28,7 @@ export const AuditLogs: CollectionConfig = {
     { name: 'actor', label: '처리한 관리자', type: 'relationship', relationTo: 'admins', required: true },
     {
       name: 'action',
+      label: '처리 종류',
       type: 'select',
       required: true,
       options: [

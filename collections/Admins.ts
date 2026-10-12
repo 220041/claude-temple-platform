@@ -59,11 +59,13 @@ export const Admins: CollectionConfig = {
   fields: [
     {
       name: 'name',
+      label: '이름',
       type: 'text',
       required: true,
     },
     {
       name: 'role',
+      label: '역할',
       type: 'select',
       required: true,
       defaultValue: 'editor',

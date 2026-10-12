@@ -76,32 +76,6 @@ export const HomePage: GlobalConfig = {
       defaultValue: true,
     },
     {
-      name: 'sectionOrder',
-      label: '섹션 순서',
-      labels: { singular: '섹션', plural: '섹션' },
-      type: 'array',
-      minRows: 3,
-      maxRows: 3,
-      defaultValue: [{ section: 'templeIntro' }, { section: 'prayer' }, { section: 'location' }],
-      validate: validateSectionOrder,
-      admin: {
-        description: '메인 슬라이드 아래 섹션이 표시되는 순서입니다. 각 행을 드래그해 순서를 바꾸세요(표시/숨김은 위 체크박스로 따로 설정합니다).',
-      },
-      fields: [
-        {
-          name: 'section',
-          label: '섹션',
-          type: 'select',
-          required: true,
-          options: [
-            { label: '사찰·주지스님 소개', value: 'templeIntro' },
-            { label: '기도·법회 카드', value: 'prayer' },
-            { label: '찾아오는 길', value: 'location' },
-          ],
-        },
-      ],
-    },
-    {
       name: 'mainSlides',
       label: '메인 슬라이드',
       labels: { singular: '슬라이드', plural: '슬라이드' },
@@ -174,6 +148,32 @@ export const HomePage: GlobalConfig = {
             { label: '달력', value: 'calendar' },
             { label: '하트', value: 'heart' },
             { label: '사람들', value: 'users' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'sectionOrder',
+      label: '섹션 순서',
+      labels: { singular: '섹션', plural: '섹션' },
+      type: 'array',
+      minRows: 3,
+      maxRows: 3,
+      defaultValue: [{ section: 'templeIntro' }, { section: 'prayer' }, { section: 'location' }],
+      validate: validateSectionOrder,
+      admin: {
+        description: '메인 슬라이드 아래 섹션이 표시되는 순서입니다. 각 행을 드래그해 순서를 바꾸세요(표시/숨김은 위 체크박스로 따로 설정합니다).',
+      },
+      fields: [
+        {
+          name: 'section',
+          label: '섹션',
+          type: 'select',
+          required: true,
+          options: [
+            { label: '사찰·주지스님 소개', value: 'templeIntro' },
+            { label: '기도·법회 카드', value: 'prayer' },
+            { label: '찾아오는 길', value: 'location' },
           ],
         },
       ],

@@ -1,6 +1,7 @@
 import type { Access, CollectionConfig, FieldAccess, Where } from 'payload'
 
 import { adminOnlyField } from '../lib/access'
+import { pathForBoardKey } from '../lib/boardPaths'
 import { auditPostChanges, auditPostPermanentDelete, cascadeDeletePostRelations } from './hooks/auditPostChanges'
 import { setPostAuthor } from './hooks/setPostAuthor'
 import { syncPostImageVisibility } from './hooks/syncPostImageVisibility'
@@ -43,6 +44,15 @@ export const Posts: CollectionConfig = {
     group: '게시판',
     useAsTitle: 'title',
     defaultColumns: ['title', 'board', 'status', 'pinned', 'reportCount', 'updatedAt'],
+    // 저장한 글이 공개 화면에서 어떻게 보이는지 바로 열어 볼 수 있는 링크(게시 전이면 공개 화면에는 아직 없다).
+    preview: async (doc, { req }) => {
+      const base = process.env.NEXT_PUBLIC_SERVER_URL ?? ''
+      const boardRef = (doc as { board?: unknown }).board
+      const boardId = boardRef && typeof boardRef === 'object' ? (boardRef as { id?: number }).id : (boardRef as number | undefined)
+      if (!boardId || !doc?.id) return null
+      const board = await req.payload.findByID({ collection: 'boards', id: boardId, depth: 0, overrideAccess: true, req })
+      return `${base}${pathForBoardKey(board.boardKey)}/${doc.id}`
+    },
   },
   access: {
     // guide.md 9.3: 비밀글도 목록에는 "비밀글입니다"로 마스킹돼 노출돼야
@@ -123,9 +133,48 @@ export const Posts: CollectionConfig = {
     afterDelete: [auditPostPermanentDelete],
   },
   fields: [
-    { name: 'board', label: '게시판', type: 'relationship', relationTo: 'boards', required: true, index: true },
+    {
+      name: 'board',
+      label: '게시판',
+      type: 'relationship',
+      relationTo: 'boards',
+      required: true,
+      index: true,
+      // 새 글을 쓸 때 가장 흔한 경우인 공지형 게시판을 미리 골라 둔다(대시보드 "공지 쓰기"가 곧바로 쓸 수 있게).
+      defaultValue: async ({ req }: { req: { payload: { find: (a: unknown) => Promise<{ docs: { id: number }[] }> } } }) => {
+        try {
+          const r = await req.payload.find({ collection: 'boards', where: { boardType: { equals: 'notice' } }, sort: 'createdAt', limit: 1, depth: 0, overrideAccess: true })
+          return r.docs[0]?.id
+        } catch {
+          return undefined
+        }
+      },
+    },
     { name: 'title', label: '제목', type: 'text', required: true, access: { read: secretFieldReadAccess } },
     { name: 'content', label: '내용', type: 'textarea', required: true, access: { read: secretFieldReadAccess } },
+    // 회원이 쓴 글일 때만, 본문 바로 아래에 승인 상태를 보여 준다(접힌 영역에 숨어 있으면 승인 작업을 찾기 어렵다).
+    {
+      name: 'moderationStatus',
+      label: '승인 상태',
+      type: 'select',
+      defaultValue: 'approved',
+      options: [
+        { label: '승인됨', value: 'approved' },
+        { label: '승인 대기', value: 'pending' },
+        { label: '반려됨', value: 'rejected' },
+      ],
+      admin: {
+        condition: (data) => data?.authorType === 'member',
+        description: '회원이 쓴 글입니다. "승인됨"으로 바꾸고 저장하면 공개 게시판에 나타나고, "반려됨"이면 공개되지 않습니다. 반려할 때는 아래에 사유를 남겨 주세요.',
+      },
+    },
+    {
+      name: 'moderationReason',
+      label: '반려·조치 사유',
+      type: 'text',
+      access: { create: adminOnlyField, update: adminOnlyField },
+      admin: { condition: (data) => data?.authorType === 'member' },
+    },
     // 관리자 작성 게시물의 이미지는 Public Blob(media-public)에, 회원
     // 작성 게시물의 이미지는 Private Blob(media-private)에 올라간다
     // (guide.md 10.1). 업로드 시점에 어느 컬렉션에 저장했는지에 따라
@@ -169,7 +218,7 @@ export const Posts: CollectionConfig = {
         },
         { name: 'pinned', label: '상단 고정', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
         { name: 'archived', label: '보관(게시 종료)', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
-        { name: 'expiresAt', label: '게시 종료일', type: 'date', access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'expiresAt', label: '게시 종료일', type: 'date', admin: { date: { pickerAppearance: 'dayOnly', displayFormat: 'yyyy-MM-dd' } }, access: { create: adminOnlyField, update: adminOnlyField } },
       ],
     },
     {
@@ -200,24 +249,8 @@ export const Posts: CollectionConfig = {
         },
         { name: 'adminAuthor', label: '작성 관리자', type: 'relationship', relationTo: 'admins' },
         { name: 'memberAuthor', label: '작성 회원', type: 'relationship', relationTo: 'members' },
-        {
-          name: 'moderationStatus',
-          label: '승인 상태',
-          type: 'select',
-          defaultValue: 'approved',
-          options: [
-            { label: '승인됨', value: 'approved' },
-            { label: '승인 대기', value: 'pending' },
-            { label: '반려됨', value: 'rejected' },
-          ],
-          admin: {
-            description:
-              '회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.',
-          },
-        },
         { name: 'viewCount', label: '조회수', type: 'number', defaultValue: 0, admin: { readOnly: true }, access: { create: adminOnlyField, update: adminOnlyField } },
-        { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true }, access: { create: adminOnlyField, update: adminOnlyField } },
-        { name: 'moderationReason', label: '관리자 조치 사유', type: 'text', access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true, date: { displayFormat: 'yyyy-MM-dd HH:mm' } }, access: { create: adminOnlyField, update: adminOnlyField } },
         {
           name: 'reportCount',
           label: '누적 신고 수',

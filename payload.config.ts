@@ -37,7 +37,9 @@ export default buildConfig({
     fallbackLanguage: 'ko',
     translations: {
       ko: {
+        general: { selectValue: '선택하세요' },
         version: {
+          publishChanges: '게시하기',
           previouslyPublished: '이전에 게시됨',
           draftHasPublishedVersion: '게시된 버전이 있는 초안',
           unpublished: '게시 안 됨',

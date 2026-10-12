@@ -12,7 +12,7 @@ import { getPayload } from 'payload'
  *
  * - 설치가 안 된(site-settings.installed=false) 빈 DB에서만 실행한다. 이미 설치된 DB(실제 사찰)는 건드리지 않는다.
  * - 사진은 sharp로 만든 단순한 그림(산·소나무·기와지붕)이며 media-public(Blob)에 올라간다.
- * - 시험용 계정(최고관리자·편집자·회원 2명)을 만들고 비밀번호는 repo 루트의 demo-accounts.local.txt(.gitignore 대상)에만 적는다.
+ * - 시험용 계정(최고관리자·편집자·회원 2명)을 만들고 비밀번호는 repo 루트의 demo-accounts.local.txt(.gitignore 대상, DEMO_ACCOUNTS_FILE로 경로 변경 가능)에만 적는다.
  */
 if (process.env.DEMO_SEED_CONFIRM !== '청솔사') {
   throw new Error('안전장치: DEMO_SEED_CONFIRM=청솔사 를 지정해야 실행됩니다. (빈 DB 전용)')
@@ -226,7 +226,7 @@ await payload.updateGlobal({ slug: 'site-settings', overrideAccess: true, data: 
   siteDescription: '한라산 기슭의 푸른 솔 아래 자리한 열린 도량, 청솔사입니다.', siteKeywords: '청솔사, 사찰, 법회, 템플스테이',
   logoTagline: '푸른 솔 아래 깃든 사찰', emailFromName: '[청솔사]', location: { lat: 33.3617, lng: 126.5292, mapLabel: '청솔사', zoomLevel: 4 } } as never })
 
-const file = path.resolve(process.cwd(), 'demo-accounts.local.txt')
+const file = path.resolve(process.env.DEMO_ACCOUNTS_FILE ?? path.resolve(process.cwd(), 'demo-accounts.local.txt'))
 fs.writeFileSync(file, ['# 데모 사찰(청솔사) 시험용 계정 — 이 파일은 git에 올리지 않습니다.', '', ...Object.values(accounts).map((a) => `${a.role}\n  이메일: ${a.email}\n  비밀번호: ${a.password}\n`)].join('\n'))
 log(`데모 사찰 준비 완료. 계정 정보: ${file}`)
 process.exit(0)

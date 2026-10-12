@@ -43,6 +43,7 @@ export const MediaPublic: CollectionConfig = {
       name: 'alt',
       label: '대체 텍스트',
       type: 'text',
+      admin: { description: '사진 내용을 한 줄로 설명하는 글입니다(예: "대웅전 앞 가을 풍경"). 화면 낭독기와 검색에 쓰이며, 비워 두어도 됩니다.' },
     },
   ],
 }

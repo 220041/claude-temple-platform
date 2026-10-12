@@ -134,7 +134,7 @@ function menuItemFields(opts: { withChildren: boolean }): Field[] {
         { label: '외부 URL 연결', value: 'url' },
       ],
       admin: {
-        description: '"새 페이지 만들기"는 저장되지 않는 화면 전용 선택지입니다 — 클릭 시 초안 페이지를 만들고 자동으로 "기존 페이지 연결"로 바뀝니다.',
+        description: '"새 페이지 만들기"를 고르면 빈 초안 페이지가 만들어지고, 선택이 자동으로 "기존 페이지 연결"로 바뀝니다.',
       },
     },
     {

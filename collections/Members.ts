@@ -85,6 +85,7 @@ export const Members: CollectionConfig = {
     { name: 'realName', label: '실명', type: 'text', required: true },
     {
       name: 'status',
+      label: '상태',
       type: 'select',
       defaultValue: 'pending',
       options: [

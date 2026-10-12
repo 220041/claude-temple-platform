@@ -91,6 +91,7 @@ export const Reports: CollectionConfig = {
     },
     {
       name: 'reason',
+      label: '신고 사유',
       type: 'select',
       required: true,
       options: [

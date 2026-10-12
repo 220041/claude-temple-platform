@@ -9,6 +9,8 @@ import type { Block } from 'payload'
 export const HeadingBlock: Block = {
   slug: 'heading',
   labels: { singular: '제목', plural: '제목' },
+  imageURL: '/admin-blocks/heading.svg',
+  imageAltText: '제목 블록 미리보기',
   fields: [
     { name: 'text', label: '내용', type: 'text', required: true },
     {
@@ -27,12 +29,16 @@ export const HeadingBlock: Block = {
 export const ParagraphBlock: Block = {
   slug: 'paragraph',
   labels: { singular: '문단', plural: '문단' },
+  imageURL: '/admin-blocks/paragraph.svg',
+  imageAltText: '문단 블록 미리보기',
   fields: [{ name: 'text', label: '내용', type: 'textarea', required: true }],
 }
 
 export const PhotoBlock: Block = {
   slug: 'photo',
   labels: { singular: '사진', plural: '사진' },
+  imageURL: '/admin-blocks/photo.svg',
+  imageAltText: '사진 블록 미리보기',
   fields: [
     {
       name: 'image',
@@ -49,6 +55,8 @@ export const PhotoBlock: Block = {
 export const GalleryBlock: Block = {
   slug: 'gallery',
   labels: { singular: '갤러리', plural: '갤러리' },
+  imageURL: '/admin-blocks/gallery.svg',
+  imageAltText: '갤러리 블록 미리보기',
   fields: [
     {
       name: 'images',
@@ -67,6 +75,8 @@ export const GalleryBlock: Block = {
 export const InfoTableBlock: Block = {
   slug: 'infoTable',
   labels: { singular: '안내표', plural: '안내표' },
+  imageURL: '/admin-blocks/infotable.svg',
+  imageAltText: '안내표 블록 미리보기',
   fields: [
     {
       name: 'rows',
@@ -75,7 +85,7 @@ export const InfoTableBlock: Block = {
       type: 'array',
       minRows: 1,
       fields: [
-        { name: 'label', type: 'text', required: true },
+        { name: 'label', label: '항목', type: 'text', required: true },
         { name: 'value', label: '내용', type: 'text', required: true },
       ],
     },
