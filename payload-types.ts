@@ -340,6 +340,9 @@ export interface Page {
             blockType: 'paragraph';
           }
         | {
+            /**
+             * 사진이 필요합니다. 사진이 없으면 이 블록 오른쪽의 "…" 메뉴에서 블록을 삭제한 뒤 게시하세요.
+             */
             image: number | MediaPublic;
             caption?: string | null;
             id?: string | null;
@@ -414,21 +417,6 @@ export interface Post {
   board: number | Board;
   title: string;
   content: string;
-  /**
-   * 글을 쓰는 사람에 따라 자동으로 정해집니다.
-   */
-  authorType?: ('admin' | 'member') | null;
-  adminAuthor?: (number | null) | Admin;
-  memberAuthor?: (number | null) | Member;
-  /**
-   * 회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.
-   */
-  moderationStatus?: ('approved' | 'pending' | 'rejected') | null;
-  /**
-   * 비밀글은 게시판 설정에서 비밀글을 허용한 경우에만 쓸 수 있습니다.
-   */
-  visibility?: ('public' | 'secret') | null;
-  commentPolicy?: ('boardDefault' | 'allowed' | 'blocked') | null;
   featuredImage?:
     | ({
         relationTo: 'media-public';
@@ -452,13 +440,28 @@ export interface Post {
         id?: string | null;
       }[]
     | null;
+  /**
+   * 비밀글은 게시판 설정에서 비밀글을 허용한 경우에만 쓸 수 있습니다.
+   */
+  visibility?: ('public' | 'secret') | null;
+  commentPolicy?: ('boardDefault' | 'allowed' | 'blocked') | null;
   pinned?: boolean | null;
-  viewCount?: number | null;
+  archived?: boolean | null;
+  expiresAt?: string | null;
   showInTempleNews?: boolean | null;
   templeNewsFeatured?: boolean | null;
   templeNewsPinned?: boolean | null;
-  archived?: boolean | null;
-  expiresAt?: string | null;
+  /**
+   * 글을 쓰는 사람에 따라 자동으로 정해집니다.
+   */
+  authorType?: ('admin' | 'member') | null;
+  adminAuthor?: (number | null) | Admin;
+  memberAuthor?: (number | null) | Member;
+  /**
+   * 회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.
+   */
+  moderationStatus?: ('approved' | 'pending' | 'rejected') | null;
+  viewCount?: number | null;
   hiddenAt?: string | null;
   moderationReason?: string | null;
   reportCount?: number | null;
@@ -1008,12 +1011,6 @@ export interface PostsSelect<T extends boolean = true> {
   board?: T;
   title?: T;
   content?: T;
-  authorType?: T;
-  adminAuthor?: T;
-  memberAuthor?: T;
-  moderationStatus?: T;
-  visibility?: T;
-  commentPolicy?: T;
   featuredImage?: T;
   images?:
     | T
@@ -1021,13 +1018,19 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  visibility?: T;
+  commentPolicy?: T;
   pinned?: T;
-  viewCount?: T;
+  archived?: T;
+  expiresAt?: T;
   showInTempleNews?: T;
   templeNewsFeatured?: T;
   templeNewsPinned?: T;
-  archived?: T;
-  expiresAt?: T;
+  authorType?: T;
+  adminAuthor?: T;
+  memberAuthor?: T;
+  moderationStatus?: T;
+  viewCount?: T;
   hiddenAt?: T;
   moderationReason?: T;
   reportCount?: T;
