@@ -19,6 +19,7 @@ const validateHexColor = (value: unknown) => {
  */
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  label: '사이트 설정',
   admin: {
     group: '설정',
   },
@@ -60,7 +61,7 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: false,
       admin: {
         description:
-          '체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. installed와 별개 설정입니다.',
+          '체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. 설치 완료와는 별도로 설정합니다.',
       },
     },
     {
@@ -69,15 +70,15 @@ export const SiteSettings: GlobalConfig = {
       type: 'text',
       admin: { description: '모든 페이지 상단에 띠 배너로 표시됩니다(예: "공사 중", "오늘 하루 휴무"). 비워두면 배너가 표시되지 않습니다.' },
     },
-    { name: 'siteName', label: '사찰 정식 명칭', type: 'text', admin: { description: '예: 하논봉림사' } },
-    { name: 'siteShortName', label: '짧은 이름', type: 'text', admin: { description: '헤더/푸터 브랜드 표기용. 예: 봉림사' } },
-    { name: 'siteNameEn', label: '영문 명칭', type: 'text', admin: { description: '예: Bonglimsa' } },
+    { name: 'siteName', label: '사찰 정식 명칭', type: 'text', admin: { description: '예: ○○사' } },
+    { name: 'siteShortName', label: '짧은 이름', type: 'text', admin: { description: '헤더/푸터 브랜드 표기용. 예: ○○' } },
+    { name: 'siteNameEn', label: '영문 명칭', type: 'text', admin: { description: '예: Temple' } },
     { name: 'affiliation', label: '소속 종단', type: 'text', admin: { description: '예: 대한불교조계종' } },
     { name: 'siteDescription', label: '사이트 설명 (SEO)', type: 'textarea' },
     { name: 'siteKeywords', label: 'SEO 키워드', type: 'text', admin: { description: '쉼표로 구분' } },
     { name: 'logo', label: '로고 이미지', type: 'upload', relationTo: 'media-public' },
     { name: 'logoAlt', label: '로고 대체 텍스트', type: 'text' },
-    { name: 'logoTagline', label: '로고 위 짧은 문구', type: 'text', admin: { description: '예: 하논에 깃든 사찰' } },
+    { name: 'logoTagline', label: '로고 위 짧은 문구', type: 'text', admin: { description: '예: 산 속에 깃든 사찰' } },
     { name: 'themeColor', label: '브라우저 주소창 색상', type: 'text', validate: validateHexColor },
     {
       name: 'colors',
@@ -92,7 +93,7 @@ export const SiteSettings: GlobalConfig = {
         { name: 'paper', label: '밝은 배경색', type: 'text', defaultValue: '#f5f1e8', validate: validateHexColor },
       ],
     },
-    { name: 'emailFromName', label: '발신 메일 표시 이름', type: 'text', admin: { description: '예: [봉림사]' } },
+    { name: 'emailFromName', label: '발신 메일 표시 이름', type: 'text', admin: { description: '예: [○○사]' } },
     {
       name: 'location',
       label: '지도 위치',

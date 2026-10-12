@@ -237,6 +237,7 @@ function utilityLinkFields(): Field[] {
  */
 export const MainMenu: GlobalConfig = {
   slug: 'main-menu',
+  label: '메뉴',
   admin: {
     group: '홈페이지',
     preview: () => shellPreviewUrl(),

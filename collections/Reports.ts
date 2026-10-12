@@ -18,6 +18,7 @@ const getRelationId = (value: unknown): string | number | undefined => {
  */
 export const Reports: CollectionConfig = {
   slug: 'reports',
+  labels: { singular: '신고', plural: '신고' },
   admin: {
     group: '운영',
     useAsTitle: 'reason',

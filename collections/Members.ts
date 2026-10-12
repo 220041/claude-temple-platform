@@ -21,6 +21,7 @@ const isSelfOrAdmin = ({ req: { user }, id }: { req: { user: { collection?: stri
  */
 export const Members: CollectionConfig = {
   slug: 'members',
+  labels: { singular: '회원', plural: '회원' },
   auth: {
     verify: true,
     maxLoginAttempts: 5,

@@ -10,6 +10,7 @@ import { isReservedPath } from '../lib/reservedPaths'
  */
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  labels: { singular: '페이지', plural: '페이지' },
   admin: {
     group: '홈페이지',
     useAsTitle: 'title',

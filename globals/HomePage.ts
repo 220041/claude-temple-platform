@@ -26,6 +26,7 @@ const validateSectionOrder = (value: unknown) => {
  */
 export const HomePage: GlobalConfig = {
   slug: 'home-page',
+  label: '홈페이지 구성',
   admin: {
     group: '홈페이지',
     preview: () => {
@@ -114,7 +115,7 @@ export const HomePage: GlobalConfig = {
     },
     {
       name: 'templeNews',
-      label: '봉림사 소식',
+      label: '사찰 소식',
       type: 'group',
       fields: [
         { name: 'displayCount', label: '노출 게시물 수', type: 'number', defaultValue: 7, min: 1, max: 30 },

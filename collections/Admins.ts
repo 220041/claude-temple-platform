@@ -4,8 +4,10 @@ import { writeAuditLog } from './hooks/writeAuditLog'
 
 export const Admins: CollectionConfig = {
   slug: 'admins',
+  labels: { singular: '관리자 계정', plural: '관리자 계정' },
   auth: true,
   admin: {
+    group: '설정',
     useAsTitle: 'email',
     defaultColumns: ['email', 'role', 'updatedAt'],
   },

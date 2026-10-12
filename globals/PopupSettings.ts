@@ -5,6 +5,7 @@ import { adminOnly } from '../lib/access'
 /** guide.md 6절: 팝업 — 제목, 이미지, 연결 URL, 노출 시작일/종료일, 하루 동안 보지 않기. */
 export const PopupSettings: GlobalConfig = {
   slug: 'popup-settings',
+  label: '팝업 설정',
   admin: {
     group: '홈페이지',
   },

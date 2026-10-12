@@ -15,6 +15,7 @@ const getRelationId = (value: unknown): string | number | undefined => {
  */
 export const Comments: CollectionConfig = {
   slug: 'comments',
+  labels: { singular: '댓글', plural: '댓글' },
   trash: true,
   admin: {
     group: '게시판',

@@ -1,6 +1,7 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { ko } from '@payloadcms/translations/languages/ko'
 import path from 'path'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
@@ -29,6 +30,8 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  // 관리자 화면(버튼·메뉴·검증 메시지 등 Payload 공통 문구)은 한국어만 지원한다.
+  i18n: { supportedLanguages: { ko }, fallbackLanguage: 'ko' },
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   admin: {
     user: Admins.slug,

@@ -43,6 +43,7 @@ const canReadMedia: NonNullable<CollectionConfig['access']>['read'] = ({ req: { 
  */
 export const MediaPrivate: CollectionConfig = {
   slug: 'media-private',
+  labels: { singular: '비공개 파일', plural: '비공개 파일' },
   admin: {
     group: '미디어',
   },

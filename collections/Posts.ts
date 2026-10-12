@@ -36,6 +36,7 @@ const commonReadConditions = (): Where[] => {
  */
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: { singular: '게시글', plural: '게시글' },
   trash: true,
   admin: {
     group: '게시판',
@@ -185,9 +186,9 @@ export const Posts: CollectionConfig = {
     },
     { name: 'pinned', type: 'checkbox', defaultValue: false },
     { name: 'viewCount', label: '조회수', type: 'number', defaultValue: 0, admin: { readOnly: true } },
-    { name: 'showInTempleNews', label: '봉림사 소식에 노출', type: 'checkbox', defaultValue: false },
-    { name: 'templeNewsFeatured', label: '봉림사 소식 대표', type: 'checkbox', defaultValue: false },
-    { name: 'templeNewsPinned', label: '봉림사 소식 상단 고정', type: 'checkbox', defaultValue: false },
+    { name: 'showInTempleNews', label: '사찰 소식에 노출', type: 'checkbox', defaultValue: false },
+    { name: 'templeNewsFeatured', label: '사찰 소식 대표', type: 'checkbox', defaultValue: false },
+    { name: 'templeNewsPinned', label: '사찰 소식 상단 고정', type: 'checkbox', defaultValue: false },
     { name: 'archived', type: 'checkbox', defaultValue: false },
     { name: 'expiresAt', label: '게시 종료일', type: 'date' },
     { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true } },
@@ -215,7 +216,7 @@ export const Posts: CollectionConfig = {
       name: 'pressMeta',
       label: '언론 보도 메타데이터',
       type: 'group',
-      admin: { description: '언론 속 봉림사 게시판에서만 입력한다.' },
+      admin: { description: '언론 보도 게시판에서만 입력한다.' },
       fields: [
         { name: 'outlet', label: '언론사', type: 'text' },
         { name: 'reportedAt', label: '보도일', type: 'date' },

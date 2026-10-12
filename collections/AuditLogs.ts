@@ -12,6 +12,7 @@ const superAdminOnly = ({ req: { user } }: { req: { user: { collection?: string;
  */
 export const AuditLogs: CollectionConfig = {
   slug: 'audit-logs',
+  labels: { singular: '감사 기록', plural: '감사 기록' },
   admin: {
     group: '운영',
     useAsTitle: 'action',

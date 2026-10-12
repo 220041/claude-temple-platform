@@ -16,6 +16,7 @@ const SLUG_PATTERN = /^[a-z][a-z0-9-]{1,49}$/
  */
 export const Boards: CollectionConfig = {
   slug: 'boards',
+  labels: { singular: '게시판', plural: '게시판' },
   admin: {
     group: '게시판',
     useAsTitle: 'displayName',
@@ -87,7 +88,7 @@ export const Boards: CollectionConfig = {
     { name: 'defaultAllowComments', label: '댓글 기본 허용', type: 'checkbox', defaultValue: true },
     { name: 'allowPerPostCommentToggle', label: '게시물별 댓글 설정 허용', type: 'checkbox', defaultValue: false },
     { name: 'allowSecret', label: '비밀글 허용', type: 'checkbox', defaultValue: false },
-    { name: 'allowTempleNewsSelection', label: '봉림사 소식 선정 가능', type: 'checkbox', defaultValue: true },
+    { name: 'allowTempleNewsSelection', label: '사찰 소식 선정 가능', type: 'checkbox', defaultValue: true },
     { name: 'maxPinned', label: '상단 고정 최대 개수', type: 'number', defaultValue: 3, min: 0, max: 20 },
   ],
 }

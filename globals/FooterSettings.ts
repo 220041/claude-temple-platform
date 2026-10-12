@@ -10,6 +10,7 @@ import { shellPreviewUrl } from '../lib/previewUrl'
  */
 export const FooterSettings: GlobalConfig = {
   slug: 'footer-settings',
+  label: '푸터 설정',
   admin: {
     group: '홈페이지',
     preview: () => shellPreviewUrl(),

@@ -13,6 +13,7 @@ const superAdminOnly = ({ req: { user } }: { req: { user: { collection?: string;
  */
 export const SecurityEvents: CollectionConfig = {
   slug: 'security-events',
+  labels: { singular: '보안 이벤트', plural: '보안 이벤트' },
   admin: {
     group: '운영',
     useAsTitle: 'identifier',

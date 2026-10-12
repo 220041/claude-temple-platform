@@ -8,6 +8,7 @@ import { validateAndStripImage } from './hooks/validateAndStripImage'
  */
 export const MediaPublic: CollectionConfig = {
   slug: 'media-public',
+  labels: { singular: '공개 이미지·파일', plural: '공개 이미지·파일' },
   admin: {
     group: '미디어',
   },
