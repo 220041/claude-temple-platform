@@ -45,12 +45,13 @@ export type BackupSummary = {
  * 아니다. 컬렉션/글로벌 목록은 하드코딩하지 않고 payload.config에서
  * 동적으로 가져와 새 컬렉션이 추가돼도 자동으로 포함되게 한다.
  */
-export async function runWeeklyBackup(payload: Payload): Promise<BackupSummary> {
+export async function buildBackupSnapshot(payload: Payload) {
   const collectionCounts: Record<string, number> = {}
   const collectionsData: Record<string, unknown[]> = {}
 
   for (const { slug } of payload.config.collections) {
-    const { docs } = await payload.find({ collection: slug, limit: 0, pagination: false, overrideAccess: true })
+    // trash:true — 휴지통(soft delete)에 있는 문서도 복구 대상이다(기본 조회는 제외).
+    const { docs } = await payload.find({ collection: slug, limit: 0, pagination: false, trash: true, overrideAccess: true })
     collectionsData[slug] = redact(slug, docs)
     collectionCounts[slug] = docs.length
   }
@@ -60,11 +61,13 @@ export async function runWeeklyBackup(payload: Payload): Promise<BackupSummary> 
     globalsData[slug] = await payload.findGlobal({ slug, overrideAccess: true })
   }
 
-  const body = JSON.stringify(
-    { generatedAt: new Date().toISOString(), collections: collectionsData, globals: globalsData },
-    null,
-    2,
-  )
+  const snapshot = { generatedAt: new Date().toISOString(), collections: collectionsData, globals: globalsData }
+  return { snapshot, collectionCounts }
+}
+
+export async function runWeeklyBackup(payload: Payload): Promise<BackupSummary> {
+  const { snapshot, collectionCounts } = await buildBackupSnapshot(payload)
+  const body = JSON.stringify(snapshot, null, 2)
 
   const token = process.env.BLOB_READ_WRITE_TOKEN_PRIVATE
   if (!token) throw new Error('BLOB_READ_WRITE_TOKEN_PRIVATE이 설정되지 않았습니다.')

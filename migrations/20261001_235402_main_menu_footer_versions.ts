@@ -93,12 +93,16 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "main_menu__status_idx" ON "main_menu" USING btree ("_status");`)
 
   // 새 _status 컬럼 기본값이 'draft'라 이미 공개 중인 메뉴/푸터가 "Draft"로
-  // 보이는 불일치를 막기 위해 현재 내용을 그대로 발행한다
-  // (20261001_050634_home_page_versions.ts의 HomePage 선례와 동일).
-  // 메뉴는 빈 신규 DB에서도 안전하도록 items 없이 _status만 갱신한다.
-  for (const slug of ['main-menu', 'footer-settings'] as const) {
-    await payload.updateGlobal({ slug, data: { _status: 'published' }, overrideAccess: true, req })
-  }
+  // 보이는 불일치를 막기 위해 현재 내용을 그대로 발행 상태로 만든다.
+  // payload.updateGlobal(API)을 쓰면 안 된다 — API는 "현재 코드의 전체 스키마"를
+  // 조회하는데, 그 안에는 이후 마이그레이션(utility_links)이 만들 테이블이 이미
+  // 들어 있어 빈 신규 DB에서 아직 없는 테이블을 조회하다 실패한다. 그래서 원시 SQL로
+  // 한다(행이 없는 빈 DB에서는 발행 상태의 행을 만든다). 버전 이력은 첫 저장 때 생긴다.
+  await db.execute(sql`
+   INSERT INTO "main_menu" ("_status") SELECT 'published' WHERE NOT EXISTS (SELECT 1 FROM "main_menu");
+  INSERT INTO "footer_settings" ("_status") SELECT 'published' WHERE NOT EXISTS (SELECT 1 FROM "footer_settings");
+  UPDATE "main_menu" SET "_status" = 'published';
+  UPDATE "footer_settings" SET "_status" = 'published';`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
