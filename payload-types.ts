@@ -311,7 +311,7 @@ export interface Page {
   id: number;
   title: string;
   /**
-   * URL 경로: /pages/이 값
+   * 방문자가 보는 주소입니다(/pages/이 값). 영문 소문자·숫자·하이픈을 권장하며, 저장 후 바꾸면 옛 주소는 새 주소로 자동 안내됩니다.
    */
   slug: string;
   /**
