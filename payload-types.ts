@@ -248,6 +248,9 @@ export interface Member {
  */
 export interface MediaPublic {
   id: number;
+  /**
+   * 사진 내용을 한 줄로 설명하는 글입니다(예: "대웅전 앞 가을 풍경"). 화면 낭독기와 검색에 쓰이며, 비워 두어도 됩니다.
+   */
   alt?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -277,6 +280,9 @@ export interface MediaPublic {
  */
 export interface MediaPrivate {
   id: number;
+  /**
+   * 사진 내용을 한 줄로 설명하는 글입니다. 비워 두어도 됩니다.
+   */
   alt?: string | null;
   uploadedBy?: (number | null) | Member;
   isPublic?: boolean | null;
@@ -417,6 +423,11 @@ export interface Post {
   board: number | Board;
   title: string;
   content: string;
+  /**
+   * 회원이 쓴 글입니다. "승인됨"으로 바꾸고 저장하면 공개 게시판에 나타나고, "반려됨"이면 공개되지 않습니다. 반려할 때는 아래에 사유를 남겨 주세요.
+   */
+  moderationStatus?: ('approved' | 'pending' | 'rejected') | null;
+  moderationReason?: string | null;
   featuredImage?:
     | ({
         relationTo: 'media-public';
@@ -457,13 +468,8 @@ export interface Post {
   authorType?: ('admin' | 'member') | null;
   adminAuthor?: (number | null) | Admin;
   memberAuthor?: (number | null) | Member;
-  /**
-   * 회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.
-   */
-  moderationStatus?: ('approved' | 'pending' | 'rejected') | null;
   viewCount?: number | null;
   hiddenAt?: string | null;
-  moderationReason?: string | null;
   reportCount?: number | null;
   /**
    * 법문 게시판에서만 입력한다.
@@ -1011,6 +1017,8 @@ export interface PostsSelect<T extends boolean = true> {
   board?: T;
   title?: T;
   content?: T;
+  moderationStatus?: T;
+  moderationReason?: T;
   featuredImage?: T;
   images?:
     | T
@@ -1029,10 +1037,8 @@ export interface PostsSelect<T extends boolean = true> {
   authorType?: T;
   adminAuthor?: T;
   memberAuthor?: T;
-  moderationStatus?: T;
   viewCount?: T;
   hiddenAt?: T;
-  moderationReason?: T;
   reportCount?: T;
   dharmaMeta?:
     | T
@@ -1259,15 +1265,6 @@ export interface HomePage {
   showMonkIntro?: boolean | null;
   showPrayerSection?: boolean | null;
   showLocationSection?: boolean | null;
-  /**
-   * 메인 슬라이드 아래 섹션이 표시되는 순서입니다. 각 행을 드래그해 순서를 바꾸세요(표시/숨김은 위 체크박스로 따로 설정합니다).
-   */
-  sectionOrder?:
-    | {
-        section: 'templeIntro' | 'prayer' | 'location';
-        id?: string | null;
-      }[]
-    | null;
   mainSlides?:
     | {
         image: number | MediaPublic;
@@ -1317,6 +1314,15 @@ export interface HomePage {
          */
         linkUrl?: string | null;
         icon?: ('calendar' | 'heart' | 'users') | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * 메인 슬라이드 아래 섹션이 표시되는 순서입니다. 각 행을 드래그해 순서를 바꾸세요(표시/숨김은 위 체크박스로 따로 설정합니다).
+   */
+  sectionOrder?:
+    | {
+        section: 'templeIntro' | 'prayer' | 'location';
         id?: string | null;
       }[]
     | null;
@@ -1372,7 +1378,7 @@ export interface MainMenu {
         showInTop?: boolean | null;
         showInBottom?: boolean | null;
         /**
-         * "새 페이지 만들기"는 저장되지 않는 화면 전용 선택지입니다 — 클릭 시 초안 페이지를 만들고 자동으로 "기존 페이지 연결"로 바뀝니다.
+         * "새 페이지 만들기"를 고르면 빈 초안 페이지가 만들어지고, 선택이 자동으로 "기존 페이지 연결"로 바뀝니다.
          */
         linkType?: ('none' | 'newPage' | 'page' | 'board' | 'url') | null;
         pageRef?: (number | null) | Page;
@@ -1388,7 +1394,7 @@ export interface MainMenu {
               showInTop?: boolean | null;
               showInBottom?: boolean | null;
               /**
-               * "새 페이지 만들기"는 저장되지 않는 화면 전용 선택지입니다 — 클릭 시 초안 페이지를 만들고 자동으로 "기존 페이지 연결"로 바뀝니다.
+               * "새 페이지 만들기"를 고르면 빈 초안 페이지가 만들어지고, 선택이 자동으로 "기존 페이지 연결"로 바뀝니다.
                */
               linkType?: ('none' | 'newPage' | 'page' | 'board' | 'url') | null;
               pageRef?: (number | null) | Page;
@@ -1469,12 +1475,6 @@ export interface HomePageSelect<T extends boolean = true> {
   showMonkIntro?: T;
   showPrayerSection?: T;
   showLocationSection?: T;
-  sectionOrder?:
-    | T
-    | {
-        section?: T;
-        id?: T;
-      };
   mainSlides?:
     | T
     | {
@@ -1516,6 +1516,12 @@ export interface HomePageSelect<T extends boolean = true> {
         image?: T;
         linkUrl?: T;
         icon?: T;
+        id?: T;
+      };
+  sectionOrder?:
+    | T
+    | {
+        section?: T;
         id?: T;
       };
   _status?: T;
