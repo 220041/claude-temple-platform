@@ -75,6 +75,7 @@ export const Members: CollectionConfig = {
   fields: [
     {
       name: 'nickname',
+      label: '닉네임',
       type: 'text',
       required: true,
       unique: true,
@@ -105,6 +106,7 @@ export const Members: CollectionConfig = {
     { name: 'agreedAt', label: '약관 동의 일시', type: 'date', required: true },
     {
       name: 'lastNicknameChangeAt',
+      label: '닉네임 마지막 변경일',
       type: 'date',
       admin: { readOnly: true, description: '닉네임 30일 변경 제한 계산용' },
     },

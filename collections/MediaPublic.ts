@@ -41,6 +41,7 @@ export const MediaPublic: CollectionConfig = {
   fields: [
     {
       name: 'alt',
+      label: '대체 텍스트',
       type: 'text',
     },
   ],

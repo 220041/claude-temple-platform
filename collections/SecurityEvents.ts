@@ -26,8 +26,8 @@ export const SecurityEvents: CollectionConfig = {
     delete: () => false,
   },
   fields: [
-    { name: 'endpoint', type: 'text', required: true, index: true },
-    { name: 'identifier', type: 'text', required: true, index: true },
-    { name: 'blocked', type: 'checkbox', defaultValue: false, index: true },
+    { name: 'endpoint', label: '요청 경로', type: 'text', required: true, index: true },
+    { name: 'identifier', label: '식별 값', type: 'text', required: true, index: true },
+    { name: 'blocked', label: '차단 여부', type: 'checkbox', defaultValue: false, index: true },
   ],
 }

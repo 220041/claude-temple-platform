@@ -85,10 +85,10 @@ export const Comments: CollectionConfig = {
     beforeValidate: [validateComment],
   },
   fields: [
-    { name: 'post', type: 'relationship', relationTo: 'posts', required: true, index: true },
-    { name: 'parentComment', type: 'relationship', relationTo: 'comments' },
-    { name: 'content', type: 'textarea', required: true },
-    { name: 'memberAuthor', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
+    { name: 'post', label: '게시글', type: 'relationship', relationTo: 'posts', required: true, index: true },
+    { name: 'parentComment', label: '상위 댓글', type: 'relationship', relationTo: 'comments' },
+    { name: 'content', label: '내용', type: 'textarea', required: true },
+    { name: 'memberAuthor', label: '작성 회원', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
     { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true } },
     { name: 'moderationReason', label: '관리자 조치 사유', type: 'text' },
     {

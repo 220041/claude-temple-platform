@@ -90,12 +90,12 @@ export const MediaPrivate: CollectionConfig = {
     ],
   },
   fields: [
-    { name: 'alt', type: 'text' },
-    { name: 'uploadedBy', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
+    { name: 'alt', label: '대체 텍스트', type: 'text' },
+    { name: 'uploadedBy', label: '올린 회원', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
     // 아래 두 필드는 이 파일이 쓰인 게시물의 공개 상태를 복제한 값이며
     // hooks/syncPostImageVisibility.ts가 Posts 저장 시 채운다. 어느 게시물
     //에도 아직 연결되지 않은 신규 업로드는 기본적으로 비공개(false)다.
-    { name: 'isPublic', type: 'checkbox', defaultValue: false, admin: { readOnly: true } },
-    { name: 'ownerMember', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
+    { name: 'isPublic', label: '공개 여부', type: 'checkbox', defaultValue: false, admin: { readOnly: true } },
+    { name: 'ownerMember', label: '소유 회원', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
   ],
 }

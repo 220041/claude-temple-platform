@@ -84,6 +84,7 @@ export const Reports: CollectionConfig = {
   fields: [
     {
       name: 'target',
+      label: '신고 대상',
       type: 'relationship',
       relationTo: ['posts', 'comments'],
       required: true,
@@ -103,7 +104,7 @@ export const Reports: CollectionConfig = {
       ],
     },
     { name: 'reasonDetail', label: '상세 사유', type: 'textarea' },
-    { name: 'reporterMember', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
+    { name: 'reporterMember', label: '신고한 회원', type: 'relationship', relationTo: 'members', admin: { readOnly: true } },
     {
       name: 'resolution',
       label: '처리 결과',

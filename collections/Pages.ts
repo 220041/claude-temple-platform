@@ -56,7 +56,7 @@ export const Pages: CollectionConfig = {
     ],
   },
   fields: [
-    { name: 'title', type: 'text', required: true },
+    { name: 'title', label: '제목', type: 'text', required: true },
     {
       name: 'statusBadge',
       label: '',
@@ -69,6 +69,7 @@ export const Pages: CollectionConfig = {
     },
     {
       name: 'slug',
+      label: '주소 이름',
       type: 'text',
       required: true,
       unique: true,
@@ -95,11 +96,12 @@ export const Pages: CollectionConfig = {
     },
     {
       name: 'slugHistory',
+      label: '이전 주소 기록',
       type: 'array',
       admin: { readOnly: true, description: '이전 주소 자동 기록(직접 수정 불가) — 옛 링크를 새 주소로 안내하는 데 쓰인다.' },
       fields: [
         { name: 'slug', type: 'text', required: true },
-        { name: 'changedAt', type: 'date' },
+        { name: 'changedAt', label: '변경일', type: 'date' },
       ],
     },
     {
@@ -114,6 +116,7 @@ export const Pages: CollectionConfig = {
     },
     {
       name: 'blocks',
+      label: '내용 구성',
       type: 'blocks',
       blocks: pageBlocks,
     },

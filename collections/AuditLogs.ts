@@ -25,7 +25,7 @@ export const AuditLogs: CollectionConfig = {
     delete: () => false,
   },
   fields: [
-    { name: 'actor', type: 'relationship', relationTo: 'admins', required: true },
+    { name: 'actor', label: '처리한 관리자', type: 'relationship', relationTo: 'admins', required: true },
     {
       name: 'action',
       type: 'select',
@@ -46,9 +46,9 @@ export const AuditLogs: CollectionConfig = {
         { label: '데이터 복구 실행', value: 'data-restore' },
       ],
     },
-    { name: 'targetCollection', type: 'text' },
-    { name: 'targetId', type: 'text' },
-    { name: 'reason', type: 'text' },
-    { name: 'metadata', type: 'json' },
+    { name: 'targetCollection', label: '대상 종류', type: 'text' },
+    { name: 'targetId', label: '대상 번호', type: 'text' },
+    { name: 'reason', label: '사유', type: 'text' },
+    { name: 'metadata', label: '상세 정보', type: 'json' },
   ],
 }

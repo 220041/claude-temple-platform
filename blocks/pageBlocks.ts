@@ -10,7 +10,7 @@ export const HeadingBlock: Block = {
   slug: 'heading',
   labels: { singular: '제목', plural: '제목' },
   fields: [
-    { name: 'text', type: 'text', required: true },
+    { name: 'text', label: '내용', type: 'text', required: true },
     {
       name: 'level',
       type: 'select',
@@ -26,15 +26,15 @@ export const HeadingBlock: Block = {
 export const ParagraphBlock: Block = {
   slug: 'paragraph',
   labels: { singular: '문단', plural: '문단' },
-  fields: [{ name: 'text', type: 'textarea', required: true }],
+  fields: [{ name: 'text', label: '내용', type: 'textarea', required: true }],
 }
 
 export const PhotoBlock: Block = {
   slug: 'photo',
   labels: { singular: '사진', plural: '사진' },
   fields: [
-    { name: 'image', type: 'upload', relationTo: 'media-public', required: true },
-    { name: 'caption', type: 'text' },
+    { name: 'image', label: '사진', type: 'upload', relationTo: 'media-public', required: true },
+    { name: 'caption', label: '설명', type: 'text' },
   ],
 }
 
@@ -44,11 +44,12 @@ export const GalleryBlock: Block = {
   fields: [
     {
       name: 'images',
+      label: '사진 목록',
       type: 'array',
       minRows: 1,
       fields: [
-        { name: 'image', type: 'upload', relationTo: 'media-public', required: true },
-        { name: 'caption', type: 'text' },
+        { name: 'image', label: '사진', type: 'upload', relationTo: 'media-public', required: true },
+        { name: 'caption', label: '설명', type: 'text' },
       ],
     },
   ],
@@ -60,11 +61,12 @@ export const InfoTableBlock: Block = {
   fields: [
     {
       name: 'rows',
+      label: '행',
       type: 'array',
       minRows: 1,
       fields: [
         { name: 'label', type: 'text', required: true },
-        { name: 'value', type: 'text', required: true },
+        { name: 'value', label: '내용', type: 'text', required: true },
       ],
     },
   ],

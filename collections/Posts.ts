@@ -122,21 +122,22 @@ export const Posts: CollectionConfig = {
     afterDelete: [auditPostPermanentDelete],
   },
   fields: [
-    { name: 'board', type: 'relationship', relationTo: 'boards', required: true, index: true },
-    { name: 'title', type: 'text', required: true, access: { read: secretFieldReadAccess } },
-    { name: 'content', type: 'textarea', required: true, access: { read: secretFieldReadAccess } },
+    { name: 'board', label: '게시판', type: 'relationship', relationTo: 'boards', required: true, index: true },
+    { name: 'title', label: '제목', type: 'text', required: true, access: { read: secretFieldReadAccess } },
+    { name: 'content', label: '내용', type: 'textarea', required: true, access: { read: secretFieldReadAccess } },
     {
       name: 'authorType',
+      label: '작성자 구분',
       type: 'select',
       defaultValue: 'admin',
       options: [
         { label: '관리자', value: 'admin' },
         { label: '회원', value: 'member' },
       ],
-      admin: { description: '작성 시 요청자 신원에 따라 서버에서 자동 지정된다(hooks/setPostAuthor.ts).' },
+      admin: { description: '글을 쓰는 사람에 따라 자동으로 정해집니다.' },
     },
-    { name: 'adminAuthor', type: 'relationship', relationTo: 'admins' },
-    { name: 'memberAuthor', type: 'relationship', relationTo: 'members' },
+    { name: 'adminAuthor', label: '작성 관리자', type: 'relationship', relationTo: 'admins' },
+    { name: 'memberAuthor', label: '작성 회원', type: 'relationship', relationTo: 'members' },
     {
       name: 'moderationStatus',
       label: '승인 상태',
@@ -149,21 +150,23 @@ export const Posts: CollectionConfig = {
       ],
       admin: {
         description:
-          '회원 작성 게시물 중 게시판의 "회원 글 공개 방식"이 승인제인 경우에만 의미가 있다(hooks/setPostAuthor.ts가 자동 지정). 반려 시 아래 "관리자 조치 사유"에 사유를 남긴다.',
+          '회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.',
       },
     },
     {
       name: 'visibility',
+      label: '공개 범위',
       type: 'select',
       defaultValue: 'public',
       options: [
         { label: '공개', value: 'public' },
         { label: '비밀글', value: 'secret' },
       ],
-      admin: { description: '비밀글은 게시판의 allowSecret이 켜진 경우에만 허용된다(guide.md 9.3, 자유게시판).' },
+      admin: { description: '비밀글은 게시판 설정에서 비밀글을 허용한 경우에만 쓸 수 있습니다.' },
     },
     {
       name: 'commentPolicy',
+      label: '댓글 정책',
       type: 'select',
       defaultValue: 'boardDefault',
       options: [
@@ -176,20 +179,22 @@ export const Posts: CollectionConfig = {
     // 작성 게시물의 이미지는 Private Blob(media-private)에 올라간다
     // (guide.md 10.1). 업로드 시점에 어느 컬렉션에 저장했는지에 따라
     // 자동으로 맞는 관계가 선택되므로 두 컬렉션을 모두 허용한다.
-    { name: 'featuredImage', type: 'upload', relationTo: ['media-public', 'media-private'], access: { read: secretFieldReadAccess } },
+    { name: 'featuredImage', label: '대표 이미지', type: 'upload', relationTo: ['media-public', 'media-private'], access: { read: secretFieldReadAccess } },
     {
       name: 'images',
+      label: '이미지',
+      labels: { singular: '이미지', plural: '이미지' },
       type: 'array',
       maxRows: 10,
       access: { read: secretFieldReadAccess },
-      fields: [{ name: 'image', type: 'upload', relationTo: ['media-public', 'media-private'], required: true }],
+      fields: [{ name: 'image', label: '이미지', type: 'upload', relationTo: ['media-public', 'media-private'], required: true }],
     },
-    { name: 'pinned', type: 'checkbox', defaultValue: false },
+    { name: 'pinned', label: '상단 고정', type: 'checkbox', defaultValue: false },
     { name: 'viewCount', label: '조회수', type: 'number', defaultValue: 0, admin: { readOnly: true } },
     { name: 'showInTempleNews', label: '사찰 소식에 노출', type: 'checkbox', defaultValue: false },
     { name: 'templeNewsFeatured', label: '사찰 소식 대표', type: 'checkbox', defaultValue: false },
     { name: 'templeNewsPinned', label: '사찰 소식 상단 고정', type: 'checkbox', defaultValue: false },
-    { name: 'archived', type: 'checkbox', defaultValue: false },
+    { name: 'archived', label: '보관(게시 종료)', type: 'checkbox', defaultValue: false },
     { name: 'expiresAt', label: '게시 종료일', type: 'date' },
     { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true } },
     { name: 'moderationReason', label: '관리자 조치 사유', type: 'text' },
