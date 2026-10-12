@@ -57,7 +57,7 @@ const snapshot = (
 }
 
 const payload = await getPayload({ config })
-const pool = (payload.db as unknown as { pool: { query: (q: string) => Promise<{ rows: Record<string, unknown>[] }> } }).pool
+const pool = (payload.db as unknown as { pool: { query: (q: string, params?: unknown[]) => Promise<{ rows: Record<string, unknown>[] }> } }).pool
 
 const existing = await pool.query(`select (select count(*) from pages)::int p, (select count(*) from boards)::int b, (select count(*) from posts)::int po`)
 const e = existing.rows[0] as { p: number; b: number; po: number }
@@ -73,7 +73,17 @@ for (const slug of slugs) {
   for (const raw of sorted) {
     const data = depopulateDoc(raw)
     for (const f of NULLED_FIELDS[slug] ?? []) delete data[f]
-    await payload.db.create({ collection: slug as never, data: data as never })
+    // payload.db.create는 data.id를 무시하고 시퀀스에서 새 번호를 받는다. 번호에 빈틈이 있는 운영 데이터를
+    // 복구할 때 관계(댓글→게시물 등)가 끊기지 않도록, 삽입 직전에 시퀀스를 원래 번호로 맞춘다.
+    const origId = Number(raw.id)
+    const table = slug.replace(/-/g, '_')
+    if (Number.isFinite(origId)) {
+      await pool.query(`select setval(pg_get_serial_sequence('"${table}"', 'id'), $1, false)`, [origId])
+    }
+    const created = (await payload.db.create({ collection: slug as never, data: data as never })) as { id?: number | string }
+    if (Number.isFinite(origId) && Number(created.id) !== origId) {
+      throw new Error(`${slug}#${origId}를 같은 번호로 복구하지 못했습니다(실제 ${created.id}).`)
+    }
   }
   restored[slug] = sorted.length
 }
