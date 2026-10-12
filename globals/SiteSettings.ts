@@ -1,7 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
 import { writeAuditLog } from '../collections/hooks/writeAuditLog'
-import { superAdminOnly } from '../lib/access'
+import { hiddenFromEditors, superAdminOnly } from '../lib/access'
 
 const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/
 
@@ -22,6 +22,7 @@ export const SiteSettings: GlobalConfig = {
   label: '사이트 설정',
   admin: {
     group: '설정',
+    hidden: hiddenFromEditors,
   },
   access: {
     read: () => true,

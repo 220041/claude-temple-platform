@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { superAdminOnly } from '../lib/access'
+import { hiddenFromEditors, superAdminOnly } from '../lib/access'
 import { isReservedPath } from '../lib/reservedPaths'
 
 const SLUG_PATTERN = /^[a-z][a-z0-9-]{1,49}$/
@@ -19,6 +19,7 @@ export const Boards: CollectionConfig = {
   labels: { singular: '게시판', plural: '게시판' },
   admin: {
     group: '게시판',
+    hidden: hiddenFromEditors,
     useAsTitle: 'displayName',
   },
   access: {

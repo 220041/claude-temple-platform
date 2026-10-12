@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { adminOnly } from '../lib/access'
+import { adminOnly, publicReadNoDraft } from '../lib/access'
 
 const SECTION_KEYS = ['templeIntro', 'prayer', 'location'] as const
 
@@ -47,7 +47,7 @@ export const HomePage: GlobalConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: publicReadNoDraft,
     update: adminOnly,
   },
   fields: [

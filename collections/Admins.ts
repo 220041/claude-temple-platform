@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { hiddenFromEditors } from '../lib/access'
 import { writeAuditLog } from './hooks/writeAuditLog'
 
 export const Admins: CollectionConfig = {
@@ -8,6 +9,7 @@ export const Admins: CollectionConfig = {
   auth: true,
   admin: {
     group: '설정',
+    hidden: hiddenFromEditors,
     useAsTitle: 'email',
     defaultColumns: ['email', 'role', 'updatedAt'],
   },

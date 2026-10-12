@@ -31,8 +31,26 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   // 관리자 화면(버튼·메뉴·검증 메시지 등 Payload 공통 문구)은 한국어만 지원한다.
-  i18n: { supportedLanguages: { ko }, fallbackLanguage: 'ko' },
+  // Payload 기본 한국어는 "게시"와 "발행/발표"가 섞여 있어, 화면 전체에서 "게시"로 통일한다.
+  i18n: {
+    supportedLanguages: { ko },
+    fallbackLanguage: 'ko',
+    translations: {
+      ko: {
+        version: {
+          previouslyPublished: '이전에 게시됨',
+          draftHasPublishedVersion: '게시된 버전이 있는 초안',
+          unpublished: '게시 안 됨',
+          schedulePublish: '게시 예약',
+          aboutToRestore: '이 {{label}}을(를) {{versionDate}} 시점의 버전으로 복원합니다.',
+          aboutToRestoreGlobal: '{{label}}을(를) {{versionDate}} 시점의 버전으로 복원합니다.',
+        },
+      },
+    },
+  },
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
+  // 프런트·관리자 모두 REST/로컬 API만 쓴다. 쓰지 않는 GraphQL은 끄고(초안 읽기 우회 경로 차단) 노출면을 줄인다.
+  graphQL: { disable: true },
   admin: {
     user: Admins.slug,
     meta: {

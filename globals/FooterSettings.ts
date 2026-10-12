@@ -1,6 +1,6 @@
 import type { GlobalConfig } from 'payload'
 
-import { adminOnly } from '../lib/access'
+import { adminOnly, publicReadNoDraft } from '../lib/access'
 import { shellPreviewUrl } from '../lib/previewUrl'
 
 /**
@@ -22,7 +22,7 @@ export const FooterSettings: GlobalConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: publicReadNoDraft,
     update: adminOnly,
   },
   fields: [

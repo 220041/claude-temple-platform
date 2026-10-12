@@ -1,6 +1,6 @@
 import type { Field, GlobalBeforeValidateHook, GlobalConfig } from 'payload'
 
-import { superAdminOnly } from '../lib/access'
+import { hiddenFromEditors, publicReadNoDraft, superAdminOnly } from '../lib/access'
 import { shellPreviewUrl } from '../lib/previewUrl'
 
 /**
@@ -241,6 +241,7 @@ export const MainMenu: GlobalConfig = {
   label: '메뉴',
   admin: {
     group: '홈페이지',
+    hidden: hiddenFromEditors,
     preview: () => shellPreviewUrl(),
     components: {
       elements: {
@@ -257,7 +258,7 @@ export const MainMenu: GlobalConfig = {
     },
   },
   access: {
-    read: () => true,
+    read: publicReadNoDraft,
     update: superAdminOnly,
   },
   hooks: {
