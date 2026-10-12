@@ -95,12 +95,14 @@ export default function Footer({
                 )}
               </Link>
               <address className="font-sans not-italic" style={{ fontSize: "13px", color: "#d1d1d1", lineHeight: 1.9 }}>
-                <p style={{ whiteSpace: "pre-line" }}>{info.address}</p>
-                <p style={{ marginTop: "10px" }}>
-                  전화: {info.phone}<br />
-                  팩스: {info.fax}
-                </p>
-                <p style={{ marginTop: "10px" }}>이메일: {info.email}</p>
+                {info.address && <p style={{ whiteSpace: "pre-line" }}>{info.address}</p>}
+                {(info.phone || info.fax) && (
+                  <p style={{ marginTop: "10px" }}>
+                    {info.phone && <>전화: {info.phone}<br /></>}
+                    {info.fax && <>팩스: {info.fax}</>}
+                  </p>
+                )}
+                {info.email && <p style={{ marginTop: "10px" }}>이메일: {info.email}</p>}
               </address>
             </div>
 

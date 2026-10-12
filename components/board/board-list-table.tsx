@@ -34,12 +34,12 @@ export default function BoardListTable({
     <table className="font-sans" style={{ width: "100%", borderCollapse: "collapse", fontSize: "14px" }}>
       <thead>
         <tr style={{ borderTop: "2px solid #161410", borderBottom: "1px solid #e8e6e1" }}>
-          <th style={{ padding: "12px 8px", width: "60px", color: "#888078", fontWeight: 500 }}>번호</th>
+          <th className="hidden md:table-cell" style={{ padding: "12px 8px", width: "60px", color: "#888078", fontWeight: 500 }}>번호</th>
           <th style={{ padding: "12px 8px", textAlign: "left", color: "#888078", fontWeight: 500 }}>제목</th>
-          <th style={{ padding: "12px 8px", width: "100px", color: "#888078", fontWeight: 500 }}>작성자</th>
+          <th className="hidden md:table-cell" style={{ padding: "12px 8px", width: "100px", color: "#888078", fontWeight: 500 }}>작성자</th>
           <th style={{ padding: "12px 8px", width: "100px", color: "#888078", fontWeight: 500 }}>작성일</th>
-          <th style={{ padding: "12px 8px", width: "70px", color: "#888078", fontWeight: 500 }}>조회</th>
-          <th style={{ padding: "12px 8px", width: "70px", color: "#888078", fontWeight: 500 }}>댓글</th>
+          <th className="hidden md:table-cell" style={{ padding: "12px 8px", width: "70px", color: "#888078", fontWeight: 500 }}>조회</th>
+          <th className="hidden md:table-cell" style={{ padding: "12px 8px", width: "70px", color: "#888078", fontWeight: 500 }}>댓글</th>
         </tr>
       </thead>
       <tbody>
@@ -48,7 +48,7 @@ export default function BoardListTable({
           const hasImages = Boolean(post.featuredImage) || (post.images?.length ?? 0) > 0
           return (
             <tr key={post.id} style={{ borderBottom: "1px solid #f0efec" }}>
-              <td style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>
+              <td className="hidden md:table-cell" style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>
                 {post.pinned ? "고정" : totalDocs - (page - 1) * pageSize - i}
               </td>
               <td style={{ padding: "12px 8px" }}>
@@ -62,10 +62,10 @@ export default function BoardListTable({
                   )}
                 </Link>
               </td>
-              <td style={{ padding: "12px 8px", textAlign: "center", color: "#656058" }}>{resolveAuthorName(post)}</td>
+              <td className="hidden md:table-cell" style={{ padding: "12px 8px", textAlign: "center", color: "#656058" }}>{resolveAuthorName(post)}</td>
               <td style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>{formatDate(post.createdAt)}</td>
-              <td style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>{post.viewCount ?? 0}</td>
-              <td style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>{post.commentCount ?? 0}</td>
+              <td className="hidden md:table-cell" style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>{post.viewCount ?? 0}</td>
+              <td className="hidden md:table-cell" style={{ padding: "12px 8px", textAlign: "center", color: "#aaa" }}>{post.commentCount ?? 0}</td>
             </tr>
           )
         })}

@@ -46,15 +46,17 @@ export default function PrayerSection({ cards, mascotUrl }: { cards?: PrayerCard
                 onMouseEnter={e => { e.currentTarget.style.background = "#fdfbf8" }}
                 onMouseLeave={e => { e.currentTarget.style.background = "#fff" }}
               >
-                <div className="relative overflow-hidden" style={{ height: "180px" }}>
-                  <Image
-                    src={p.image}
-                    alt={p.alt ?? p.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                </div>
+                {p.image && (
+                  <div className="relative overflow-hidden" style={{ height: "180px" }}>
+                    <Image
+                      src={p.image}
+                      alt={p.alt ?? p.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                )}
                 <div style={{ padding: "32px" }}>
                   <div style={{ color: "#cc5030", marginBottom: "20px" }}>
                     <Icon size={24} />
