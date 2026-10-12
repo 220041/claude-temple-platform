@@ -94,13 +94,14 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // 콘텐츠가 그대로인데도 관리자 화면엔 "Draft"로 표시되는 불일치가
   // 생긴다(migrations/20260929_000000_backfill_page_versions.ts의
   // Pages 선례와 동일한 문제). 현재 내용을 그대로 "발행"해 _status를
-  // 바로잡고 버전 이력의 첫 항목(복원 가능한 published 버전)을 만든다.
-  await payload.updateGlobal({
-    slug: 'home-page',
-    data: { _status: 'published' },
-    overrideAccess: true,
-    req,
-  })
+  // 바로잡는다. payload.updateGlobal(API)을 쓰면 안 된다 — API는 "현재 코드의
+  // 전체 스키마"를 조회하므로 HomePage 스키마가 바뀐 뒤에는 빈 신규 DB에서 아직
+  // 없는 컬럼/테이블을 조회하다 실패한다(20261001_235402 마이그레이션과 동일한
+  // 이유). 그래서 원시 SQL로 한다(행이 없는 빈 DB에서는 발행 상태의 행을 만든다).
+  // 버전 이력은 첫 저장 때 생긴다.
+  await db.execute(sql`
+   INSERT INTO "home_page" ("_status") SELECT 'published' WHERE NOT EXISTS (SELECT 1 FROM "home_page");
+  UPDATE "home_page" SET "_status" = 'published';`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
