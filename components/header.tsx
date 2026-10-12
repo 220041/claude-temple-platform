@@ -92,7 +92,7 @@ export default function Header({
         style={{ height: "80px" }}
       >
         <div className="flex-shrink-0">
-          <SiteLogo logoUrl={logo?.logoUrl} logoAlt={logo?.logoAlt} logoTagline={logo?.logoTagline} />
+          <SiteLogo logoUrl={logo?.logoUrl} logoAlt={logo?.logoAlt} logoTagline={logo?.logoTagline} siteName={logo?.siteShortName} />
         </div>
 
         {/* 데스크탑 네비게이션 */}

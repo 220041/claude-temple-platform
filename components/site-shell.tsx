@@ -58,7 +58,7 @@ export default async function SiteShell({ children, temporaryHome = false }: { c
       {draft.isEnabled && <RefreshRouteOnSave />}
       <SiteNotice text={siteSettings?.siteNoticeText} />
       {temporaryHome ? (
-        <TemporaryHeader logo={logo} />
+        <TemporaryHeader logo={{ ...logo, siteName: brand.shortName }} />
       ) : (
         <Header memberNickname={member?.nickname} logo={{ ...logo, siteShortName: brand.shortName }} menuItems={topMenuItems} utilityLinks={utilityLinks} />
       )}

@@ -114,6 +114,9 @@ export default async function HomePage() {
           </div>
         </>
       )}
+      {!siteSettings.homepageReady && slides.length === 0 && (
+        <p className="px-8 py-24 text-center font-sans text-sm text-[#656058]">홈페이지를 준비하고 있습니다. 곧 찾아뵙겠습니다.</p>
+      )}
       <HeroSlider slides={slides} />
       {orderedKeys.map((key) => (
         <Fragment key={key}>{sectionRenderers[key]}</Fragment>

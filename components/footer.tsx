@@ -57,7 +57,9 @@ export default function Footer({
               { label: "전화", value: info.phone },
               { label: "팩스", value: info.fax },
               { label: "이메일", value: info.email },
-            ].map(({ label, value }) => (
+            ]
+              .filter(({ value }) => Boolean(value))
+              .map(({ label, value }) => (
               <div key={label}>
                 <span className="mb-2 block text-xs text-[#aaa]">{label}</span>
                 <span className="block whitespace-pre-line break-words text-[13px] leading-6 text-[#eee]">{value}</span>
