@@ -472,7 +472,7 @@ export interface Post {
     youtubeUrl?: string | null;
   };
   /**
-   * 언론 속 봉림사 게시판에서만 입력한다.
+   * 언론 보도 게시판에서만 입력한다.
    */
   pressMeta?: {
     outlet?: string | null;
@@ -1188,7 +1188,7 @@ export interface SiteSetting {
    */
   installed?: boolean | null;
   /**
-   * 체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. installed와 별개 설정입니다.
+   * 체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. 설치 완료와는 별도로 설정합니다.
    */
   homepageReady?: boolean | null;
   /**
@@ -1196,15 +1196,15 @@ export interface SiteSetting {
    */
   siteNoticeText?: string | null;
   /**
-   * 예: 하논봉림사
+   * 예: ○○사
    */
   siteName?: string | null;
   /**
-   * 헤더/푸터 브랜드 표기용. 예: 봉림사
+   * 헤더/푸터 브랜드 표기용. 예: ○○
    */
   siteShortName?: string | null;
   /**
-   * 예: Bonglimsa
+   * 예: Temple
    */
   siteNameEn?: string | null;
   /**
@@ -1219,7 +1219,7 @@ export interface SiteSetting {
   logo?: (number | null) | MediaPublic;
   logoAlt?: string | null;
   /**
-   * 예: 하논에 깃든 사찰
+   * 예: 산 속에 깃든 사찰
    */
   logoTagline?: string | null;
   themeColor?: string | null;
@@ -1234,7 +1234,7 @@ export interface SiteSetting {
     paper?: string | null;
   };
   /**
-   * 예: [봉림사]
+   * 예: [○○사]
    */
   emailFromName?: string | null;
   location?: {
