@@ -33,6 +33,22 @@ export const validateComment: CollectionBeforeValidateHook = async ({ data, req,
   const post = await payload.findByID({ collection: 'posts', id: postId, overrideAccess: true, req })
   if (!post) throw new Error('게시물을 찾을 수 없습니다.')
 
+  // 게시물 읽기 규칙(Posts.access.read)과 같은 조건: ID만 알면 읽을 수 없는 글에도 댓글이 달리는 것을 막는다.
+  if (post.visibility === 'secret' && getRelationId(post.memberAuthor) !== user.id) {
+    throw new Error('비밀글에는 작성자만 댓글을 달 수 있습니다.')
+  }
+  const expired = post.expiresAt ? new Date(post.expiresAt).getTime() <= Date.now() : false
+  if (
+    post._status !== 'published' ||
+    post.archived ||
+    post.hiddenAt ||
+    expired ||
+    post.moderationStatus === 'pending' ||
+    post.moderationStatus === 'rejected'
+  ) {
+    throw new Error('댓글을 달 수 없는 게시물입니다.')
+  }
+
   const board = await payload.findByID({ collection: 'boards', id: getRelationId(post.board)!, overrideAccess: true, req })
   if (!board) throw new Error('게시판을 찾을 수 없습니다.')
 

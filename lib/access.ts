@@ -35,3 +35,11 @@ export const publicReadNoDraft = ({
 /** 구조·정체성 설정(사이트 정보, 메뉴 등)은 최고관리자만 변경 가능. */
 export const superAdminOnly = ({ req: { user } }: { req: { user: AccessUser } }) =>
   Boolean(user && user.collection === 'admins' && user.role === 'super-admin')
+
+/**
+ * 필드 단위 쓰기 권한 — 관리자만 값을 정할 수 있는 필드(고정·조회수·사찰 소식 노출 등)에 쓴다.
+ * 회원이 REST로 직접 값을 보내도 저장되지 않는다. 시스템이 overrideAccess로 갱신하는 코드는 영향을 받지 않는다.
+ */
+export const adminOnlyField = ({ req: { user } }: { req: { user?: unknown } }) =>
+  Boolean(user && (user as { collection?: string }).collection === 'admins')
+

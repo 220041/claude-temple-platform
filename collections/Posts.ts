@@ -1,5 +1,6 @@
 import type { Access, CollectionConfig, FieldAccess, Where } from 'payload'
 
+import { adminOnlyField } from '../lib/access'
 import { auditPostChanges, auditPostPermanentDelete, cascadeDeletePostRelations } from './hooks/auditPostChanges'
 import { setPostAuthor } from './hooks/setPostAuthor'
 import { syncPostImageVisibility } from './hooks/syncPostImageVisibility'
@@ -166,9 +167,9 @@ export const Posts: CollectionConfig = {
             { label: '댓글 차단', value: 'blocked' },
           ],
         },
-        { name: 'pinned', label: '상단 고정', type: 'checkbox', defaultValue: false },
-        { name: 'archived', label: '보관(게시 종료)', type: 'checkbox', defaultValue: false },
-        { name: 'expiresAt', label: '게시 종료일', type: 'date' },
+        { name: 'pinned', label: '상단 고정', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'archived', label: '보관(게시 종료)', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'expiresAt', label: '게시 종료일', type: 'date', access: { create: adminOnlyField, update: adminOnlyField } },
       ],
     },
     {
@@ -176,9 +177,9 @@ export const Posts: CollectionConfig = {
       label: '사찰 소식 노출',
       admin: { initCollapsed: true },
       fields: [
-        { name: 'showInTempleNews', label: '사찰 소식에 노출', type: 'checkbox', defaultValue: false },
-        { name: 'templeNewsFeatured', label: '사찰 소식 대표', type: 'checkbox', defaultValue: false },
-        { name: 'templeNewsPinned', label: '사찰 소식 상단 고정', type: 'checkbox', defaultValue: false },
+        { name: 'showInTempleNews', label: '사찰 소식에 노출', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'templeNewsFeatured', label: '사찰 소식 대표', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'templeNewsPinned', label: '사찰 소식 상단 고정', type: 'checkbox', defaultValue: false, access: { create: adminOnlyField, update: adminOnlyField } },
       ],
     },
     {
@@ -214,12 +215,13 @@ export const Posts: CollectionConfig = {
               '회원이 쓴 글이 승인제 게시판에 올라온 경우에만 의미가 있습니다. 반려할 때는 아래 "관리자 조치 사유"에 사유를 남겨 주세요.',
           },
         },
-        { name: 'viewCount', label: '조회수', type: 'number', defaultValue: 0, admin: { readOnly: true } },
-        { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true } },
-        { name: 'moderationReason', label: '관리자 조치 사유', type: 'text' },
+        { name: 'viewCount', label: '조회수', type: 'number', defaultValue: 0, admin: { readOnly: true }, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'hiddenAt', label: '관리자 숨김 시각', type: 'date', admin: { readOnly: true }, access: { create: adminOnlyField, update: adminOnlyField } },
+        { name: 'moderationReason', label: '관리자 조치 사유', type: 'text', access: { create: adminOnlyField, update: adminOnlyField } },
         {
           name: 'reportCount',
           label: '누적 신고 수',
+          access: { create: adminOnlyField, update: adminOnlyField },
           type: 'number',
           defaultValue: 0,
           admin: { readOnly: true, components: { Cell: '@/components/admin/ReportCountCell#ReportCountCell' } },
