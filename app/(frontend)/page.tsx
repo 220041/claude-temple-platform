@@ -92,7 +92,10 @@ export default async function HomePage() {
       />
     ),
     prayer: (homePage?.showPrayerSection ?? true) ? (
-      <PrayerSection cards={prayerCards.length > 0 ? prayerCards : undefined} />
+      <PrayerSection
+        cards={prayerCards.length > 0 ? prayerCards : undefined}
+        mascotUrl={resolveImageUrl(homePage?.prayerMascot) || undefined}
+      />
     ) : null,
     location: (homePage?.showLocationSection ?? true) ? <LocationSection location={location} /> : null,
   }

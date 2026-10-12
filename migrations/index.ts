@@ -17,6 +17,7 @@ import * as migration_20261001_050634_home_page_versions from './20261001_050634
 import * as migration_20261001_232418_audit_logs_moderation_action from './20261001_232418_audit_logs_moderation_action';
 import * as migration_20261001_235402_main_menu_footer_versions from './20261001_235402_main_menu_footer_versions';
 import * as migration_20261002_001726_footer_tagline_utility_links from './20261002_001726_footer_tagline_utility_links';
+import * as migration_20261012_013724_home_page_prayer_mascot from './20261012_013724_home_page_prayer_mascot';
 
 export const migrations = [
   {
@@ -112,6 +113,11 @@ export const migrations = [
   {
     up: migration_20261002_001726_footer_tagline_utility_links.up,
     down: migration_20261002_001726_footer_tagline_utility_links.down,
-    name: '20261002_001726_footer_tagline_utility_links'
+    name: '20261002_001726_footer_tagline_utility_links',
+  },
+  {
+    up: migration_20261012_013724_home_page_prayer_mascot.up,
+    down: migration_20261012_013724_home_page_prayer_mascot.down,
+    name: '20261012_013724_home_page_prayer_mascot'
   },
 ];

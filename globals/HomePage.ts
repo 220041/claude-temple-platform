@@ -148,6 +148,13 @@ export const HomePage: GlobalConfig = {
       ],
     },
     {
+      name: 'prayerMascot',
+      label: '기도·법회 섹션 상단 이미지',
+      type: 'upload',
+      relationTo: 'media-public',
+      admin: { description: '섹션 제목 위에 작게 보여줄 이미지입니다(예: 사찰 마스코트). 비워두면 표시하지 않습니다.' },
+    },
+    {
       name: 'prayerCards',
       label: '기도·법회 카드',
       labels: { singular: '카드', plural: '카드' },

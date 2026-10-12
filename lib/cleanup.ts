@@ -177,6 +177,7 @@ export async function purgeOrphanMedia(payload: Payload) {
   for (const id of [
     extractDirectUploadId(homePage.templeIntro?.image),
     extractDirectUploadId(homePage.monkIntro?.image),
+    extractDirectUploadId(homePage.prayerMascot),
   ]) {
     if (id) usedPublic.add(id)
   }

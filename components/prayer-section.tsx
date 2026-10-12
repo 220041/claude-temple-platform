@@ -17,13 +17,14 @@ export type PrayerCard = {
 }
 
 
-export default function PrayerSection({ cards }: { cards?: PrayerCard[] }) {
+export default function PrayerSection({ cards, mascotUrl }: { cards?: PrayerCard[]; mascotUrl?: string }) {
   if (!cards || cards.length === 0) return null
   const prayers = cards
   return (
     <section id="prayer" aria-label="기도·법회" style={{ background: "#f5f4f2", borderBottom: "1px solid #e8e6e1" }}>
       <div className="max-w-[1280px] mx-auto px-8 lg:px-16" style={{ paddingTop: "72px", paddingBottom: "72px" }}>
         <div className="mb-10 flex flex-col items-center text-center">
+          {mascotUrl && <Image src={mascotUrl} alt="" width={56} height={56} className="mb-3" />}
           <p className="font-serif text-sm leading-7 text-[#888078]">
             "일체중생이 행복하기를" 간절한 마음으로 기도합니다.
           </p>

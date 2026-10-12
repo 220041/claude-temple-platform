@@ -1187,18 +1187,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface SiteSetting {
   id: number;
   /**
-   * 체크하기 전까지 공개 화면(홈/헤더/푸터)은 이 사찰의 정보 대신 "설치 미완료" 안내만 보여줍니다. 아래 정보를 모두 입력한 뒤 체크하세요.
-   */
-  installed?: boolean | null;
-  /**
-   * 체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. 설치 완료와는 별도로 설정합니다.
-   */
-  homepageReady?: boolean | null;
-  /**
-   * 모든 페이지 상단에 띠 배너로 표시됩니다(예: "공사 중", "오늘 하루 휴무"). 비워두면 배너가 표시되지 않습니다.
-   */
-  siteNoticeText?: string | null;
-  /**
    * 예: ○○사
    */
   siteName?: string | null;
@@ -1214,11 +1202,6 @@ export interface SiteSetting {
    * 예: 대한불교조계종
    */
   affiliation?: string | null;
-  siteDescription?: string | null;
-  /**
-   * 쉼표로 구분
-   */
-  siteKeywords?: string | null;
   logo?: (number | null) | MediaPublic;
   logoAlt?: string | null;
   /**
@@ -1236,16 +1219,33 @@ export interface SiteSetting {
     pine?: string | null;
     paper?: string | null;
   };
-  /**
-   * 예: [○○사]
-   */
-  emailFromName?: string | null;
   location?: {
     lat?: number | null;
     lng?: number | null;
     mapLabel?: string | null;
     zoomLevel?: number | null;
   };
+  siteDescription?: string | null;
+  /**
+   * 쉼표로 구분
+   */
+  siteKeywords?: string | null;
+  /**
+   * 예: [○○사]
+   */
+  emailFromName?: string | null;
+  /**
+   * 체크하기 전까지 공개 화면(홈/헤더/푸터)은 이 사찰의 정보 대신 "설치 미완료" 안내만 보여줍니다. 다른 탭(기본 정보·디자인·지도 등)의 정보를 모두 입력한 뒤 체크하세요.
+   */
+  installed?: boolean | null;
+  /**
+   * 체크 전까지는 설치 완료 후에도 홈페이지가 메뉴 없는 간단한 임시 화면(로고만)으로 보입니다. 메인 사진·소개·기도카드 등을 다 준비한 뒤 체크해 정식 메뉴가 있는 홈페이지로 전환하세요. 설치 완료와는 별도로 설정합니다.
+   */
+  homepageReady?: boolean | null;
+  /**
+   * 모든 페이지 상단에 띠 배너로 표시됩니다(예: "공사 중", "오늘 하루 휴무"). 비워두면 배너가 표시되지 않습니다.
+   */
+  siteNoticeText?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1303,6 +1303,10 @@ export interface HomePage {
      */
     linkUrl?: string | null;
   };
+  /**
+   * 섹션 제목 위에 작게 보여줄 이미지입니다(예: 사찰 마스코트). 비워두면 표시하지 않습니다.
+   */
+  prayerMascot?: (number | null) | MediaPublic;
   prayerCards?:
     | {
         title: string;
@@ -1421,15 +1425,10 @@ export interface MainMenu {
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
-  installed?: T;
-  homepageReady?: T;
-  siteNoticeText?: T;
   siteName?: T;
   siteShortName?: T;
   siteNameEn?: T;
   affiliation?: T;
-  siteDescription?: T;
-  siteKeywords?: T;
   logo?: T;
   logoAlt?: T;
   logoTagline?: T;
@@ -1443,7 +1442,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         pine?: T;
         paper?: T;
       };
-  emailFromName?: T;
   location?:
     | T
     | {
@@ -1452,6 +1450,12 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         mapLabel?: T;
         zoomLevel?: T;
       };
+  siteDescription?: T;
+  siteKeywords?: T;
+  emailFromName?: T;
+  installed?: T;
+  homepageReady?: T;
+  siteNoticeText?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1503,6 +1507,7 @@ export interface HomePageSelect<T extends boolean = true> {
         image?: T;
         linkUrl?: T;
       };
+  prayerMascot?: T;
   prayerCards?:
     | T
     | {
