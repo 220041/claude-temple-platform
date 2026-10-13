@@ -21,3 +21,6 @@ designs/
 
 # 데모 사찰 시험용 계정 정보(비밀번호 포함)
 demo-accounts.local.txt
+
+# Supabase CLI temp
+supabase/.temp/
